@@ -3,17 +3,21 @@ import SwiperCarousel from './components/SwiperCarousel'
 export default function Home() {
   const sharedContent = (
     <div>
-      <h2 className="text-white text-5xl font-extrabold drop-shadow-lg">
+      <h2
+        className="text-5xl font-extrabold drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)]"
+        style={{ color: '#cc8f2a' }}
+      >
         TRANFORM
-      </h2> 
-      <br />
-      <h2 className="text-white text-5xl font-extrabold drop-shadow-lg">
+      </h2>
+
+      <h2
+        className="text-5xl font-light drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)]"
+        style={{ color: '#fdfdfd' }}
+      >
         & DECORATE
       </h2>
       <br />
-      <h3 className="text-white text-2xl font-semibold drop-shadow-lg">
-        Your Home with Taurus by Emperor
-      </h3>
+      <h3 className="text-[#fdfdfd] drop-shadow-lg">&quot;เปลี่ยนบ้านหลังเก่าให้เป็นไปตามจินตนาการของคุณ&quot;</h3>
     </div>
   )
 

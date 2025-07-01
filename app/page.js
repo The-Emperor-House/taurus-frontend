@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import SwiperCarousel from './components/SwiperCarousel'
+import Project from './components/home/project'
 import Map from './components/home/map'
 
 export default function Home() {
@@ -50,6 +51,15 @@ export default function Home() {
   <main className="flex flex-col">
     <section className="h-[calc(100vh-80px)] overflow-hidden">
       <SwiperCarousel slides={carouselSlides} />
+    </section>
+
+    <section className="bg-[#fdfdfd] py-12">
+      <div className="container mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center mb-8">
+          Projects
+        </h2>
+        <Project />
+      </div>
     </section>
 
     <section className="bg-white py-0">

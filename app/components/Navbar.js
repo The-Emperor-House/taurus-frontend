@@ -11,7 +11,7 @@ export default function Navbar() {
   const mobileHoverBg = 'hover:bg-[#cc8f2a]/10'
 
   return (
-    <nav className="bg-gray-800 text-white p-4 font-poppins">
+    <nav className="bg-[#404040] text-white p-4 font-poppins">
       <div className="container mx-auto flex justify-between items-center">
         <Link
           href="/"

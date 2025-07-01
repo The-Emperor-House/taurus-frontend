@@ -7,21 +7,21 @@ const projects = [
   {
     id: 1,
     title: 'TRANFORM',
-    description: 'Description for project one with some details about what it does.',
+    description: 'ปรับปรุง ต่อเติม',
     image: '/home/projects/tranform.webp',
     link: '/projects/1'
   },
   {
     id: 2,
     title: 'DECORATE',
-    description: 'Description for project two with some details about what it does.',
+    description: 'ตกแต่งภายใน',
     image: '/home/projects/decorate.webp',
     link: '/projects/2'
   },
   {
     id: 3,
     title: 'CONSTRUCTION',
-    description: 'Description for project three with some details about what it does.',
+    description: 'การก่อสร้าง',
     image: '/home/projects/construction.webp',
     link: '/projects/3'
   }
@@ -29,38 +29,40 @@ const projects = [
 
 export default function ProjectCards() {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="w-full px-4 py-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
         {projects.map((project) => (
           <Link 
             href={project.link} 
             key={project.id}
-            className="group block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+            className="group block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 h-full"
           >
-            <div className="relative h-64 w-full overflow-hidden">
+            <div className="relative h-80 w-full overflow-hidden">
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                <div>
-                  <h3 className="text-white text-xl font-bold">{project.title}</h3>
-                  <p className="text-white/90 mt-2 line-clamp-2">{project.description}</p>
+              
+              {/* Overlay with Animation */}
+              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="text-center px-8">
+                  {/* Title with Underline Animation */}
+                  <h3 className="text-white text-2xl font-light tracking-widest">
+                    {project.title}
+                    {/* Animated Underline */}
+                    <span className="block h-0.5 bg-white w-0 mx-auto mt-3 group-hover:w-16 transition-all duration-500 ease-out"></span>
+                  </h3>
+                  
+                  {/* Description with Fade-in Animation */}
+                  <p className="text-white text-lg mt-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                    {project.description}
+                  </p>
                 </div>
               </div>
             </div>
-            {/* <div className="p-6 bg-white">
-              <h3 className="text-lg font-semibold text-gray-800">{project.title}</h3>
-              <p className="mt-2 text-gray-600 line-clamp-2">{project.description}</p>
-              <div className="mt-4 flex items-center text-blue-600 group-hover:text-blue-800 transition-colors">
-                <span>View Project</span>
-                <svg className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </div>
-            </div> */}
           </Link>
         ))}
       </div>

@@ -74,7 +74,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-6 font-medium">
+        <div className="hidden md:flex space-x-6 font-light text-2xl">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -89,7 +89,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden mt-4 space-y-2 font-medium">
+        <div className="md:hidden mt-4 space-y-2 font-light text-2xl">
           {navLinks.slice(0, 2).map((link) => (
             <Link
               key={link.href}

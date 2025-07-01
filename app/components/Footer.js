@@ -80,7 +80,7 @@ const Footer = () => {
 
             <div className="mt-6">
               <div className="flex items-center space-x-4 relative">
-                <p className="text-sm">ติดตามผลงานเพิ่มเติมของเราได้ที่</p>
+                <p>ติดตามผลงานเพิ่มเติมของเราได้ที่</p>
                 
                 {/* Facebook Icon */}
                 <a 

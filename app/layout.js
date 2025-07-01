@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className="min-h-screen bg-gray-100 overflow-x-hidden font-prompt flex flex-col">
+      <body className="min-h-screen bg-[#404040] overflow-x-hidden font-prompt flex flex-col">
         <Navbar />
         <main className="flex-grow h-full">
           {children}

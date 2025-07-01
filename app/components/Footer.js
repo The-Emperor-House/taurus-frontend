@@ -17,7 +17,7 @@ const Footer = () => {
   }, [showTikTokEmbed]);
 
   return (
-    <footer className="bg-[#000000] text-white py-12">
+    <footer className="bg-[#404040] text-[#fdfdfd] py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
@@ -37,7 +37,7 @@ const Footer = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 title="เพิ่มเพื่อนทาง LINE"
-                className="text-[#00B900] hover:text-[#00D900] transition-colors text-2xl"
+                className="text-gray-300 hover:text-[#cc8f2a] transition-colors text-2xl"
               >
                 <FaLine />
               </a>

@@ -6,11 +6,16 @@ import { useState } from 'react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
 
-  const hoverColor = 'hover:text-[#cc8f2a]';
-  const mobileHoverBg = 'hover:bg-[#cc8f2a]/10';
+  // คลาสสำหรับเอฟเฟกต์ hover
+  const hoverEffect = {
+    text: 'hover:text-[#cc8f2a] transition-colors duration-300',
+    button: 'hover:bg-[#e0a040] transition-colors duration-300',
+    mobileItem: 'hover:bg-[#cc8f2a]/10 hover:text-[#cc8f2a] transition-colors duration-300'
+  };
 
+  // ลิงก์เมนู
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About Us' },
@@ -22,86 +27,87 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-[#404040] text-white p-4 font-poppins">
+    <nav className="bg-[#404040] text-white p-4 font-poppins fixed w-full z-50 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
+        {/* Logo */}
         <Link
           href="/"
           className="inline-block"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={() => setIsLogoHovered(true)}
+          onMouseLeave={() => setIsLogoHovered(false)}
+          aria-label="Taurus Home"
         >
           <Image
             src={
-              isHovered
+              isLogoHovered
                 ? '/navbar/logo webp/taurusOrange.webp'
                 : '/navbar/logo webp/taurusWhite.webp'
             }
             alt="Taurus Logo"
             width={110}
             height={65}
-            style={{ width: "auto", height: "auto" }}
+            className="w-auto h-[40px] md:h-[65px]"
+            priority
           />
         </Link>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            {isOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </button>
-
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-6 font-light text-2xl">
+        <div className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`${hoverColor} transition-colors duration-300`}
+              className={`text-xl font-light ${hoverEffect.text}`}
             >
               {link.label}
             </Link>
           ))}
+          
+          {/* Login Button */}
+          <Link
+            href="/login"
+            className={`ml-6 bg-[#cc8f2a] text-white font-medium py-2 px-6 rounded-full ${hoverEffect.button}`}
+          >
+            Login
+          </Link>
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden focus:outline-none p-2"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
+        >
+          <div className="w-6 flex flex-col gap-1.5">
+            <span className={`block h-0.5 bg-white transition-all ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+            <span className={`block h-0.5 bg-white transition-all ${isOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+            <span className={`block h-0.5 bg-white transition-all ${isOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+          </div>
+        </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden mt-4 space-y-2 font-light text-2xl">
-          {navLinks.slice(0, 2).map((link) => (
+      {/* Mobile Menu Dropdown */}
+      <div className={`md:hidden bg-[#404040] overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-screen mt-4' : 'max-h-0'}`}>
+        <div className="space-y-3 py-4 px-4">
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`block px-3 py-2 rounded ${mobileHoverBg} ${hoverColor} transition-colors duration-300`}
+              className={`block text-xl py-3 px-4 rounded-lg ${hoverEffect.mobileItem}`}
               onClick={() => setIsOpen(false)}
             >
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/login"
+            className={`block text-xl py-3 px-4 rounded-lg bg-[#cc8f2a] text-white font-medium text-center ${hoverEffect.button}`}
+            onClick={() => setIsOpen(false)}
+          >
+            Member Login
+          </Link>
         </div>
-      )}
+      </div>
     </nav>
   );
 }

@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col">
-      <section className="relative w-full h-[80vh] min-h-[400px] max-h-[1000px] md:h-screen md:min-h-[600px] overflow-hidden bg-black">
+      <section className="relative h-screen overflow-hidden">
         <SwiperCarousel slides={carouselSlides} />
       </section>
 

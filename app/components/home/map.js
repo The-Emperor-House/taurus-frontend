@@ -6,8 +6,8 @@ const Map = () => {
   return (
     <div className="flex flex-col md:flex-row h-full">
         {/* Left Side: Team Image - แสดงบน Mobile และ Desktop */}
-        <div className="block w-full md:w-1/2 h-[50vh] md:h-screen p-0 order-1 md:order-none">
-        <div className="w-full h-full">
+        <div className="w-full md:w-1/2 h-[50vh] md:h-screen p-0 order-1 md:order-none">
+        <div className="relative w-full h-full">
             <Image 
             src="/home/team/104096.webp"
             alt="Taurus Team"

@@ -27,7 +27,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-[#404040] text-white p-4 font-poppins fixed w-full z-50 shadow-md">
+    <nav className="bg-[#000000] text-white p-4 font-poppins fixed w-full z-50 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link
@@ -44,8 +44,8 @@ export default function Navbar() {
                 : '/navbar/logo webp/taurusWhite.webp'
             }
             alt="Taurus Logo"
-            width={110}
-            height={65}
+            width={isLogoHovered ? 150 : 120}
+            height={isLogoHovered ? 50 : 40}
             className="w-auto h-[40px] md:h-[65px]"
             priority={true}
           />

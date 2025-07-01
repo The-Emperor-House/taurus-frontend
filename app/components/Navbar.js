@@ -37,10 +37,9 @@ export default function Navbar() {
                 : '/navbar/logo webp/taurusWhite.webp'
             }
             alt="Taurus Logo"
-            width={128}
-            height={0}
-            className="w-32 h-auto"
-            priority={false}
+            width={110}
+            height={65}
+            style={{ width: "auto", height: "auto" }}
           />
         </Link>
 

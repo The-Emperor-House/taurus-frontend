@@ -1,32 +1,35 @@
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import './globals.css';
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import { Prompt } from 'next/font/google'
+import './globals.css'
 
 export const metadata = {
   title: 'My Website',
   description: 'Created with Next.js 15',
   icons: {
-    icon: '/favicon.ico', // Add your favicon
+    icon: '/logo.webp',
   },
-};
+}
+
+const prompt = Prompt({
+  subsets: ['latin', 'thai'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+})
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth"> {/* Added smooth scrolling */}
+    <html lang="en" className={`scroll-smooth ${prompt.className}`}>
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" /> {/* Viewport meta */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className="min-h-screen bg-gray-100 overflow-x-hidden font-prompt flex flex-col">
         <Navbar />
-        <main className="flex-grow"> {/* Wrapped children in main for semantic HTML */}
+        <main className="flex-grow h-full">
           {children}
         </main>
         <Footer />
       </body>
     </html>
-  );
+  )
 }

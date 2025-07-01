@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import SwiperCarousel from './components/SwiperCarousel'
+import Map from './components/home/map'
 
 export default function Home() {
   const sharedContent = (
@@ -17,52 +19,42 @@ export default function Home() {
         & DECORATE
       </h2>
       <br />
+
       <h3 className="text-[#fdfdfd] drop-shadow-lg">&quot;เปลี่ยนบ้านหลังเก่าให้เป็นไปตามจินตนาการของคุณ&quot;</h3>
     </div>
   )
 
-  const carouselSlides = [
-    {
-      id: 1,
-      background: <img src="/home/swiper/01.webp" className="w-full h-full object-cover" alt="slide 1" />,
-      content: sharedContent
-    },
-    {
-      id: 2,
-      background: <img src="/home/swiper/02.webp" className="w-full h-full object-cover" alt="slide 2" />,
-      content: sharedContent
+  const imageSlides = [1, 2, 3, 4, 5, 6, 7]
 
-    },
-    {
-      id: 3,
-      background: <img src="/home/swiper/03.webp" className="w-full h-full object-cover" alt="slide 3" />,
-      content: sharedContent
-    },
-    {
-      id: 4,
-      background: <img src="/home/swiper/04.webp" className="w-full h-full object-cover" alt="slide 4" />,
-      content: sharedContent
-    },
-    {
-      id: 5,
-      background: <img src="/home/swiper/05.webp" className="w-full h-full object-cover" alt="slide 5" />,
-      content: sharedContent
-    },
-    {
-      id: 6,
-      background: <img src="/home/swiper/06.webp" className="w-full h-full object-cover" alt="slide 6" />,
-      content: sharedContent
-    },
-    {
-      id: 7,
-      background: <img src="/home/swiper/07.webp" className="w-full h-full object-cover" alt="slide 7" />,
-      content: sharedContent
+  const carouselSlides = imageSlides.map((num) => {
+    const paddedNum = String(num).padStart(2, '0')
+
+    return {
+      id: num,
+      background: (
+        <Image
+          key={num}
+          src={`/home/swiper/${paddedNum}.webp`}
+          className="w-full h-full object-cover"
+          alt={`slide ${num}`}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority={num === 1} // โหลดภาพแรกก่อน
+        />
+      ),
+      content: sharedContent,
     }
-  ]
+  })
 
   return (
-    <main className="w-full h-[calc(100vh-80px)] overflow-hidden">
+  <main className="flex flex-col">
+    <section className="h-[calc(100vh-80px)] overflow-hidden">
       <SwiperCarousel slides={carouselSlides} />
-    </main>
+    </section>
+
+    <section className="bg-white py-0">
+      <Map />
+    </section>
+  </main>
   )
 }

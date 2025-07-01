@@ -26,8 +26,9 @@ const Footer = () => {
             <Image
               src="/navbar/logo webp/taurusWhite.webp"
               alt="Taurus Logo"
-              width={160}
+              width={120}
               height={0}
+              style={{ width: "auto", height: "auto" }}
               className="w-40 h-auto mb-4"
             />
             <div className="flex space-x-4">

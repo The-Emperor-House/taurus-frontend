@@ -42,10 +42,10 @@ export default function Home() {
         <SwiperCarousel slides={carouselSlides} />
       </section>
 
-      <section className="bg-[#fdfdfd] py-12">
+      <section className="bg-[#404040] py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <AnimatedHeading title="Projects" />
+            <AnimatedHeading title="PROJECTS" />
           </div>
           <Project />
         </div>

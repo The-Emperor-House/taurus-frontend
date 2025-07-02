@@ -6,9 +6,9 @@ import Image from "next/image";
 const projects = [
   {
     id: 1,
-    title: "TRANFORM",
+    title: "TRANSFORM",
     description: "ปรับปรุง ต่อเติม",
-    image: "/home/projects/tranform.webp",
+    image: "/home/projects/transform.webp",
     link: "/projects/1",
   },
   {

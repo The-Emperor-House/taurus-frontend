@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -18,8 +19,8 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // เรียก API Login
-      const response = await fetch('/api/auth/login', {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,12 +30,19 @@ export default function LoginPage() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
+      if (data.token) {
+        Cookies.set('token', data.token, { 
+          expires: 1,
+          secure: process.env.NODE_ENV === 'production', // ส่งผ่าน HTTPS เท่านั้นเมื่ออยู่บน Production
+          sameSite: 'lax' // ป้องกัน CSRF
+      });
 
       // Login สำเร็จ redirect ไปหน้า dashboard
       router.push('/dashboard');
+      } else {
+      throw new Error('ไม่ได้รับ Token จากเซิร์ฟเวอร์');
+    }
+
     } catch (err) {
       setError(err.message);
     } finally {

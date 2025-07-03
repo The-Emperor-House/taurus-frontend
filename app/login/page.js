@@ -3,15 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
+import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,26 +21,17 @@ export default function LoginPage() {
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
       const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'An error occurred.');
+      }
 
-      if (data.token) {
-        Cookies.set('token', data.token, { 
-          expires: 1,
-          secure: process.env.NODE_ENV === 'production', // ส่งผ่าน HTTPS เท่านั้นเมื่ออยู่บน Production
-          sameSite: 'lax' // ป้องกัน CSRF
-      });
-
-      // Login สำเร็จ redirect ไปหน้า dashboard
-      router.push('/dashboard');
-      } else {
-      throw new Error('ไม่ได้รับ Token จากเซิร์ฟเวอร์');
-    }
+      login(data.token);
 
     } catch (err) {
       setError(err.message);

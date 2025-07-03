@@ -77,11 +77,10 @@ export default function Navbar() {
     if (authStatus === 'authenticated') {
       return isMobile ? (
         <>
-          <Link href="/dashboard" className="..." onClick={() => setIsOpen(false)}>Dashboard</Link>
-          <button onClick={handleMobileLogout} className="...">Logout</button>
+          <Link href="/dashboard" className={`block text-xl py-3 px-4 rounded-lg bg-[#cc8f2a]/80 text-white font-medium text-center ${hoverEffect.button}`} onClick={() => setIsOpen(false)}>Dashboard</Link>
+          <button onClick={handleMobileLogout} className={`w-full text-left block text-xl py-3 px-4 rounded-lg ${hoverEffect.mobileItem}`}>Logout</button>
         </>
       ) : (
-        // 3. ส่งฟังก์ชัน logout ที่ได้จาก context ไปให้ UserProfile
         <UserProfile onLogout={logout} />
       );
     }

@@ -24,13 +24,17 @@ const UserProfile = ({ onLogout }) => {
   return (
     <div className="relative" ref={profileRef}>
       <button onClick={() => setIsProfileOpen(!isProfileOpen)} className="w-11 h-11 bg-gray-500 rounded-full flex items-center justify-center font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-[#cc8f2a]">
-        <span className="text-white">U</span>
+        <span className="text-white">
+          {/* แสดงตัวอักษรแรกของชื่อผู้ใช้ */}
+          {onLogout ? "U" : "G"}
+          
+        </span>
       </button>
 
       {/* Dropdown Menu */}
       {isProfileOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg py-1 z-50">
-          <Link href="/dashboard" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={() => setIsProfileOpen(false)}>
+          <Link href="/auth/dashboard" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={() => setIsProfileOpen(false)}>
             Dashboard
           </Link>
           <button onClick={onLogout} className="w-full text-left block px-4 py-2 text-sm hover:bg-gray-100">
@@ -87,7 +91,7 @@ export default function Navbar() {
     
     // Unauthenticated
     return (
-       <Link href="/login" className={isMobile ? `block text-xl py-3 px-4 rounded-lg bg-[#cc8f2a] text-white text-center` : `ml-6 bg-[#cc8f2a] text-white font-medium py-2 px-6 rounded-full ${hoverEffect.button}`}>
+       <Link href="/auth/login" className={isMobile ? `block text-xl py-3 px-4 rounded-lg bg-[#cc8f2a] text-white text-center` : `ml-6 bg-[#cc8f2a] text-white font-medium py-2 px-6 rounded-full ${hoverEffect.button}`}>
          {isMobile ? 'Member Login' : 'Login'}
        </Link>
     );

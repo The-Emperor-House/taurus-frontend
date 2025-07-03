@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import SwiperCarousel from "./components/SwiperCarousel";
+import SwiperCarousel from "./components/home/SwiperCarousel";
 import AnimatedHeading from "./components/home/AnimatedHeading";
 import Project from "./components/home/project";
 import Map from "./components/home/map";

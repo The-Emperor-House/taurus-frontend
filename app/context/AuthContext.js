@@ -23,14 +23,14 @@ export const AuthProvider = ({ children }) => {
   const login = (token) => {
     Cookies.set('token', token, { expires: 1, sameSite: 'lax' });
     setAuthStatus('authenticated'); // อัปเดตสถานะเป็น 'authenticated'
-    router.push('/dashboard');
+    router.push('/auth/dashboard');
   };
 
   // ฟังก์ชันสำหรับ Logout
   const logout = () => {
     Cookies.remove('token');
     setAuthStatus('unauthenticated'); // อัปเดตสถานะเป็น 'unauthenticated'
-    router.push('/login');
+    router.push('/auth/login');
   };
 
   // 3. ส่ง authStatus และฟังก์ชันต่างๆ ออกไปใน value

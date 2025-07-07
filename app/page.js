@@ -39,6 +39,7 @@ export default function Home() {
   return (
     <main className="flex flex-col">
       <section className="relative h-screen overflow-hidden">
+        {/* โลโก้ลายน้ำพื้นหลัง - ปรับขนาดสำหรับมือถือ */}
         <SwiperCarousel slides={carouselSlides} />
       </section>
 

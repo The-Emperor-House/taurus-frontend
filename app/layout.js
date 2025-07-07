@@ -21,10 +21,10 @@ const prompt = Prompt({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`scroll-smooth ${prompt.className}`}>
-      <body className="min-h-screen bg-[#404040] overflow-x-hidden font-prompt flex flex-col">
+      <body className="flex flex-col min-h-screen bg-gray-100 text-gray-900">
         <AuthProvider>
           <Navbar />
-          <main className="flex-grow h-full pt-20 md:pt-28">
+          <main>
             {children}
           </main>
           <Footer />

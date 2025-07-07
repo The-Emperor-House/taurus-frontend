@@ -16,7 +16,7 @@ export default function SwiperCarousel({ slides }) {
         spaceBetween={0}
         slidesPerView={1}
         autoplay={{ 
-          delay: 8000,
+          delay: 5000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}

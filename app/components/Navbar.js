@@ -88,17 +88,10 @@ export default function Navbar() {
         <UserProfile onLogout={logout} />
       );
     }
-    
-    // Unauthenticated
-    return (
-       <Link href="/auth/login" className={isMobile ? `block text-xl py-3 px-4 rounded-lg bg-[#cc8f2a] text-white text-center` : `ml-6 bg-[#cc8f2a] text-white font-medium py-2 px-6 rounded-full ${hoverEffect.button}`}>
-         {isMobile ? 'Member Login' : 'Login'}
-       </Link>
-    );
   }
 
   return (
-    <nav className="bg-black text-white p-4 font-poppins fixed w-full z-50 shadow-md">
+    <nav className="bg-[#404040] text-white p-4 font-poppins fixed w-full z-50 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" onMouseEnter={() => setIsLogoHovered(true)} onMouseLeave={() => setIsLogoHovered(false)}>

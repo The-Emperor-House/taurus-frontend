@@ -38,7 +38,7 @@ export default function ProjectCards() {
           >
             <Link href={project.link} className="block h-full relative">
               {/* ภาพพื้นหลัง */}
-              <div className="relative w-full aspect-[4/3] h-auto rounded-lg overflow-hidden">
+              <div className="relative w-full max-w-4xl aspect-[4/3] h-auto rounded-lg overflow-hidden">
                 <Image
                   src={project.image}
                   alt={project.title}

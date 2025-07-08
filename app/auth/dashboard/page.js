@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useAuth } from "../../context/AuthContext"; // Import useAuth from context
-import { useRouter } from "next/navigation";
-import UserProfileCard from "../../components/UserProfileCard"; // Import UserProfileCard component
+import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import UserProfileCard from '../../components/UserProfileCard';
 
 export default function DashboardPage() {
-  const { authStatus } = useAuth();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (authStatus === "loading") return;
-    if (authStatus !== "authenticated") {
-      router.push("/auth/login");
+    if (status === 'loading') return;
+    if (status === 'unauthenticated') {
+      router.push('/auth/login');
     }
-  }, [authStatus, router]);
+  }, [status, router]);
 
-  if (authStatus === "loading") {
-    return <div>Loading...</div>;
+  if (status === 'loading') {
+    return <div className="p-8 text-center">Loading...</div>;
   }
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
-      <UserProfileCard />
+      <UserProfileCard user={session.user} />
     </div>
   );
 }

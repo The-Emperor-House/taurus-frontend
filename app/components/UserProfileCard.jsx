@@ -1,9 +1,11 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import LogoutDialog from './LogoutDialog';
+import PersonIcon from '@mui/icons-material/Person';
+import Divider from '@mui/material/Divider';
 import {
   Box,
   Typography,
@@ -20,17 +22,6 @@ export default function UserProfileCard() {
   const [error, setError] = useState(null);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const isLoading = status === 'loading' || (status === 'authenticated' && !user);
-
-  const GradientAvatar = styled(Box)(({ theme }) => ({
-    width: 96,
-    height: 96,
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: theme.shadows[4],
-    background: `linear-gradient(135deg, #cc8f2a, #e0a040)`,
-  }));
 
   useEffect(() => {
     if (status !== 'authenticated') return;
@@ -96,35 +87,46 @@ export default function UserProfileCard() {
 
   return (
     <StyledCard>
-      <GradientAvatar>
-        <Avatar sx={{ width: 64, height: 64, fontSize: '2rem' }}>
-          {userInitial}
-        </Avatar>
-      </GradientAvatar>
-      <Typography variant="h5" sx={{ mt: 2, fontWeight: 600 }}>
+      <Avatar sx={{ width: 72, height: 72, bgcolor: 'primary.main', fontSize: '2rem' }}>
+        <PersonIcon fontSize="inherit" />
+      </Avatar>
+
+      <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, color: 'text.primary' }}>
         {user.username}
       </Typography>
-      <Box sx={{ mt: 1, mb: 3 }}>
-        <Typography variant="body2" color="text.secondary">
-          {user.email}
-        </Typography>
+
+      <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+        {user.email}
+      </Typography>
+
+      <Divider sx={{ my: 3, width: '100%' }} />
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, width: '100%' }}>
+        <InfoItem label="👤 ชื่อจริง" value={user.firstName || '—'} />
+        <InfoItem label="👥 นามสกุล" value={user.lastName || '—'} />
+        <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.createdAt)} />
+        <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDate(user.updatedAt)} />
       </Box>
-      <InfoItem label="👤 ชื่อจริง" value={user.firstName ? user.firstName : '—'} />
-      <InfoItem label="👥 นามสกุล" value={user.lastName ? user.lastName : '—'} />
-      <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.createdAt)} />
-      <InfoItem label="🚠️ วันที่แก้ไขล่าสุด" value={formatDate(user.updatedAt)} />
 
       <Button
         variant="outlined"
         color="error"
         onClick={() => setIsLogoutDialogOpen(true)}
-        sx={{ mt: 2 }}
+        sx={{ mt: 3, fontWeight: 600 }}
       >
         ออกจากระบบ
       </Button>
+
       <Box sx={{ mt: 2, textAlign: 'center' }}>
         <Link href="/profile/edit" style={{ textDecoration: 'none' }}>
-          <Button variant="contained" color="secondary">
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: '#cc8f2a',
+              '&:hover': { backgroundColor: '#e0a040' },
+              fontWeight: 600,
+            }}
+          >
             แก้ไขโปรไฟล์
           </Button>
         </Link>
@@ -137,16 +139,20 @@ export default function UserProfileCard() {
 
 function InfoItem({ label, value }) {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>{label}:</Typography>
-      <Box sx={{
-        px: 2,
-        py: 0.5,
-        fontSize: '0.85rem',
-        fontFamily: 'monospace',
-        bgcolor: 'action.hover',
-        borderRadius: '9999px',
-      }}>
+      <Box
+        sx={{
+          px: 2,
+          py: 0.5,
+          fontSize: '0.85rem',
+          fontFamily: 'monospace',
+          bgcolor: 'grey.100',
+          borderRadius: '9999px',
+          minWidth: 100,
+          textAlign: 'center',
+        }}
+      >
         {value}
       </Box>
     </Box>

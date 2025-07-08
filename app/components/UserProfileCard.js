@@ -254,7 +254,7 @@ export default function UserProfileCard() {
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'text.secondary' }}>
-            Last Login:
+            Last Updated At:
           </Typography>
           <Box
             sx={{
@@ -267,7 +267,7 @@ export default function UserProfileCard() {
               color: 'text.primary', // For text-gray-700 / dark:text-gray-200
             }}
           >
-            {new Date(user.lastLogin).toLocaleDateString('en-US', {
+            {new Date(user.updatedAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: '2-digit',
               day: '2-digit',

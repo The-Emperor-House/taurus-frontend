@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useAuth } from "../context/AuthContext"; // Import useAuth
+import { useAuth } from "../context/AuthContext";
+import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
 
 export default function UserProfileCard() {
   const [user, setUser] = useState(null);
@@ -59,7 +61,6 @@ export default function UserProfileCard() {
     );
   }
 
-  // --- JSX ที่คุณออกแบบไว้ ---
   return (
     <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 space-y-8">
       <div className="text-center">
@@ -102,12 +103,22 @@ export default function UserProfileCard() {
         </div>
       </div>
 
-      <button
+      {/* <button
         onClick={logout}
         className="w-full py-3 px-4 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
       >
         Logout
-      </button>
+      </button> */}
+
+      <Button
+        variant="contained"
+        color="error"
+        onClick={logout}
+        className="w-full mt-4"
+      >
+        Logout
+      </Button>
+
     </div>
   );
 }

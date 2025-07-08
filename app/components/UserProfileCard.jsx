@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import LogoutDialog from './LogoutDialog';
 import {
   Box,
   Typography,
@@ -17,6 +18,7 @@ export default function UserProfileCard() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const isLoading = status === 'loading' || (status === 'authenticated' && !user);
 
   const GradientAvatar = styled(Box)(({ theme }) => ({
@@ -44,7 +46,7 @@ export default function UserProfileCard() {
         if (!res.ok) {
           if ([401, 403].includes(res.status)) {
             console.error('Authentication failed');
-            signOut({ callbackUrl: '/auth/login' });
+            setIsLogoutDialogOpen(true);
           }
           throw new Error('Fetch failed');
         }
@@ -82,11 +84,12 @@ export default function UserProfileCard() {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => signOut({ callbackUrl: '/auth/login' })}
+          onClick={() => setIsLogoutDialogOpen(true)}
           sx={{ mt: 3 }}
         >
           กลับไปล็อกอิน
         </Button>
+        <LogoutDialog isOpen={isLogoutDialogOpen} onClose={() => setIsLogoutDialogOpen(false)} />
       </StyledCard>
     );
   }
@@ -106,26 +109,15 @@ export default function UserProfileCard() {
           {user.email}
         </Typography>
       </Box>
-<InfoItem
-  label="👤 ชื่อจริง"
-  value={user.firstName ? user.firstName : '—'}
-/>
-<InfoItem
-  label="👥 นามสกุล"
-  value={user.lastName ? user.lastName : '—'}
-/>
-<InfoItem
-  label="📅 วันที่สมัครสมาชิก"
-  value={formatDate(user.createdAt)}
-/>
-<InfoItem
-  label="🛠️ วันที่แก้ไขล่าสุด"
-  value={formatDate(user.updatedAt)}
-/>
+      <InfoItem label="👤 ชื่อจริง" value={user.firstName ? user.firstName : '—'} />
+      <InfoItem label="👥 นามสกุล" value={user.lastName ? user.lastName : '—'} />
+      <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.createdAt)} />
+      <InfoItem label="🚠️ วันที่แก้ไขล่าสุด" value={formatDate(user.updatedAt)} />
+
       <Button
         variant="outlined"
-        color="primary"
-        onClick={() => signOut({ callbackUrl: '/auth/login' })}
+        color="error"
+        onClick={() => setIsLogoutDialogOpen(true)}
         sx={{ mt: 2 }}
       >
         ออกจากระบบ
@@ -137,6 +129,8 @@ export default function UserProfileCard() {
           </Button>
         </Link>
       </Box>
+
+      <LogoutDialog isOpen={isLogoutDialogOpen} onClose={() => setIsLogoutDialogOpen(false)} />
     </StyledCard>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Fade } from '@mui/material';
 import UserProfileCard from '../../components/UserProfileCard';
 
 export default function DashboardPage() {
@@ -17,12 +18,18 @@ export default function DashboardPage() {
   }, [status, router]);
 
   if (status === 'loading') {
-    return <div className="p-8 text-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="text-center text-lg text-gray-500 animate-pulse">Loading...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
-      <UserProfileCard user={session.user} />
-    </div>
+    <Fade in timeout={500}>
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
+        <UserProfileCard user={session.user} />
+      </div>
+    </Fade>
   );
 }

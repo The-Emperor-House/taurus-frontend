@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import customTheme from '../../lib/theme'; // ปรับเส้นทางให้ตรงกับที่เก็บไฟล์ theme.js ของคุณ
+import customTheme from '../../lib/theme';
 
 export default function MuiThemeProviderWrapper({ children }) {
   return (

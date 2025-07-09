@@ -29,6 +29,11 @@ const Map = () => {
             referrerPolicy="no-referrer-when-downgrade"
             className="w-full h-full border-0"
         />
+        <noscript>
+          <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
+            โปรดเปิด JavaScript เพื่อดูแผนที่
+          </p>
+        </noscript>
         </div>
     </div>
   );

@@ -53,8 +53,6 @@ export default function UserProfileCard() {
     fetchUserData();
   }, [session, status]);
 
-  const userInitial = user?.username?.charAt(0)?.toUpperCase() || 'U';
-
   if (isLoading) {
     return (
       <StyledCard>
@@ -104,8 +102,8 @@ export default function UserProfileCard() {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, width: '100%' }}>
         <InfoItem label="👤 ชื่อจริง" value={user.firstName || '—'} />
         <InfoItem label="👥 นามสกุล" value={user.lastName || '—'} />
-        <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.createdAt)} />
-        <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDate(user.updatedAt)} />
+        <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.created_at)} />
+        <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDate(user.updated_at)} />
       </Box>
 
       <Button

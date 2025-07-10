@@ -1,7 +1,7 @@
 export default function AboutPage() {
   return (
-    <main className="flex flex-col">
-      <section className="bg-[#404040] relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[#404040]">
+      <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 relative z-10">
           <h1 className="text-5xl font-extrabold text-[#cc8f2a] text-center mb-8">
             About Us
@@ -13,6 +13,6 @@ export default function AboutPage() {
           </p>
         </div>
       </section>
-    </main>
+    </div>
   )
 }

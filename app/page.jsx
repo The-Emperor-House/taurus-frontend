@@ -45,16 +45,16 @@ export default function Home() {
 
       <section className="bg-[#404040] relative overflow-hidden">
         {/* โลโก้ลายน้ำพื้นหลัง - ปรับขนาดสำหรับมือถือ */}
-        <div className="absolute inset-0 items-center justify-start opacity-5 md:opacity-10 pointer-events-none flex">
+        {/* <div className="absolute inset-0 items-center justify-start opacity-5 md:opacity-10 pointer-events-none flex">
           <Image
-            src="/home/transparent.webp"
+            src="/home/projects/water-mark.png"
             alt="Taurus Logo Watermark"
             width={300}
             height={300}
             className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-auto object-contain mx-auto"
             priority
           />
-        </div>
+        </div> */}
 
         {/* เนื้อหาหลัก */}
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 relative z-10">

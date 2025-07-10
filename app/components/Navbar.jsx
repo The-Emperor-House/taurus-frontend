@@ -134,8 +134,7 @@ export default function Navbar() {
             }
             alt="Taurus Logo"
             width={120}
-            height={40}
-            className="w-auto h-[40px] md:h-[65px]"
+            height={0}
             priority
           />
         </Link>

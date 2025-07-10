@@ -24,7 +24,7 @@ const Footer = () => {
           {/* Logo Column */}
           <div className="flex flex-col items-center md:items-start">
             <Image
-              src="/navbar/logo webp/taurusWhite.webp"
+              src="/footer/logo-cut.webp"
               alt="Taurus Logo"
               width={120}
               height={0}

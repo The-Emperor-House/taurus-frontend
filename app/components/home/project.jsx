@@ -29,8 +29,8 @@ const projects = [
 
 export default function ProjectCards() {
   return (
-    <div className="py-16">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {projects.map((project) => (
           <div
             key={project.id}
@@ -38,7 +38,7 @@ export default function ProjectCards() {
           >
             <Link href={project.link} className="block h-full relative">
               {/* ภาพพื้นหลัง */}
-              <div className="relative w-full max-w-4xl aspect-[4/3] h-auto rounded-lg overflow-hidden">
+              <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
                   src={project.image}
                   alt={project.title}

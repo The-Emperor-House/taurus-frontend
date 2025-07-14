@@ -105,7 +105,7 @@ export default function UserProfileCard() {
         <InfoItem label="👤 ชื่อจริง" value={user.fname || '—'} />
         <InfoItem label="👥 นามสกุล" value={user.lname || '—'} />
         <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.created_at)} />
-        <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDate(user.updated_at)} />
+        <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDateTime(user.updated_at)} />
       </Box>
 
       <Button
@@ -168,10 +168,21 @@ function InfoItem({ label, value }) {
 
 function formatDate(date) {
   if (!date) return '-';
-  return new Date(date).toLocaleDateString('en-GB', {
+  return new Date(date).toLocaleDateString('th-TH', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
+  });
+}
+
+function formatDateTime(date) {
+  if (!date) return '-';
+  return new Date(date).toLocaleString('th-TH', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
   });
 }
 

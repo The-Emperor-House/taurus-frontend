@@ -1,4 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
+'use client';
+
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import SuccessModal from './SuccessModal';
 import ErrorModal from './ErrorModal';
 import WarningModal from './WarningModal';
@@ -8,6 +10,7 @@ import LoadingModal from './LoadingModal';
 export const ModalContext = createContext();
 
 export function ModalProvider({ children }) {
+  const [ready, setReady] = useState(false);
   const [modalState, setModalState] = useState({
     type: '',
     message: '',
@@ -15,13 +18,19 @@ export function ModalProvider({ children }) {
     onConfirm: null,
   });
 
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
   const showModal = (type, { message = '', onConfirm = null } = {}) => {
     setModalState({ type, message, isOpen: true, onConfirm });
   };
 
   const closeModal = () => {
-    setModalState({ ...modalState, isOpen: false, onConfirm: null });
+    setModalState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
   };
+
+  if (!ready) return null;
 
   return (
     <ModalContext.Provider value={{ showModal, closeModal }}>

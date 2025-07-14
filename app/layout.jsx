@@ -3,7 +3,6 @@ import Footer from "./components/Footer";
 import MuiThemeProviderWrapper from "./components/MuiThemeProviderWrapper";
 import { Prompt } from "next/font/google";
 import "./globals.css";
-
 import { Providers } from "./providers";
 
 export const metadata = {
@@ -23,10 +22,7 @@ const prompt = Prompt({
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`${prompt.variable} scroll-smooth ${prompt.className}`}
-    >
+    <html lang="en" className={`${prompt.variable} scroll-smooth ${prompt.className}`}>
       <body className="flex flex-col min-h-screen bg-gray-100 text-gray-900">
         <Providers>
           <MuiThemeProviderWrapper>

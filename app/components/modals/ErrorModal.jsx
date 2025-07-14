@@ -1,3 +1,5 @@
+'use client';
+
 import { Dialog, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 

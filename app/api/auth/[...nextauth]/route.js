@@ -12,33 +12,48 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-              rememberMe: credentials.rememberMe === 'on',
-            }),
-          });
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: credentials.email,
+                password: credentials.password,
+                rememberMe: credentials.rememberMe === "on",
+              }),
+            }
+          );
 
           const data = await res.json();
 
-          if (res.ok && data.user) {
+          console.log("👉 API response:", data);
+
+          if (
+            res.ok &&
+            data.status === "success" &&
+            data.data &&
+            data.data.user
+          ) {
             return {
-              ...data.user,
-              token: data.token,
-              tokenExpiresIn: data.expiresIn,
+              ...data.data.user,
+              token: data.data.token,
+              tokenExpiresIn: data.data.expiresIn,
             };
           }
 
+          console.warn(
+            "❌ Login failed, API responded:",
+            res.status,
+            data.message
+          );
           return null;
         } catch (error) {
-          console.error('Login error:', error);
+          console.error("🔥 authorize() error:", error);
           return null;
         }
-      }
-    })
+      },
+    }),
   ],
 
   callbacks: {
@@ -64,14 +79,14 @@ const handler = NextAuth({
   },
 
   pages: {
-    signIn: '/auth/login',
+    signIn: "/auth/login",
   },
 
   secret: process.env.NEXTAUTH_SECRET,
 
   session: {
-    strategy: 'jwt',
-  }
+    strategy: "jwt",
+  },
 });
 
 export { handler as GET, handler as POST };

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import LogoutDialog from './LogoutDialog';
+import LogoutDialog from '../LogoutDialog';
 import PersonIcon from '@mui/icons-material/Person';
 import Divider from '@mui/material/Divider';
 import {
@@ -15,12 +15,14 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { styled } from '@mui/system';
+import EditProfileDialog from './EditProfileDialog'; // Assuming you have an EditProfileDialog component
 
 export default function UserProfileCard() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const isLoading = status === 'loading' || (status === 'authenticated' && !user);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function UserProfileCard() {
         }
 
         const data = await res.json();
-        setUser(data.user);
+        setUser(data.data.user);
       } catch (err) {
         console.error(err);
         setError('ไม่สามารถโหลดข้อมูลผู้ใช้ได้');
@@ -100,8 +102,8 @@ export default function UserProfileCard() {
       <Divider sx={{ my: 3, width: '100%' }} />
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, width: '100%' }}>
-        <InfoItem label="👤 ชื่อจริง" value={user.firstName || '—'} />
-        <InfoItem label="👥 นามสกุล" value={user.lastName || '—'} />
+        <InfoItem label="👤 ชื่อจริง" value={user.fname || '—'} />
+        <InfoItem label="👥 นามสกุล" value={user.lname || '—'} />
         <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.created_at)} />
         <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDate(user.updated_at)} />
       </Box>
@@ -116,19 +118,26 @@ export default function UserProfileCard() {
       </Button>
 
       <Box sx={{ mt: 2, textAlign: 'center' }}>
-        <Link href="/profile/edit" style={{ textDecoration: 'none' }}>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: '#cc8f2a',
-              '&:hover': { backgroundColor: '#e0a040' },
-              fontWeight: 600,
-            }}
-          >
-            แก้ไขโปรไฟล์
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: '#cc8f2a',
+            '&:hover': { backgroundColor: '#e0a040' },
+            fontWeight: 600,
+          }}
+          onClick={() => setIsEditDialogOpen(true)}
+        >
+          แก้ไขโปรไฟล์
+        </Button>
       </Box>
+
+      <EditProfileDialog
+        open={isEditDialogOpen}
+        onClose={() => setIsEditDialogOpen(false)}
+        user={user}
+        token={session.backendToken}
+        onUpdated={(updatedUser) => setUser(updatedUser)}
+      />
 
       <LogoutDialog isOpen={isLogoutDialogOpen} onClose={() => setIsLogoutDialogOpen(false)} />
     </StyledCard>

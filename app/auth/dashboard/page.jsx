@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Fade } from '@mui/material';
-import UserProfileCard from '../../components/UserProfileCard';
+import UserProfileCard from '../../components/user/UserProfileCard';
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();

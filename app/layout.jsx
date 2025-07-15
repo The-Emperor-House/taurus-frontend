@@ -1,4 +1,4 @@
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Main";
 import Footer from "./components/Footer";
 import MuiThemeProviderWrapper from "./components/MuiThemeProviderWrapper";
 import { Prompt } from "next/font/google";
@@ -23,11 +23,11 @@ const prompt = Prompt({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${prompt.variable} scroll-smooth ${prompt.className}`}>
-      <body className="flex flex-col min-h-screen bg-gray-100 text-gray-900">
+      <body>
         <Providers>
           <MuiThemeProviderWrapper>
             <Navbar />
-            <main className="flex-grow">{children}</main>
+            <main>{children}</main>
             <Footer />
           </MuiThemeProviderWrapper>
         </Providers>

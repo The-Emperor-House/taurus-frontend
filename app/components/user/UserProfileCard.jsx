@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import LogoutDialog from '../LogoutDialog';
 import PersonIcon from '@mui/icons-material/Person';
 import Divider from '@mui/material/Divider';
 import {
@@ -21,7 +19,6 @@ export default function UserProfileCard() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const isLoading = status === 'loading' || (status === 'authenticated' && !user);
 
@@ -35,14 +32,6 @@ export default function UserProfileCard() {
             Authorization: `Bearer ${session.backendToken}`,
           },
         });
-
-        if (!res.ok) {
-          if ([401, 403].includes(res.status)) {
-            console.error('Authentication failed');
-            setIsLogoutDialogOpen(true);
-          }
-          throw new Error('Fetch failed');
-        }
 
         const data = await res.json();
         setUser(data.data.user);
@@ -62,25 +51,6 @@ export default function UserProfileCard() {
         <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>
           Loading Profile...
         </Typography>
-      </StyledCard>
-    );
-  }
-
-  if (error || !user) {
-    return (
-      <StyledCard>
-        <Typography variant="h6" color="error" sx={{ textAlign: 'center' }}>
-          {error || 'ไม่พบข้อมูลผู้ใช้'}
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setIsLogoutDialogOpen(true)}
-          sx={{ mt: 3 }}
-        >
-          กลับไปล็อกอิน
-        </Button>
-        <LogoutDialog isOpen={isLogoutDialogOpen} onClose={() => setIsLogoutDialogOpen(false)} />
       </StyledCard>
     );
   }
@@ -108,15 +78,6 @@ export default function UserProfileCard() {
         <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDateTime(user.updated_at)} />
       </Box>
 
-      <Button
-        variant="outlined"
-        color="error"
-        onClick={() => setIsLogoutDialogOpen(true)}
-        sx={{ mt: 3, fontWeight: 600 }}
-      >
-        ออกจากระบบ
-      </Button>
-
       <Box sx={{ mt: 2, textAlign: 'center' }}>
         <Button
           variant="contained"
@@ -138,8 +99,6 @@ export default function UserProfileCard() {
         token={session.backendToken}
         onUpdated={(updatedUser) => setUser(updatedUser)}
       />
-
-      <LogoutDialog isOpen={isLogoutDialogOpen} onClose={() => setIsLogoutDialogOpen(false)} />
     </StyledCard>
   );
 }

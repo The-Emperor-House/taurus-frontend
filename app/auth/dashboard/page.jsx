@@ -19,7 +19,7 @@ export default function DashboardPage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center text-lg text-gray-500 animate-pulse">Loading...</div>
       </div>
     );
@@ -27,7 +27,7 @@ export default function DashboardPage() {
 
   return (
     <Fade in timeout={500}>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center">
         <UserProfileCard user={session.user} />
       </div>
     </Fade>

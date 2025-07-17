@@ -1,5 +1,5 @@
-import Navbar from "./components/navbar/Main";
-import Footer from "./components/Footer";
+import MainNavbar from "./components/navbar/MainNavbar";
+import Footer from "./components/common/Footer";
 import MuiThemeProviderWrapper from "./components/MuiThemeProviderWrapper";
 import { Prompt } from "next/font/google";
 import "./globals.css";
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <MuiThemeProviderWrapper>
-            <Navbar />
+            <MainNavbar />
             <main>{children}</main>
             <Footer />
           </MuiThemeProviderWrapper>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useModalContext } from './modals/useModalContext';
+import { useModalContext } from './useModalContext';
 import { Button, Box, Typography } from '@mui/material';
 
 export default function ModalTest() {

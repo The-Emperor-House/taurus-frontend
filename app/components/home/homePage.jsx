@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import SwiperCarousel from "./swiperCarousel";
-import AnimatedHeading from "./animatedHeading";
+import SwiperCarousel from "./SwiperCarousel";
+import AnimatedHeading from "./AnimatedHeading";
 import Project from "./project";
 import Map from "./map";
 

@@ -77,10 +77,20 @@ export default function UserProfileCard() {
   return (
     <StyledCard>
       <Avatar
-        src={user.avatarUrl || "/default-avatar.png"}
-        sx={{ width: 96, height: 96, mb: 2 }}
+        src={user.avatarUrl && user.avatarUrl !== 'null' ? user.avatarUrl : undefined}
+        alt={user.name || 'User Avatar'}
+        sx={{
+          width: 96,
+          height: 96,
+          mb: 2,
+          cursor: 'pointer',
+          bgcolor: user.avatarUrl ? 'transparent' : 'primary.main',
+        }}
+        onClick={() => setIsEditAvatarDialogOpen(true)}
       >
-        {!user.avatarUrl && <PersonIcon sx={{ fontSize: 48, color: "#cc8f2a" }} />}
+        {!user.avatarUrl || user.avatarUrl === 'null' ? (
+          <PersonIcon sx={{ fontSize: 48, color: '#cc8f2a' }} />
+        ) : null}
       </Avatar>
 
       <Typography
@@ -125,20 +135,6 @@ export default function UserProfileCard() {
           onClick={() => setIsEditDialogOpen(true)}
         >
           แก้ไขโปรไฟล์
-        </Button>
-
-        <Button
-          variant="outlined"
-          sx={{
-            ml: 2,
-            color: "#cc8f2a",
-            borderColor: "#cc8f2a",
-            "&:hover": { borderColor: "#e0a040", color: "#e0a040" },
-            fontWeight: 600,
-          }}
-          onClick={() => setIsEditAvatarDialogOpen(true)}
-        >
-          แก้ไขรูปโปรไฟล์
         </Button>
       </Box>
 

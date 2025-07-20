@@ -9,22 +9,18 @@ import {
   Button,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useModalContext } from '../modals/useModalContext';
 
 export default function EditProfileDialog({ open, onClose, user, token, onUpdated }) {
   const { showModal, closeModal } = useModalContext();
-  const router = useRouter();
-
-  const [form, setForm] = useState({ username: '', fname: '', lname: '', email: '' });
+  const [form, setForm] = useState({ name: '', email: '' });
   const [formError, setFormError] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (open && user) {
       setForm({
-        username: user.username || '',
-        fname: user.fname || '',
-        lname: user.lname || '',
+        name: user.name || '',
         email: user.email || '',
       });
       setFormError({});
@@ -38,27 +34,21 @@ export default function EditProfileDialog({ open, onClose, user, token, onUpdate
 
   const validateForm = () => {
     const errors = {};
-    if (!form.username.trim()) errors.username = 'กรุณากรอกชื่อผู้ใช้';
-    if (!form.fname.trim()) errors.fname = 'กรุณากรอกชื่อจริง';
-    if (!form.lname.trim()) errors.lname = 'กรุณากรอกนามสกุล';
-    if (!form.email.trim()) {
-      errors.email = 'กรุณากรอกอีเมล';
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form.email)) {
+    if (!form.name.trim()) errors.name = 'กรุณากรอกชื่อ';
+    if (!form.email.trim()) errors.email = 'กรุณากรอกอีเมล';
+    else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form.email))
       errors.email = 'รูปแบบอีเมลไม่ถูกต้อง';
-    }
     setFormError(errors);
     return Object.keys(errors).length === 0;
   };
 
   const submitData = async () => {
     const startTime = Date.now();
-    console.log('[submitData] เริ่มอัปเดตข้อมูล...');
-
+    setLoading(true);
     try {
       showModal('loading', { message: 'กำลังอัปเดตข้อมูล...' });
-      console.log('[modal] แสดง loading modal');
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${user.userId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -68,48 +58,34 @@ export default function EditProfileDialog({ open, onClose, user, token, onUpdate
       });
 
       const elapsed = Date.now() - startTime;
-      console.log(`[fetch] ตอบกลับภายใน ${elapsed} ms`);
+      const minDelay = 500;
+      if (elapsed < minDelay) await new Promise((r) => setTimeout(r, minDelay - elapsed));
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({ message: 'เกิดข้อผิดพลาด' }));
-        console.warn('[fetch] response ไม่ ok:', err);
         throw new Error(err.message || 'เกิดข้อผิดพลาด');
       }
 
       const updatedUser = await res.json();
-      console.log('[fetch] อัปเดตสำเร็จ:', updatedUser);
-
-      // ให้ loading อยู่ไม่น้อยกว่า 500ms
-      const minDelay = 500;
-      if (elapsed < minDelay) {
-        await new Promise((res) => setTimeout(res, minDelay - elapsed));
-      }
 
       closeModal();
-      console.log('[modal] ปิด loading modal');
-
       showModal('success', { message: 'อัปเดตข้อมูลสำเร็จ!' });
-      console.log('[modal] แสดง success modal');
 
-      // แสดง success modal 1.5 วินาที
       setTimeout(() => {
-        closeModal();
-        onUpdated(updatedUser);
-        router.refresh();
+        onUpdated(updatedUser); // ✅ ส่ง user จริงจาก backend
         onClose();
-        console.log('[system] อัปเดต state / refresh / ปิด dialog');
       }, 1500);
     } catch (error) {
       closeModal();
-      console.error('[error] เกิดข้อผิดพลาด:', error);
       showModal('error', { message: error.message || 'เกิดข้อผิดพลาด' });
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSubmitWithConfirm = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     showModal('confirm', {
       message: 'คุณแน่ใจหรือไม่ว่าต้องการบันทึกการเปลี่ยนแปลง?',
       onConfirm: submitData,
@@ -117,60 +93,54 @@ export default function EditProfileDialog({ open, onClose, user, token, onUpdate
   };
 
   return (
-    <Dialog open={open} onClose={() => { setFormError({}); onClose(); }} fullWidth maxWidth="sm">
-      <DialogTitle>แก้ไขโปรไฟล์</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setFormError({});
+        onClose();
+      }}
+      fullWidth
+      maxWidth="sm"
+      PaperProps={{
+        sx: (theme) => ({
+          bgcolor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+        }),
+      }}
+    >
+      <DialogTitle sx={{ fontWeight: 600 }}>แก้ไขโปรไฟล์</DialogTitle>
       <DialogContent>
         <form id="edit-profile-form" onSubmit={handleSubmitWithConfirm}>
           <TextField
-            id="username"
-            margin="dense"
-            label="ชื่อผู้ใช้"
-            name="username"
-            value={form.username}
+            label="ชื่อ"
+            name="name"
+            value={form.name}
             onChange={handleChange}
             fullWidth
-            error={!!formError.username}
-            helperText={formError.username}
+            margin="dense"
+            error={!!formError.name}
+            helperText={formError.name}
           />
           <TextField
-            id="fname"
-            margin="dense"
-            label="ชื่อจริง"
-            name="fname"
-            value={form.fname}
-            onChange={handleChange}
-            fullWidth
-            error={!!formError.fname}
-            helperText={formError.fname}
-          />
-          <TextField
-            id="lname"
-            margin="dense"
-            label="นามสกุล"
-            name="lname"
-            value={form.lname}
-            onChange={handleChange}
-            fullWidth
-            error={!!formError.lname}
-            helperText={formError.lname}
-          />
-          <TextField
-            id="email"
-            margin="dense"
             label="อีเมล"
             name="email"
             value={form.email}
             onChange={handleChange}
             fullWidth
+            margin="dense"
             error={!!formError.email}
             helperText={formError.email}
           />
           <DialogActions sx={{ mt: 2 }}>
-            <Button onClick={() => { setFormError({}); onClose(); }}>ยกเลิก</Button>
+            <Button onClick={() => { setFormError({}); onClose(); }}>
+              ยกเลิก
+            </Button>
             <Button
               type="submit"
               variant="contained"
-              sx={{ backgroundColor: '#cc8f2a', '&:hover': { backgroundColor: '#e0a040' } }}
+              color="primary"
+              disabled={loading}
+              sx={{ fontWeight: 600 }}
             >
               บันทึก
             </Button>

@@ -51,6 +51,7 @@ export default function EditProfileDialog({ open, onClose, user, token, onUpdate
       const data = await res.json();
       onUpdated(data.user);
       onClose();
+      // router.refresh();
     } catch (err) {
       console.error('🔥 Update avatar error:', err);
       alert('เกิดข้อผิดพลาดในการอัปเดตรูป');

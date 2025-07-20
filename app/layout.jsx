@@ -17,14 +17,12 @@ export const metadata = {
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
   variable: "--font-poppins",
 });
 
 const prompt = Prompt({
   subsets: ["latin", "thai"],
   weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
   variable: "--font-prompt",
 });
 
@@ -35,13 +33,13 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable} ${prompt.variable} scroll-smooth ${poppins.className}`}
     >
       <body>
-        <Providers>
-          <MuiThemeProviderWrapper>
+        <MuiThemeProviderWrapper>
+          <Providers>
             <MainNavbar />
             <PageTransition>{children}</PageTransition>
             <Footer />
-          </MuiThemeProviderWrapper>
-        </Providers>
+          </Providers>
+        </MuiThemeProviderWrapper>
       </body>
     </html>
   );

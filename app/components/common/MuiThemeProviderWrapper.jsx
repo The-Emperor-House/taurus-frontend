@@ -9,7 +9,6 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 export default function MuiThemeProviderWrapper({ children }) {
   const [mode, setMode] = useState('light');
 
-  // Load saved theme on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedMode = localStorage.getItem('theme') || 'light';
@@ -18,7 +17,6 @@ export default function MuiThemeProviderWrapper({ children }) {
     }
   }, []);
 
-  // Toggle light/dark mode
   const toggleMode = () => {
     const newMode = mode === 'light' ? 'dark' : 'light';
     setMode(newMode);
@@ -40,12 +38,17 @@ export default function MuiThemeProviderWrapper({ children }) {
           bgcolor: 'background.paper',
           borderRadius: '50%',
           boxShadow: 3,
+          transition: 'background-color 0.3s ease',
         }}
       >
         <IconButton
           onClick={toggleMode}
           color="primary"
-          sx={{ width: 48, height: 48 }}
+          sx={{
+            width: 48,
+            height: 48,
+            transition: 'color 0.3s ease',
+          }}
           aria-label="Toggle dark mode"
         >
           {mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />}

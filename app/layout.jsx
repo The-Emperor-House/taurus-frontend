@@ -1,9 +1,10 @@
 import MainNavbar from "./components/navbar/MainNavbar";
 import Footer from "./components/common/Footer";
-import MuiThemeProviderWrapper from "./components/MuiThemeProviderWrapper";
-import { Prompt } from "next/font/google";
+import MuiThemeProviderWrapper from "./components/common/MuiThemeProviderWrapper";
+import { Prompt, Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import PageTransition from "./components/common/PageTransition";
 
 export const metadata = {
   title: "TAURUS",
@@ -12,6 +13,13 @@ export const metadata = {
     icon: "/logo.webp",
   },
 };
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-poppins",
+});
 
 const prompt = Prompt({
   subsets: ["latin", "thai"],
@@ -22,12 +30,15 @@ const prompt = Prompt({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${prompt.variable} scroll-smooth ${prompt.className}`}>
+    <html
+      lang="en"
+      className={`${poppins.variable} ${prompt.variable} scroll-smooth ${poppins.className}`}
+    >
       <body>
         <Providers>
           <MuiThemeProviderWrapper>
             <MainNavbar />
-            <main>{children}</main>
+            <PageTransition>{children}</PageTransition>
             <Footer />
           </MuiThemeProviderWrapper>
         </Providers>

@@ -1,0 +1,57 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { ThemeProvider, CssBaseline, IconButton, Box } from '@mui/material';
+import { getTheme } from '@/lib/theme';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
+
+export default function MuiThemeProviderWrapper({ children }) {
+  const [mode, setMode] = useState('light');
+
+  // Load saved theme on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedMode = localStorage.getItem('theme') || 'light';
+      setMode(savedMode);
+      document.documentElement.classList.toggle('dark', savedMode === 'dark');
+    }
+  }, []);
+
+  // Toggle light/dark mode
+  const toggleMode = () => {
+    const newMode = mode === 'light' ? 'dark' : 'light';
+    setMode(newMode);
+    localStorage.setItem('theme', newMode);
+    document.documentElement.classList.toggle('dark', newMode === 'dark');
+  };
+
+  const theme = getTheme(mode);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 16,
+          right: 16,
+          zIndex: 9999,
+          bgcolor: 'background.paper',
+          borderRadius: '50%',
+          boxShadow: 3,
+        }}
+      >
+        <IconButton
+          onClick={toggleMode}
+          color="primary"
+          sx={{ width: 48, height: 48 }}
+          aria-label="Toggle dark mode"
+        >
+          {mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
+        </IconButton>
+      </Box>
+      {children}
+    </ThemeProvider>
+  );
+}

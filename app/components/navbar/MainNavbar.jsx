@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import LogoutDialog from "../LogoutDialog";
+import LogoutDialog from "../common/LogoutDialog";
 
 const UserProfile = ({ user }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);

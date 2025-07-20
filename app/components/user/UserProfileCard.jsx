@@ -18,7 +18,7 @@ import EditProfileDialog from "./EditProfileDialog";
 export default function UserProfileCard() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const [setError] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const isLoading =
     status === "loading" || (status === "authenticated" && !user);

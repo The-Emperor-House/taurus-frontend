@@ -30,7 +30,7 @@ const handler = NextAuth({
               id: data.data.user.userId,
               name: data.data.user.name,
               email: data.data.user.email,
-              image: data.data.user.avatarUrl,
+              avatarUrl: data.data.user.avatarUrl,
               backendToken: data.data.token,
               tokenExpiresIn: data.data.tokenExpiresIn,
             };
@@ -52,7 +52,7 @@ const handler = NextAuth({
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.image = user.image;
+        token.avatarUrl = user.avatarUrl;
         token.backendToken = user.backendToken;  // ✅ ใส่ backend token ลง jwt
         token.tokenExpiresIn = user.tokenExpiresIn;
       }
@@ -63,7 +63,7 @@ const handler = NextAuth({
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;
-      session.user.image = token.image;
+      session.user.avatarUrl = token.avatarUrl;
       session.backendToken = token.backendToken;  // ✅ ให้ session เอาไปใช้เรียก API
       session.tokenExpiresIn = token.tokenExpiresIn;
       return session;

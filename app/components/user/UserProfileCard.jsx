@@ -14,12 +14,14 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import EditProfileDialog from "./EditProfileDialog";
+import EditAvatarDialog from "./EditAvatarDialog";
 
 export default function UserProfileCard() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const [setError] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isEditAvatarDialogOpen, setIsEditAvatarDialogOpen] = useState(false);
   const isLoading =
     status === "loading" || (status === "authenticated" && !user);
 
@@ -75,14 +77,10 @@ export default function UserProfileCard() {
   return (
     <StyledCard>
       <Avatar
-        sx={{
-          width: 72,
-          height: 72,
-          bgcolor: "primary.main",
-          fontSize: "2rem",
-        }}
+        src={user.avatarUrl || "/default-avatar.png"}
+        sx={{ width: 96, height: 96, mb: 2 }}
       >
-        <PersonIcon fontSize="inherit" />
+        {!user.avatarUrl && <PersonIcon sx={{ fontSize: 48, color: "#cc8f2a" }} />}
       </Avatar>
 
       <Typography
@@ -128,6 +126,20 @@ export default function UserProfileCard() {
         >
           แก้ไขโปรไฟล์
         </Button>
+
+        <Button
+          variant="outlined"
+          sx={{
+            ml: 2,
+            color: "#cc8f2a",
+            borderColor: "#cc8f2a",
+            "&:hover": { borderColor: "#e0a040", color: "#e0a040" },
+            fontWeight: 600,
+          }}
+          onClick={() => setIsEditAvatarDialogOpen(true)}
+        >
+          แก้ไขรูปโปรไฟล์
+        </Button>
       </Box>
 
       <EditProfileDialog
@@ -137,6 +149,15 @@ export default function UserProfileCard() {
         token={session.backendToken}
         onUpdated={(updatedUser) => setUser(updatedUser)}
       />
+
+      <EditAvatarDialog
+        open={isEditAvatarDialogOpen}
+        onClose={() => setIsEditAvatarDialogOpen(false)}
+        user={user}
+        token={session.backendToken}
+        onUpdated={(updatedUser) => setUser(updatedUser)}
+      />
+
     </StyledCard>
   );
 }

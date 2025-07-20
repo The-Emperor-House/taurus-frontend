@@ -10,6 +10,7 @@ import {
   MenuItem,
   ListItemIcon,
   Divider,
+  Typography,
 } from '@mui/material';
 import Logout from '@mui/icons-material/Logout';
 import Dashboard from '@mui/icons-material/Dashboard';
@@ -32,6 +33,13 @@ export default function AccountMenu({ user }) {
     signOut({ callbackUrl: '/auth/login' });
   };
 
+  const firstLetter = user?.name?.charAt(0)?.toUpperCase() || 'U';
+  const fullAvatarUrl = user.avatarUrl
+
+  console.log("AccountMenu user:", user);
+  console.log("Full avatar URL:", fullAvatarUrl);
+
+
   return (
     <>
       <IconButton
@@ -43,11 +51,10 @@ export default function AccountMenu({ user }) {
         aria-expanded={open ? 'true' : undefined}
       >
         <Avatar
-          src={user?.image || ''}
-          alt={user?.name || 'U'}
-          sx={{ width: 32, height: 32 }}
+          src={fullAvatarUrl}
+          sx={{ width: 40, height: 40 }}
         >
-          {!user?.image && (user?.name?.charAt(0).toUpperCase() || 'U')}
+          {!fullAvatarUrl && firstLetter}
         </Avatar>
       </IconButton>
 
@@ -61,7 +68,7 @@ export default function AccountMenu({ user }) {
           elevation: 4,
           sx: (theme) => ({
             mt: 1.5,
-            minWidth: 180,
+            minWidth: 200,
             bgcolor: theme.palette.background.paper,
             color: theme.palette.text.primary,
             '& .MuiMenuItem-root:hover': {
@@ -75,23 +82,23 @@ export default function AccountMenu({ user }) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem disabled>
+        <MenuItem disabled sx={{ cursor: 'default' }}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>
-          {user?.name || 'Account'}
+          <Typography variant="body2" noWrap>
+            {user?.name || 'Account'}
+          </Typography>
         </MenuItem>
 
         <Divider />
 
-        <Link href="/auth/dashboard" passHref legacyBehavior>
-          <MenuItem component="a">
-            <ListItemIcon>
-              <Dashboard fontSize="small" />
-            </ListItemIcon>
-            Dashboard
-          </MenuItem>
-        </Link>
+        <MenuItem component={Link} href="/auth/dashboard">
+          <ListItemIcon>
+            <Dashboard fontSize="small" />
+          </ListItemIcon>
+          Dashboard
+        </MenuItem>
 
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

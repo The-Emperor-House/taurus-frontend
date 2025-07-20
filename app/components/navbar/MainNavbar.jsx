@@ -2,177 +2,203 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import LogoutDialog from "../common/LogoutDialog";
+import { useSession, signOut } from "next-auth/react";
+import { useTheme } from "@mui/material/styles";
 
-const UserProfile = ({ user }) => {
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
-  const profileRef = useRef(null);
+export default function MainNavbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeHash, setActiveHash] = useState("");
+  const { status } = useSession();
+
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
-        setIsProfileOpen(false);
-      }
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      setIsScrolled(scrollY > 0);
+      setScrollProgress((scrollY / docHeight) * 100);
+      setActiveHash(window.location.hash);
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const firstLetter = user?.name?.[0]?.toUpperCase() || "U";
-
-  return (
-    <div className="relative" ref={profileRef}>
-      <button
-        onClick={() => setIsProfileOpen(!isProfileOpen)}
-        className="w-11 h-11 bg-gray-500 rounded-full flex items-center justify-center font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-[#cc8f2a]"
-      >
-        <span className="text-white">{firstLetter}</span>
-      </button>
-
-      <AnimatePresence>
-        {isProfileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg py-1 z-50"
-          >
-            <Link
-              href="/auth/dashboard"
-              className="block px-4 py-2 text-sm hover:bg-gray-100"
-              onClick={() => setIsProfileOpen(false)}
-            >
-              Dashboard
-            </Link>
-            <button
-              onClick={() => setIsLogoutDialogOpen(true)}
-              className="w-full text-left block px-4 py-2 text-sm hover:bg-gray-100"
-            >
-              Logout
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <LogoutDialog isOpen={isLogoutDialogOpen} onClose={() => setIsLogoutDialogOpen(false)} />
-    </div>
-  );
-};
-
-export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLogoHovered, setIsLogoHovered] = useState(false);
-  const { data: session, status } = useSession();
-
-  const hoverEffect = {
-    text: "hover:text-[#cc8f2a] transition-colors duration-300",
-    button: "hover:bg-[#e0a040] transition-colors duration-300",
-    mobileItem: "hover:bg-gray-700 transition-colors duration-300",
-  };
 
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
-    { href: "/design", label: "Design" },
-    { href: "/projects", label: "Projects" },
-    { href: "/showroom", label: "Showroom" },
-    { href: "/news", label: "News & Events" },
+    { href: "/#design", label: "Design" },
+    { href: "/#projects", label: "Projects" },
+    { href: "/#showroom", label: "Showroom" },
+    { href: "/#news", label: "News & Events" },
     { href: "/contact", label: "Contact" },
   ];
 
-  const renderAuthSection = (isMobile = false) => {
-    if (status === "loading") {
-      return <div className="w-24 h-10 bg-gray-700 rounded-full animate-pulse"></div>;
+  const handleSmoothScroll = (e, href) => {
+    if (typeof window !== "undefined" && href.startsWith("/#")) {
+      e.preventDefault();
+      const targetId = href.replace("/#", "");
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
+        setIsOpen(false);
+        setActiveHash(`#${targetId}`);
+      }
     }
-
-    if (status === "authenticated") {
-      return isMobile ? (
-        <>
-          <Link
-            href="/auth/dashboard"
-            className={`block text-xl py-3 px-4 rounded-lg bg-[#cc8f2a]/80 text-white font-medium text-center ${hoverEffect.button}`}
-            onClick={() => setIsOpen(false)}
-          >
-            Dashboard
-          </Link>
-          <button
-            onClick={() => {
-              signOut({ callbackUrl: "/auth/login" });
-              setIsOpen(false);
-            }}
-            className={`w-full text-left block text-xl py-3 px-4 rounded-lg ${hoverEffect.mobileItem}`}
-          >
-            Logout
-          </button>
-        </>
-      ) : (
-        <UserProfile user={session.user} />
-      );
-    }
-
-    return null;
   };
 
+  const textColor = isDarkMode ? "text-white" : "text-black";
+  const bgColor = isDarkMode ? "bg-black/80" : "bg-white/80";
+  const hamburgerColor = isDarkMode ? "bg-white" : "bg-black";
+
   return (
-    <nav className="bg-[#404040] text-white p-4 font-poppins fixed w-full z-50 shadow-md">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link
-          href="/"
-          onMouseEnter={() => setIsLogoHovered(true)}
-          onMouseLeave={() => setIsLogoHovered(false)}
-        >
-          <Image
-            src={
-              isLogoHovered
-                ? "/navbar/logo webp/taurusOrange.webp"
-                : "/navbar/logo webp/taurusWhite.webp"
-            }
-            alt="Taurus Logo"
-            width={120}
-            height={0}
-            priority
-          />
+    <motion.nav
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
+        isScrolled ? bgColor + " shadow backdrop-blur" : "bg-transparent"
+      }`}
+    >
+      {/* Scroll progress bar */}
+      <motion.div
+        style={{ width: `${scrollProgress}%` }}
+        className="h-1 bg-[#cc8f2a] origin-left"
+      />
+
+      <div className="container mx-auto flex justify-between items-center px-4 py-3">
+        {/* Logo with hover effect */}
+        <Link href="/" className="flex items-center group">
+          <motion.div
+            animate={{ scale: isScrolled ? 0.85 : 1 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Image
+              src={`/navbar/logo webp/taurus${
+                isScrolled ? "Orange" : "White"
+              }.webp`}
+              alt="Logo light"
+              width={isScrolled ? 100 : 120}
+              height={0}
+              priority
+              className={`${isDarkMode ? "hidden" : "block"} group-hover:hidden`}
+            />
+            <Image
+              src="/navbar/logo webp/taurusWhite.webp"
+              alt="Logo dark"
+              width={isScrolled ? 100 : 120}
+              height={0}
+              priority
+              className={`${isDarkMode ? "block" : "hidden"} group-hover:block`}
+            />
+          </motion.div>
         </Link>
 
-        <div className="hidden md:flex items-center space-x-8">
-          {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className={`text-xl font-light ${hoverEffect.text}`}>
-              {link.label}
-            </Link>
-          ))}
-          {renderAuthSection()}
+        {/* Desktop menu */}
+        <div className="hidden md:flex items-center space-x-6">
+          {navLinks.map((link) => {
+            const isActive = activeHash === link.href.replace("/", "");
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={(e) => handleSmoothScroll(e, link.href)}
+                className={`relative text-lg transition-all duration-300 ${
+                  isActive
+                    ? "font-semibold text-[#cc8f2a] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-[#cc8f2a]"
+                    : textColor
+                } hover:text-[#cc8f2a]`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          {status === "authenticated" && (
+            <button
+              onClick={() => signOut({ callbackUrl: "/auth/login" })}
+              className="px-4 py-2 rounded bg-[#cc8f2a] text-white hover:bg-[#e0a040] transition"
+            >
+              Logout
+            </button>
+          )}
         </div>
 
-        <button className="md:hidden focus:outline-none p-2" onClick={() => setIsOpen(!isOpen)}>
-          <div className="w-6 flex flex-col gap-1.5">
-            <span className={`block h-0.5 bg-white transition-all ${isOpen ? "rotate-45 translate-y-2" : ""}`}></span>
-            <span className={`block h-0.5 bg-white transition-all ${isOpen ? "opacity-0" : ""}`}></span>
-            <span className={`block h-0.5 bg-white transition-all ${isOpen ? "-rotate-45 -translate-y-2" : ""}`}></span>
-          </div>
+        {/* Hamburger icon */}
+        <button
+          className="md:hidden flex flex-col justify-center items-center w-8 h-8 relative"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <motion.span
+            className={`absolute w-6 h-0.5 ${hamburgerColor}`}
+            animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 0 : -6 }}
+            transition={{ duration: 0.3 }}
+          />
+          <motion.span
+            className={`absolute w-6 h-0.5 ${hamburgerColor}`}
+            animate={{ opacity: isOpen ? 0 : 1 }}
+            transition={{ duration: 0.3 }}
+          />
+          <motion.span
+            className={`absolute w-6 h-0.5 ${hamburgerColor}`}
+            animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? 0 : 6 }}
+            transition={{ duration: 0.3 }}
+          />
         </button>
       </div>
 
-      <div className={`md:hidden bg-[#404040] overflow-hidden transition-all duration-300 ${isOpen ? "max-h-screen mt-4" : "max-h-0"}`}>
-        <div className="space-y-3 py-4 px-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="block text-xl py-3 px-4 rounded-lg hover:bg-gray-700"
-              onClick={() => setIsOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <hr className="border-gray-600" />
-          {renderAuthSection(true)}
-        </div>
-      </div>
-    </nav>
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.3 }}
+            className={`md:hidden ${isDarkMode ? "bg-black" : "bg-white"} overflow-hidden`}
+          >
+            <div className="flex flex-col p-4 space-y-2">
+              {navLinks.map((link) => {
+                const isActive = activeHash === link.href.replace("/", "");
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleSmoothScroll(e, link.href)}
+                    className={`relative text-lg py-2 pl-4 transition-all duration-300 ${
+                      isActive
+                        ? "font-semibold text-[#cc8f2a] border-l-4 border-[#cc8f2a]"
+                        : `${textColor} border-l-4 border-transparent`
+                    } hover:text-[#cc8f2a] hover:border-[#cc8f2a]`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+              {status === "authenticated" && (
+                <button
+                  onClick={() => {
+                    signOut({ callbackUrl: "/auth/login" });
+                    setIsOpen(false);
+                  }}
+                  className={`text-left text-lg py-2 pl-4 transition-all duration-300 ${textColor} border-l-4 border-transparent hover:text-[#cc8f2a] hover:border-[#cc8f2a]`}
+                >
+                  Logout
+                </button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }

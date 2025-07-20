@@ -123,18 +123,27 @@ export default function UserProfileCard() {
           value={formatDateTime(user.updatedAt)}
         />
       </Box>
-
-      <Box sx={{ mt: 2, textAlign: "center" }}>
+      <Box
+        sx={{
+          mt: 2,
+          textAlign: "center",
+        }}
+      >
         <Button
           variant="contained"
-          sx={{
-            backgroundColor: "#cc8f2a",
-            "&:hover": { backgroundColor: "#e0a040" },
+          color="primary"
+          sx={(theme) => ({
             fontWeight: 600,
-          }}
+            backgroundColor: theme.palette.primary.main,
+            "&:hover": {
+              backgroundColor: theme.palette.primary.dark,
+            },
+          })}
           onClick={() => setIsEditDialogOpen(true)}
         >
-          แก้ไขโปรไฟล์
+          <Typography variant="button" sx={{ color: (theme) => theme.palette.primary.contrastText }}>
+            แก้ไขโปรไฟล์
+          </Typography>
         </Button>
       </Box>
 

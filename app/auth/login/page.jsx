@@ -1,9 +1,8 @@
 'use client';
 
-import { useState , useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-
 import {
   Box,
   Typography,
@@ -20,12 +19,15 @@ import {
   DialogContent,
   LinearProgress,
   Fade,
+  useTheme,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 export default function LoginPage() {
   const router = useRouter();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -65,24 +67,17 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-  if (successOpen) {
-    const timer = setTimeout(() => {
-      router.refresh(); // sync session
-      router.push('/auth/dashboard'); // ไปยัง dashboard
-    }, 1500); // 1.5 วิ
-
-    return () => clearTimeout(timer);
-  }
-}, [successOpen, router]);
-
+    if (successOpen) {
+      const timer = setTimeout(async () => {
+        router.refresh();
+        await router.push('/auth/dashboard');
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [successOpen, router]);
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (e) => e.preventDefault();
-  const handleDialogClose = () => {
-    setSuccessOpen(false);
-    router.refresh();
-    router.push('/auth/dashboard');
-  };
 
   return (
     <Fade in timeout={600}>
@@ -92,8 +87,7 @@ export default function LoginPage() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          bgcolor: '#f0f2f5',
-          fontFamily: 'Poppins, Prompt, sans-serif',
+          bgcolor: 'background.default',
         }}
       >
         <Box
@@ -101,10 +95,10 @@ export default function LoginPage() {
           onSubmit={handleSubmit}
           sx={{
             p: 4,
-            bgcolor: 'white',
-            borderRadius: '12px',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-            width: { xs: '90%', sm: '400px' },
+            bgcolor: 'background.paper',
+            borderRadius: 3,
+            boxShadow: 3,
+            width: { xs: '90%', sm: 400 },
             display: 'flex',
             flexDirection: 'column',
             gap: 3,
@@ -113,17 +107,14 @@ export default function LoginPage() {
           <Typography
             variant="h5"
             component="h1"
-            sx={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-              color: '#333',
-            }}
+            align="center"
+            sx={{ fontWeight: 'bold', color: 'text.primary' }}
           >
             เข้าสู่ระบบ
           </Typography>
 
           {error && (
-            <Alert severity="error" sx={{ borderRadius: '8px' }}>
+            <Alert severity="error" onClose={() => setError(null)}>
               {error}
             </Alert>
           )}
@@ -136,7 +127,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
+            autoFocus
           />
 
           <TextField
@@ -147,7 +138,6 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -168,46 +158,32 @@ export default function LoginPage() {
               <Checkbox
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                sx={{
-                  color: '#cc8f2a',
-                  '&.Mui-checked': { color: '#e0a040' },
-                }}
+                color="warning"
               />
             }
             label="Remember Me"
-            sx={{ '& .MuiTypography-root': { color: '#555' } }}
           />
 
           <Button
             type="submit"
             variant="contained"
+            color="warning"
             fullWidth
             disabled={loading}
-            sx={{
-              py: 1.5,
-              fontWeight: 'bold',
-              borderRadius: '8px',
-              bgcolor: '#cc8f2a',
-              color: 'white',
-              '&:hover': { bgcolor: '#e0a040' },
-              '&.Mui-disabled': {
-                bgcolor: '#cccccc',
-                color: '#666666',
-              },
-            }}
+            sx={{ fontWeight: 'bold', py: 1.5, borderRadius: 2 }}
           >
             {loading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
           </Button>
         </Box>
 
         {/* ✅ Success Modal */}
-        <Dialog open={successOpen} onClose={handleDialogClose} fullWidth maxWidth="xs">
+        <Dialog open={successOpen} fullWidth maxWidth="xs">
           <DialogTitle>เข้าสู่ระบบสำเร็จ</DialogTitle>
           <DialogContent>
-            <Typography>กำลังเปลี่ยนเส้นทางไปยังแดชบอร์ด...</Typography>
-            <Box mt={2}>
-              <LinearProgress color="secondary" />
-            </Box>
+            <Typography sx={{ mb: 2 }}>
+              กำลังเปลี่ยนเส้นทางไปยังแดชบอร์ด...
+            </Typography>
+            <LinearProgress color="warning" />
           </DialogContent>
         </Dialog>
       </Box>

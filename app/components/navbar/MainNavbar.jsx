@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "@mui/material/styles";
+import AccountMenu from './AccountMenu';
 
 export default function MainNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -135,14 +136,7 @@ export default function MainNavbar() {
               </Link>
             );
           })}
-          {status === "authenticated" && (
-            <button
-              onClick={() => signOut({ callbackUrl: "/auth/login" })}
-              className="px-4 py-2 rounded bg-[#cc8f2a] text-white hover:bg-[#e0a040] transition"
-            >
-              Logout
-            </button>
-          )}
+          {status === 'authenticated' && <AccountMenu user={session.user} />}
         </div>
 
         {/* Hamburger icon */}
@@ -202,17 +196,7 @@ export default function MainNavbar() {
                   </Link>
                 );
               })}
-              {status === "authenticated" && (
-                <button
-                  onClick={() => {
-                    signOut({ callbackUrl: "/auth/login" });
-                    setIsOpen(false);
-                  }}
-                  className={`text-left text-lg py-2 pl-4 transition-all duration-300 ${textColor} border-l-4 border-transparent hover:text-[#cc8f2a] hover:border-[#cc8f2a]`}
-                >
-                  Logout
-                </button>
-              )}
+              {status === 'authenticated' && <AccountMenu user={session.user} />}
             </div>
           </motion.div>
         )}

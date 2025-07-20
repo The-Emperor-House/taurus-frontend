@@ -83,23 +83,32 @@ export default function MainNavbar() {
             transition={{ duration: 0.3 }}
             whileHover={{ scale: 1.05 }}
           >
+            {/* LIGHT MODE */}
             <Image
-              src={`/navbar/logo webp/taurus${
-                isScrolled ? "Orange" : "White"
-              }.webp`}
+              src={
+                isScrolled
+                  ? "/navbar/logo webp/taurusOrange.webp"
+                  : "/navbar/logo webp/taurusDark.webp"
+              }
               alt="Logo light"
               width={isScrolled ? 100 : 120}
               height={0}
               priority
-              className={`${isDarkMode ? "hidden" : "block"} group-hover:hidden`}
+              className={`${isDarkMode ? "hidden" : "block"}`}
             />
+
+            {/* DARK MODE */}
             <Image
-              src="/navbar/logo webp/taurusWhite.webp"
+              src={
+                isScrolled
+                  ? "/navbar/logo webp/taurusOrange.webp"
+                  : "/navbar/logo webp/taurusWhite.webp"
+              }
               alt="Logo dark"
               width={isScrolled ? 100 : 120}
               height={0}
               priority
-              className={`${isDarkMode ? "block" : "hidden"} group-hover:block`}
+              className={`${isDarkMode ? "block" : "hidden"}`}
             />
           </motion.div>
         </Link>
@@ -164,7 +173,9 @@ export default function MainNavbar() {
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.3 }}
-            className={`md:hidden ${isDarkMode ? "bg-black" : "bg-white"} overflow-hidden`}
+            className={`md:hidden ${
+              isDarkMode ? "bg-black" : "bg-white"
+            } overflow-hidden`}
           >
             <div className="flex flex-col p-4 space-y-2">
               {navLinks.map((link) => {

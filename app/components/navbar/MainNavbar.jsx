@@ -13,7 +13,8 @@ export default function MainNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeHash, setActiveHash] = useState("");
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+  const pathname = usePathname();
 
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
@@ -116,7 +117,9 @@ export default function MainNavbar() {
         {/* Desktop menu */}
         <div className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => {
-            const isActive = activeHash === link.href.replace("/", "");
+            const isActive =
+              pathname === link.href ||
+              (pathname === "/" && activeHash === link.href.replace("/", ""));
             return (
               <Link
                 key={link.href}
@@ -179,7 +182,11 @@ export default function MainNavbar() {
           >
             <div className="flex flex-col p-4 space-y-2">
               {navLinks.map((link) => {
-                const isActive = activeHash === link.href.replace("/", "");
+                const isActive =
+                  pathname === link.href ||
+                  (pathname === "/" &&
+                    activeHash === link.href.replace("/", ""));
+
                 return (
                   <Link
                     key={link.href}

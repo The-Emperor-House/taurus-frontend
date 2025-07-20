@@ -144,30 +144,36 @@ export default function UserProfileCard() {
 function InfoItem({ label, value }) {
   return (
     <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
+      sx={(theme) => ({
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      })}
     >
       <Typography
         variant="body2"
-        color="text.secondary"
-        sx={{ fontWeight: 500 }}
+        sx={(theme) => ({
+          fontWeight: 500,
+          color: theme.palette.text.secondary,
+        })}
       >
         {label}:
       </Typography>
       <Box
-        sx={{
+        sx={(theme) => ({
           px: 2,
           py: 0.5,
-          fontSize: "0.85rem",
-          fontFamily: "monospace",
-          bgcolor: "grey.100",
-          borderRadius: "9999px",
+          fontSize: '0.85rem',
+          fontFamily: 'monospace',
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[100]
+              : theme.palette.grey[800],
+          borderRadius: '9999px',
           minWidth: 100,
-          textAlign: "center",
-        }}
+          textAlign: 'center',
+          color: theme.palette.text.primary,
+        })}
       >
         {value}
       </Box>

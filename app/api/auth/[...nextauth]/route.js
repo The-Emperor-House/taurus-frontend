@@ -12,41 +12,31 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: credentials.email,
-                password: credentials.password,
-                rememberMe: credentials.rememberMe === "on",
-              }),
-            }
-          );
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+              rememberMe: credentials.rememberMe === "on",
+            }),
+          });
 
           const data = await res.json();
-
           console.log("👉 API response:", data);
 
-          if (
-            res.ok &&
-            data.status === "success" &&
-            data.data &&
-            data.data.user
-          ) {
+          if (res.ok && data.status === "success" && data.data?.user) {
             return {
-              ...data.data.user,
-              token: data.data.token,
-              tokenExpiresIn: data.data.expiresIn,
+              id: data.data.user.userId,
+              name: data.data.user.name,
+              email: data.data.user.email,
+              image: data.data.user.avatarUrl,
+              backendToken: data.data.token,
+              tokenExpiresIn: data.data.tokenExpiresIn,
             };
           }
 
-          console.warn(
-            "❌ Login failed, API responded:",
-            res.status,
-            data.message
-          );
+          console.warn("❌ Login failed, API responded:", res.status, data.message);
           return null;
         } catch (error) {
           console.error("🔥 authorize() error:", error);
@@ -59,10 +49,11 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.userId;
-        token.name = user.username;
+        token.id = user.id;
+        token.name = user.name;
         token.email = user.email;
-        token.backendToken = user.token;
+        token.image = user.image;
+        token.backendToken = user.backendToken;  // ✅ ใส่ backend token ลง jwt
         token.tokenExpiresIn = user.tokenExpiresIn;
       }
       return token;
@@ -72,7 +63,8 @@ const handler = NextAuth({
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;
-      session.backendToken = token.backendToken;
+      session.user.image = token.image;
+      session.backendToken = token.backendToken;  // ✅ ให้ session เอาไปใช้เรียก API
       session.tokenExpiresIn = token.tokenExpiresIn;
       return session;
     },

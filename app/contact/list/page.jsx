@@ -15,13 +15,19 @@ import {
   Paper,
   Alert,
   Chip,
-  Skeleton,
   Tooltip,
+  Skeleton,
+  TextField,
+  Button,
 } from '@mui/material';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import * as XLSX from 'xlsx';
 
-export default function ContactList() {
+export default function ContactListWithSearchExport() {
   const { data: session, status } = useSession();
   const [contacts, setContacts] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -36,7 +42,10 @@ export default function ContactList() {
         });
         if (!res.ok) throw new Error('โหลดข้อมูลไม่สำเร็จ');
         const data = await res.json();
-        if (isMounted) setContacts(data);
+        if (isMounted) {
+          setContacts(data);
+          setFiltered(data);
+        }
       } catch (err) {
         if (isMounted) setError(err.message || 'เกิดข้อผิดพลาด');
       } finally {
@@ -45,23 +54,76 @@ export default function ContactList() {
     };
 
     fetchContacts();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [session, status]);
+
+  useEffect(() => {
+    const term = search.toLowerCase();
+    setFiltered(
+      contacts.filter(
+        (c) =>
+          c.fullName.toLowerCase().includes(term) ||
+          c.email.toLowerCase().includes(term) ||
+          c.phone.includes(term) ||
+          c.needs.join(',').toLowerCase().includes(term)
+      )
+    );
+  }, [search, contacts]);
+
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      filtered.map((c) => ({
+        ID: c.id,
+        Name: c.fullName,
+        Email: c.email,
+        Phone: c.phone,
+        Budget: c.budget,
+        AreaSize: c.areaSize,
+        Needs: c.needs.join(', '),
+        Details: c.details,
+        CreatedAt: new Date(c.createdAt).toLocaleString('th-TH'),
+      }))
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Contacts');
+    XLSX.writeFile(workbook, 'contacts.xlsx');
+  };
 
   return (
     <Card sx={{ p: 3, width: '100%', overflowX: 'auto' }}>
-      <Typography variant="h5" fontWeight={700} gutterBottom>
-        📋 รายการ Contact ทั้งหมด
-      </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 2 }}>
+        <Typography variant="h5" fontWeight={700}>
+          📋 รายการ Contact ทั้งหมด
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <TextField
+            label="ค้นหา"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{ flex: 1, minWidth: 200 }}
+          />
+          <Button
+            variant="contained"
+            startIcon={<FileDownloadIcon />}
+            onClick={exportToExcel}
+            disabled={filtered.length === 0}
+            sx={{ whiteSpace: 'nowrap' }}
+          >
+            Export Excel
+          </Button>
+        </Box>
+      </Box>
 
       {loading ? (
         <SkeletonTable />
       ) : error ? (
         <Alert severity="error">{error}</Alert>
-      ) : contacts.length === 0 ? (
-        <Alert severity="info">ยังไม่มีข้อมูลติดต่อ</Alert>
+      ) : filtered.length === 0 ? (
+        <Alert severity="info">ไม่พบข้อมูลที่ค้นหา</Alert>
       ) : (
-        <TableContainer component={Paper} sx={{ mt: 2 }}>
+        <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
@@ -69,14 +131,14 @@ export default function ContactList() {
                 <TableCell>อีเมล</TableCell>
                 <TableCell>เบอร์</TableCell>
                 <TableCell>บริการ</TableCell>
-                <TableCell>งบประมาณ (บาท)</TableCell>
-                <TableCell>ขนาดพื้นที่ (ตร.ม.)</TableCell>
+                <TableCell>งบประมาณ</TableCell>
+                <TableCell>ขนาดพื้นที่</TableCell>
                 <TableCell>รายละเอียด</TableCell>
                 <TableCell>วันที่</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {contacts.map((c) => (
+              {filtered.map((c) => (
                 <TableRow key={c.id}>
                   <TableCell>{c.fullName}</TableCell>
                   <TableCell>{c.email}</TableCell>
@@ -131,7 +193,12 @@ function SkeletonTable() {
   return (
     <Box sx={{ mt: 2 }}>
       {rows.map((_, idx) => (
-        <Skeleton key={idx} variant="rectangular" height={40} sx={{ mb: 1, borderRadius: 1 }} />
+        <Skeleton
+          key={idx}
+          variant="rectangular"
+          height={40}
+          sx={{ mb: 1, borderRadius: 1 }}
+        />
       ))}
     </Box>
   );

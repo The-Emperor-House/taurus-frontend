@@ -2,23 +2,37 @@ import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 export async function middleware(req) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
-  const isAuthPage = req.nextUrl.pathname.startsWith('/auth/login');
-  const isDashboard = req.nextUrl.pathname.startsWith('/auth/dashboard');
+  const { pathname } = req.nextUrl;
 
-  if (!token && isDashboard) {
-    return NextResponse.redirect(new URL('/auth/login', req.url));
+  // ✅ ถ้า user ไม่ login
+  if (!token) {
+    // ถ้าจะเข้าหน้า dashboard, profile → redirect ไป /auth/login
+    if (pathname.startsWith('/dashboard') || pathname.startsWith('/profile')) {
+      const loginUrl = new URL('/auth/login', req.url);
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
   }
 
-  // ถ้า login อยู่แล้ว ไม่ให้เข้าหน้า login ซ้ำ
-  if (token && isAuthPage) {
-    return NextResponse.redirect(new URL('/auth/dashboard', req.url));
+  // ✅ ถ้า user login อยู่
+  // ถ้าจะเข้าหน้า login → redirect ไป home
+  if (pathname.startsWith('/auth/login') || pathname === '/auth') {
+    const homeUrl = new URL('/', req.url);
+    return NextResponse.redirect(homeUrl);
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/auth/dashboard', '/auth/login'],
+  matcher: [
+    '/dashboard/:path*',
+    '/profile/:path*',
+    '/auth/:path*',
+  ],
 };

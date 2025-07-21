@@ -70,7 +70,7 @@ export default function LoginPage() {
     if (successOpen) {
       const timer = setTimeout(async () => {
         router.refresh();
-        await router.push('/auth/dashboard');
+        await router.push('/dashboard/profile');
       }, 1500);
       return () => clearTimeout(timer);
     }

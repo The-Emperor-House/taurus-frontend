@@ -5,10 +5,8 @@ import { ModalProvider } from '../modals/ModalProvider';
 
 export function Providers({ children }) {
   return (
-    <SessionProvider>
-      <ModalProvider>
-        {children}
-      </ModalProvider>
+    <SessionProvider refetchInterval={0}>
+      <ModalProvider>{children}</ModalProvider>
     </SessionProvider>
   );
 }

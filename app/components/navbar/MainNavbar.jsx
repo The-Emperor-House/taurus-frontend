@@ -57,7 +57,7 @@ export default function MainNavbar() {
 
   const textColor = isDarkMode ? "text-white" : "text-gray-800";
   const bgColor = isDarkMode ? "bg-black/80" : "bg-white/80";
-  const hamburgerColor = isDarkMode ? "bg-white" : "bg-white";
+  const hamburgerColor = isDarkMode ? "bg-white" : "bg-gray-800";
   const logoSrc = isScrolled
     ? "/navbar/logo webp/taurusOrange.webp"
     : isDarkMode

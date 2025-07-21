@@ -1,28 +1,10 @@
+import { Suspense } from 'react';
 import MuiThemeProviderWrapper from './components/common/MuiThemeProviderWrapper';
-import { Prompt, Poppins } from 'next/font/google';
-import './globals.css';
 import { Providers } from './components/common/Providers';
 import RootContent from './components/common/RootContent';
-
-export const metadata = {
-  title: 'TAURUS by emperor',
-  description:
-    'TAURUS - Renovate & Interior Design, specializing in contemporary and modern style with imported furniture. Transform your space with elegance and premium craftsmanship.',
-  keywords: [
-    'renovate',
-    'interior design',
-    'contemporary style',
-    'modern style',
-    'imported furniture',
-    'luxury renovation',
-    'premium design',
-    'Taurus',
-    'Emperor',
-  ],
-  icons: {
-    icon: '/logo.ico',
-  },
-};
+import { Prompt, Poppins } from 'next/font/google';
+import './globals.css';
+import { CircularProgress, Typography, Box } from '@mui/material';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -38,14 +20,31 @@ const prompt = Prompt({
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`${poppins.variable} ${prompt.variable} scroll-smooth ${poppins.className}`}
-    >
+    <html lang="th" className={`${poppins.variable} ${prompt.variable}`}>
       <body>
         <MuiThemeProviderWrapper>
           <Providers>
-            <RootContent>{children}</RootContent>
+            <Suspense
+              fallback={
+                <Box
+                  sx={{
+                    minHeight: '100vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    gap: 2,
+                  }}
+                >
+                  <CircularProgress />
+                  <Typography variant="h6" color="text.secondary">
+                    กำลังโหลดหน้า...
+                  </Typography>
+                </Box>
+              }
+            >
+              <RootContent>{children}</RootContent>
+            </Suspense>
           </Providers>
         </MuiThemeProviderWrapper>
       </body>

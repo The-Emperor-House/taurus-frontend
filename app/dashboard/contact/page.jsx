@@ -1,9 +1,9 @@
-import ContactList from '../../components/contact/ContactList';
+import ContactCard from '../../components/contact/ContactCard';
 
-export default function ContactListPage() {
+export default function ContactPage() {
   return (
     <div className="min-h-screen flex items-center justify-center">
-        <ContactList />
+        <ContactCard className="w-full max-w-3xl" />
     </div>
   );
 }

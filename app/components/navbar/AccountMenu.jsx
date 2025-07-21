@@ -79,7 +79,8 @@ export default function AccountMenu({ user }) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem component={Link} href="/auth/dashboard">
+
+        <MenuItem component={Link} href="/dashboard/profile">
           <ListItemIcon>
             <Dashboard fontSize="small" />
           </ListItemIcon>

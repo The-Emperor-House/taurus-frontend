@@ -9,18 +9,14 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-  Divider,
-  Typography,
 } from '@mui/material';
 import Logout from '@mui/icons-material/Logout';
 import Dashboard from '@mui/icons-material/Dashboard';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 
 export default function AccountMenu({ user }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [imageError, setImageError] = useState(false); // 🔥 เพิ่ม state เช็คโหลดรูปไม่สำเร็จ
-
+  const [imageError, setImageError] = useState(false);
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -35,7 +31,7 @@ export default function AccountMenu({ user }) {
   };
 
   const firstLetter = user?.name?.charAt(0)?.toUpperCase() || 'U';
-  const fullAvatarUrl = !imageError ? user?.avatarUrl : undefined; // 🔥 ถ้า error จะเป็น undefined
+  const fullAvatarUrl = !imageError ? user?.avatarUrl : undefined;
 
   return (
     <>
@@ -52,7 +48,7 @@ export default function AccountMenu({ user }) {
           alt={user?.name || 'User'}
           sx={{ width: 40, height: 40 }}
           imgProps={{
-            onError: () => setImageError(true), // 🔥 ถ้ารูปโหลด error → อัปเดต state
+            onError: () => setImageError(true),
           }}
         >
           {firstLetter}
@@ -83,17 +79,6 @@ export default function AccountMenu({ user }) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem disabled sx={{ cursor: 'default' }}>
-          <ListItemIcon>
-            <AccountCircle fontSize="small" />
-          </ListItemIcon>
-          <Typography variant="body2" noWrap>
-            {user?.name || 'Account'}
-          </Typography>
-        </MenuItem>
-
-        <Divider />
-
         <MenuItem component={Link} href="/auth/dashboard">
           <ListItemIcon>
             <Dashboard fontSize="small" />

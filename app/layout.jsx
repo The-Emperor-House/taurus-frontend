@@ -3,8 +3,9 @@ import Footer from "./components/common/Footer";
 import MuiThemeProviderWrapper from "./components/common/MuiThemeProviderWrapper";
 import { Prompt, Poppins } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./components/common/providers";
+import { Providers } from "./components/common/Providers";
 import PageTransition from "./components/common/PageTransition";
+import LayoutWrapper from "./components/common/LayoutWrapper";
 
 export const metadata = {
   title: "TAURUS by emperor",
@@ -48,7 +49,9 @@ export default function RootLayout({ children }) {
         <MuiThemeProviderWrapper>
           <Providers>
             <MainNavbar />
+            <LayoutWrapper>
             <PageTransition>{children}</PageTransition>
+            </LayoutWrapper>
             <Footer />
           </Providers>
         </MuiThemeProviderWrapper>

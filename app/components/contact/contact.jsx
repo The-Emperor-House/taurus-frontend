@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
 import {
   Box,
-  Grid,
+  Card,
   TextField,
   Typography,
   Checkbox,
@@ -13,6 +13,7 @@ import {
   Alert,
   Link,
 } from "@mui/material";
+import { styled } from "@mui/system";
 import { useState } from "react";
 
 const initialState = {
@@ -109,19 +110,25 @@ export default function ContactForm() {
   };
 
   return (
-    <Box sx={{ maxWidth: 900, mx: "auto", p: 4 }}>
-      <Typography variant="h5" align="center" gutterBottom sx={{ fontWeight: 600, mb: 4 }}>
+    <StyledCard>
+      <Typography variant="h5" align="center" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
         CONTACT US
       </Typography>
 
       <form onSubmit={handleSubmit}>
-        <Grid container columns={12} spacing={4}>
-          <Grid item xs={12} md={6}>
-            <TextField label="ชื่อ-นามสกุล" name="fullName" value={formData.fullName} onChange={handleChange} fullWidth variant="standard" />
-            <TextField label="อีเมล" name="email" value={formData.email} onChange={handleChange} fullWidth variant="standard" sx={{ mt: 3 }} />
-            <TextField label="เบอร์โทรติดต่อ" name="phone" value={formData.phone} onChange={handleChange} fullWidth variant="standard" sx={{ mt: 3 }} />
-
-            <Typography sx={{ mt: 4, mb: 1 }}>แจ้งความต้องการ</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: 4,
+          }}
+        >
+          {/* Left section */}
+          <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField label="ชื่อ-นามสกุล" name="fullName" value={formData.fullName} onChange={handleChange} fullWidth />
+            <TextField label="อีเมล" name="email" value={formData.email} onChange={handleChange} fullWidth />
+            <TextField label="เบอร์โทรติดต่อ" name="phone" value={formData.phone} onChange={handleChange} fullWidth />
+            <Typography sx={{ mt: 2, mb: 1 }}>แจ้งความต้องการ</Typography>
             <FormGroup>
               {Object.keys(formData.services).map((key) => (
                 <FormControlLabel
@@ -131,37 +138,53 @@ export default function ContactForm() {
                 />
               ))}
             </FormGroup>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} md={6}>
-            <TextField label="งบประมาณ (บาท)" name="budget" value={formData.budget} onChange={handleChange} fullWidth variant="standard" />
-            <TextField label="ขนาดพื้นที่ (ตร.ม.)" name="areaSize" value={formData.areaSize} onChange={handleChange} fullWidth variant="standard" sx={{ mt: 3 }} />
-            <TextField label="รายละเอียดเพิ่มเติม" name="details" value={formData.details} onChange={handleChange} fullWidth multiline minRows={4} variant="standard" sx={{ mt: 3 }} />
-          </Grid>
-
-          <Grid item xs={12} sx={{ textAlign: "center" }}>
-            <FormControlLabel
-              control={<Checkbox checked={formData.accept} onChange={handleChange} name="accept" />}
-              label={
-                <Typography variant="body2">
-                  ยอมรับข้อตกลงและ{" "}
-                  <Link href="/privacy" underline="hover">
-                    นโยบายความเป็นส่วนตัว
-                  </Link>
-                </Typography>
-              }
+          {/* Right section */}
+          <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField label="งบประมาณ (บาท)" name="budget" value={formData.budget} onChange={handleChange} fullWidth />
+            <TextField label="ขนาดพื้นที่ (ตร.ม.)" name="areaSize" value={formData.areaSize} onChange={handleChange} fullWidth />
+            <TextField
+              label="รายละเอียดเพิ่มเติม"
+              name="details"
+              value={formData.details}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              minRows={4}
             />
-            <Box sx={{ mt: 3 }}>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ backgroundColor: "#a08976", "&:hover": { backgroundColor: "#8c7466" }, px: 4, py: 1.5 }}
-              >
-                ส่งข้อมูล
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
+
+        <FormControlLabel
+          sx={{ mt: 3 }}
+          control={<Checkbox checked={formData.accept} onChange={handleChange} name="accept" />}
+          label={
+            <Typography variant="body2">
+              ยอมรับข้อตกลงและ{" "}
+              <Link href="/privacy" underline="hover">
+                นโยบายความเป็นส่วนตัว
+              </Link>
+            </Typography>
+          }
+        />
+
+        <Box sx={{ mt: 3, textAlign: "center" }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              px: 5,
+              py: 1.5,
+              fontWeight: 600,
+              bgcolor: "primary.main",
+              color: "primary.contrastText",
+              "&:hover": { bgcolor: "primary.dark" },
+            }}
+          >
+            ส่งข้อมูล
+          </Button>
+        </Box>
       </form>
 
       <Snackbar
@@ -169,10 +192,23 @@ export default function ContactForm() {
         autoHideDuration={4000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
-        <Alert severity={snackbar.severity} sx={{ width: "100%" }} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Box>
+    </StyledCard>
   );
 }
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  maxWidth: 900,
+  margin: "0 auto",
+  padding: theme.spacing(4),
+  borderRadius: theme.spacing(2),
+  boxShadow: theme.shadows[3],
+  backgroundColor: theme.palette.background.paper,
+}));

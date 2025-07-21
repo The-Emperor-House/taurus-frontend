@@ -26,10 +26,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <Fade in timeout={500}>
-      <div className="min-h-screen flex items-center justify-center">
-        <UserProfileCard user={session.user} />
-      </div>
-    </Fade>
+    <div className="min-h-screen flex items-center justify-center">
+      <UserProfileCard user={session.user} />
+    </div>
   );
 }

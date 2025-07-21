@@ -8,7 +8,6 @@ import {
   Card,
   Button,
   Avatar,
-  CircularProgress,
   Divider,
   Skeleton,
 } from "@mui/material";

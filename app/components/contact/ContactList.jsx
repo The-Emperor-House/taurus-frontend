@@ -6,30 +6,26 @@ import {
   Box,
   Typography,
   Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Alert,
-  Chip,
-  Tooltip,
-  Skeleton,
   TextField,
   Button,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { DataGrid } from '@mui/x-data-grid';
 import * as XLSX from 'xlsx';
 
-export default function ContactListWithSearchExport() {
+export default function ContactListWithDetailModal() {
   const { data: session, status } = useSession();
   const [contacts, setContacts] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectedContact, setSelectedContact] = useState(null);
 
   useEffect(() => {
     if (status !== 'authenticated') return;
@@ -43,8 +39,19 @@ export default function ContactListWithSearchExport() {
         if (!res.ok) throw new Error('โหลดข้อมูลไม่สำเร็จ');
         const data = await res.json();
         if (isMounted) {
-          setContacts(data);
-          setFiltered(data);
+          const formatted = data.map((c) => ({
+            id: c.id,
+            fullName: c.fullName,
+            email: c.email,
+            phone: c.phone,
+            budget: c.budget,
+            areaSize: c.areaSize,
+            needs: c.needs.join(', '),
+            details: c.details || '-',
+            createdAt: new Date(c.createdAt).toLocaleString('th-TH'),
+          }));
+          setContacts(formatted);
+          setFiltered(formatted);
         }
       } catch (err) {
         if (isMounted) setError(err.message || 'เกิดข้อผิดพลาด');
@@ -67,139 +74,92 @@ export default function ContactListWithSearchExport() {
           c.fullName.toLowerCase().includes(term) ||
           c.email.toLowerCase().includes(term) ||
           c.phone.includes(term) ||
-          c.needs.join(',').toLowerCase().includes(term)
+          c.needs.toLowerCase().includes(term)
       )
     );
   }, [search, contacts]);
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(
-      filtered.map((c) => ({
-        ไอดี: c.id,
-        ชื่อ: c.fullName,
-        อีเมล: c.email,
-        เบอร์ติดต่อ: c.phone,
-        งบประมาณ: c.budget,
-        ขนาดพื้นที่: c.areaSize,
-        ความต้องการ: c.needs.join(', '),
-        รายละเอียด: c.details,
-        วันที่: new Date(c.createdAt).toLocaleString('th-TH'),
-      }))
-    );
+    const worksheet = XLSX.utils.json_to_sheet(filtered);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Contacts');
     XLSX.writeFile(workbook, 'contacts.xlsx');
   };
 
+  const columns = [
+    { field: 'fullName', headerName: 'ชื่อ', flex: 1, minWidth: 150 },
+    { field: 'email', headerName: 'อีเมล', flex: 1, minWidth: 180 },
+    { field: 'phone', headerName: 'เบอร์', flex: 1, minWidth: 120 },
+    { field: 'needs', headerName: 'บริการ', flex: 1, minWidth: 180 },
+    { field: 'createdAt', headerName: 'วันที่', flex: 1, minWidth: 150 },
+  ];
+
   return (
-    <Card sx={{ p: 3, width: '100%', overflowX: 'auto' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 2 }}>
-        <Typography variant="h5" fontWeight={700}>
-          📋 รายการ Contact ทั้งหมด
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-          <TextField
-            label="ค้นหา"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            sx={{ flex: 1, minWidth: 200 }}
-          />
-          <Button
-            variant="contained"
-            startIcon={<FileDownloadIcon />}
-            onClick={exportToExcel}
-            disabled={filtered.length === 0}
-            sx={{ whiteSpace: 'nowrap' }}
-          >
-            Export Excel
-          </Button>
-        </Box>
+    <Card sx={{ p: 3, width: '100%' }}>
+      <Typography variant="h5" fontWeight={700} gutterBottom>
+        📋 รายการ Contact ทั้งหมด
+      </Typography>
+
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 2 }}>
+        <TextField
+          label="ค้นหา"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{ flex: 1, minWidth: 200 }}
+        />
+        <Button
+          variant="contained"
+          startIcon={<FileDownloadIcon />}
+          onClick={exportToExcel}
+          disabled={filtered.length === 0}
+        >
+          Export Excel
+        </Button>
       </Box>
 
-      {loading ? (
-        <SkeletonTable />
-      ) : error ? (
+      {error ? (
         <Alert severity="error">{error}</Alert>
-      ) : filtered.length === 0 ? (
-        <Alert severity="info">ไม่พบข้อมูลที่ค้นหา</Alert>
       ) : (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ชื่อ</TableCell>
-                <TableCell>อีเมล</TableCell>
-                <TableCell>เบอร์</TableCell>
-                <TableCell>บริการ</TableCell>
-                <TableCell>งบประมาณ</TableCell>
-                <TableCell>ขนาดพื้นที่</TableCell>
-                <TableCell>รายละเอียด</TableCell>
-                <TableCell>วันที่</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filtered.map((c) => (
-                <TableRow key={c.id}>
-                  <TableCell>{c.fullName}</TableCell>
-                  <TableCell>{c.email}</TableCell>
-                  <TableCell>{c.phone}</TableCell>
-                  <TableCell>
-                    {c.needs.map((need, idx) => (
-                      <Chip
-                        key={idx}
-                        label={need}
-                        size="small"
-                        color="primary"
-                        sx={{ mr: 0.5, mb: 0.5 }}
-                      />
-                    ))}
-                  </TableCell>
-                  <TableCell>{Number(c.budget).toLocaleString('th-TH')}</TableCell>
-                  <TableCell>{c.areaSize}</TableCell>
-                  <TableCell>
-                    <Tooltip title={c.details || '-'}>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          maxWidth: 150,
-                        }}
-                      >
-                        {c.details || '-'}
-                      </Typography>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>
-                    {new Date(c.createdAt).toLocaleDateString('th-TH', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box sx={{ height: 600, width: '100%' }}>
+          <DataGrid
+            rows={filtered}
+            columns={columns}
+            loading={loading}
+            pageSize={10}
+            rowsPerPageOptions={[10, 25, 50]}
+            pagination
+            disableSelectionOnClick
+            onRowClick={(params) => setSelectedContact(params.row)}
+          />
+        </Box>
       )}
-    </Card>
-  );
-}
 
-function SkeletonTable() {
-  const rows = Array.from({ length: 5 });
-  return (
-    <Box sx={{ mt: 2 }}>
-      {rows.map((_, idx) => (
-        <Skeleton
-          key={idx}
-          variant="rectangular"
-          height={40}
-          sx={{ mb: 1, borderRadius: 1 }}
-        />
-      ))}
-    </Box>
+      {/* ✅ Detail Modal */}
+      <Dialog
+        open={!!selectedContact}
+        onClose={() => setSelectedContact(null)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>รายละเอียด Contact</DialogTitle>
+        <DialogContent dividers>
+          {selectedContact && (
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Typography><strong>ชื่อ:</strong> {selectedContact.fullName}</Typography>
+              <Typography><strong>อีเมล:</strong> {selectedContact.email}</Typography>
+              <Typography><strong>เบอร์โทร:</strong> {selectedContact.phone}</Typography>
+              <Typography><strong>บริการ:</strong> {selectedContact.needs}</Typography>
+              <Typography><strong>งบประมาณ:</strong> {Number(selectedContact.budget).toLocaleString('th-TH')} บาท</Typography>
+              <Typography><strong>ขนาดพื้นที่:</strong> {selectedContact.areaSize} ตร.ม.</Typography>
+              <Typography><strong>รายละเอียดเพิ่มเติม:</strong> {selectedContact.details}</Typography>
+              <Typography><strong>วันที่ส่ง:</strong> {selectedContact.createdAt}</Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSelectedContact(null)}>ปิด</Button>
+        </DialogActions>
+      </Dialog>
+    </Card>
   );
 }

@@ -16,16 +16,13 @@ export default function MainNavbar() {
   const [activeHash, setActiveHash] = useState("");
   const { data: session, status } = useSession();
   const pathname = usePathname();
-
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       setIsScrolled(scrollY > 0);
       setScrollProgress((scrollY / docHeight) * 100);
       setActiveHash(window.location.hash);
@@ -45,7 +42,7 @@ export default function MainNavbar() {
   ];
 
   const handleSmoothScroll = (e, href) => {
-    if (typeof window !== "undefined" && href.startsWith("/#")) {
+    if (href.startsWith("/#")) {
       e.preventDefault();
       const targetId = href.replace("/#", "");
       const targetEl = document.getElementById(targetId);
@@ -58,9 +55,10 @@ export default function MainNavbar() {
     }
   };
 
-  const textColor = isDarkMode ? "text-white" : "text-black";
-  const bgColor = isDarkMode ? "bg-black/80" : "bg-white/80";
-  const hamburgerColor = isDarkMode ? "bg-white" : "bg-black";
+  const textColor = isDarkMode ? "text-white" : "text-gray-800";
+  const bgColor = isDarkMode ? "bg-black/80" : "bg-[#404040]/80";
+  const hamburgerColor = isDarkMode ? "bg-white" : "bg-gray-800";
+  const logoSrc = isScrolled ? "/navbar/logo webp/taurusOrange.webp" : "/navbar/logo webp/taurusWhite.webp";
 
   return (
     <motion.nav
@@ -68,45 +66,23 @@ export default function MainNavbar() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
       className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
-        isScrolled ? bgColor + " shadow backdrop-blur" : "bg-transparent"
+        isScrolled ? `${bgColor} shadow backdrop-blur` : "bg-transparent"
       }`}
     >
-      {/* Scroll progress bar */}
-      <motion.div
-        style={{ width: `${scrollProgress}%` }}
-        className="h-1 bg-[#cc8f2a] origin-left"
-      />
+      <motion.div style={{ width: `${scrollProgress}%` }} className="h-1 bg-[#cc8f2a]" />
 
       <div className="container mx-auto flex justify-between items-center px-4 py-3">
-        {/* Logo with hover effect */}
-     <Link href="/" className="flex items-center group">
-        <motion.div
-          animate={{ scale: isScrolled ? 0.85 : 1 }}
-          transition={{ duration: 0.3 }}
-          whileHover={{ scale: 1.05 }}
-        >
-          <Image
-            src={
-              isScrolled
-                ? '/navbar/logo webp/taurusOrange.webp'
-                : isDarkMode
-                ? '/navbar/logo webp/taurusWhite.webp'
-                : '/navbar/logo webp/taurusDark.webp'
-            }
-            alt="Logo"
-            width={isScrolled ? 100 : 120}
-            height={isScrolled ? 33 : 40} // 💥 ให้สัมพันธ์กับ width
-            priority
-          />
-        </motion.div>
-      </Link>
+        {/* Logo */}
+        <Link href="/" className="flex items-center group">
+          <motion.div animate={{ scale: isScrolled ? 0.85 : 1 }} transition={{ duration: 0.3 }} whileHover={{ scale: 1.05 }}>
+            <Image src={logoSrc} alt="Logo" width={isScrolled ? 100 : 120} height={isScrolled ? 33 : 40} priority />
+          </motion.div>
+        </Link>
 
-        {/* Desktop menu */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => {
-            const isActive =
-              pathname === link.href ||
-              (pathname === "/" && activeHash === link.href.replace("/", ""));
+            const isActive = pathname === link.href || (pathname === "/" && activeHash === link.href.replace("/", ""));
             return (
               <Link
                 key={link.href}
@@ -122,14 +98,11 @@ export default function MainNavbar() {
               </Link>
             );
           })}
-          {status === 'authenticated' && <AccountMenu user={session.user} />}
+          {status === "authenticated" && <AccountMenu user={session.user} />}
         </div>
 
-        {/* Hamburger icon */}
-        <button
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8 relative"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        {/* Hamburger */}
+        <button className="md:hidden flex flex-col justify-center items-center w-8 h-8 relative" onClick={() => setIsOpen(!isOpen)}>
           <motion.span
             className={`absolute w-6 h-0.5 ${hamburgerColor}`}
             animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 0 : -6 }}
@@ -148,7 +121,7 @@ export default function MainNavbar() {
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -156,33 +129,27 @@ export default function MainNavbar() {
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.3 }}
-            className={`md:hidden ${
-              isDarkMode ? "bg-black" : "bg-white"
-            } overflow-hidden`}
+            className={`md:hidden ${isDarkMode ? "bg-black" : "bg-[#404040]"} overflow-hidden`}
           >
             <div className="flex flex-col p-4 space-y-2">
               {navLinks.map((link) => {
-                const isActive =
-                  pathname === link.href ||
-                  (pathname === "/" &&
-                    activeHash === link.href.replace("/", ""));
-
+                const isActive = pathname === link.href || (pathname === "/" && activeHash === link.href.replace("/", ""));
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={(e) => handleSmoothScroll(e, link.href)}
-                    className={`relative text-lg py-2 pl-4 transition-all duration-300 ${
+                    className={`relative text-lg transition-all duration-300 ${
                       isActive
-                        ? "font-semibold text-[#cc8f2a] border-l-4 border-[#cc8f2a]"
-                        : `${textColor} border-l-4 border-transparent`
-                    } hover:text-[#cc8f2a] hover:border-[#cc8f2a]`}
+                        ? `font-semibold text-[#cc8f2a] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-[#cc8f2a]`
+                        : `${textColor}`
+                    } hover:text-[#cc8f2a]`}
                   >
                     {link.label}
                   </Link>
                 );
               })}
-              {status === 'authenticated' && <AccountMenu user={session.user} />}
+              {status === "authenticated" && <AccountMenu user={session.user} />}
             </div>
           </motion.div>
         )}

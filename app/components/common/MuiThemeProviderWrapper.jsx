@@ -31,30 +31,40 @@ export default function MuiThemeProviderWrapper({ children }) {
       <CssBaseline />
       <Box
         sx={{
-          position: 'fixed',
-          bottom: 16,
-          right: 16,
-          zIndex: 9999,
-          bgcolor: 'background.paper',
-          borderRadius: '50%',
-          boxShadow: 3,
+          bgcolor: mode === 'light' ? '#f3f4f6' : '#000', // light: gray-100, dark: black
+          minHeight: '100vh',
           transition: 'background-color 0.3s ease',
         }}
       >
-        <IconButton
-          onClick={toggleMode}
-          color="primary"
+        {children}
+
+        {/* Toggle button */}
+        <Box
           sx={{
-            width: 48,
-            height: 48,
-            transition: 'color 0.3s ease',
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+            zIndex: 9999,
+            bgcolor: 'background.paper',
+            borderRadius: '50%',
+            boxShadow: 3,
+            transition: 'background-color 0.3s ease',
           }}
-          aria-label="Toggle dark mode"
         >
-          {mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
-        </IconButton>
+          <IconButton
+            onClick={toggleMode}
+            color="primary"
+            sx={{
+              width: 48,
+              height: 48,
+              transition: 'color 0.3s ease',
+            }}
+            aria-label="Toggle dark mode"
+          >
+            {mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
+          </IconButton>
+        </Box>
       </Box>
-      {children}
     </ThemeProvider>
   );
 }

@@ -4,7 +4,6 @@ import MuiThemeProviderWrapper from "./components/common/MuiThemeProviderWrapper
 import { Prompt, Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./components/common/Providers";
-import PageTransition from "./components/common/PageTransition";
 import LayoutWrapper from "./components/common/LayoutWrapper";
 
 export const metadata = {
@@ -50,7 +49,7 @@ export default function RootLayout({ children }) {
           <Providers>
             <MainNavbar />
             <LayoutWrapper>
-            <PageTransition>{children}</PageTransition>
+              {children}
             </LayoutWrapper>
             <Footer />
           </Providers>

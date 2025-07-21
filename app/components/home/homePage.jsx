@@ -6,8 +6,6 @@ import AnimatedHeading from "./AnimatedHeading";
 import Project from "./project";
 import Map from "./map";
 
-import ModalTest from "../modals/ModalTest";
-
 export default function homePage() {
   const sharedContent = (
     <div>
@@ -81,7 +79,6 @@ export default function homePage() {
         <Map />
       </section>
 
-      <ModalTest />
     </main>
   );
 }

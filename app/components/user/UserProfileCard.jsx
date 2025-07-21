@@ -1,9 +1,7 @@
-"use client";
+'use client';
 
 import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import PersonIcon from "@mui/icons-material/Person";
-import Divider from "@mui/material/Divider";
 import {
   Box,
   Typography,
@@ -11,175 +9,139 @@ import {
   Button,
   Avatar,
   CircularProgress,
+  Divider,
+  Skeleton,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import EditProfileDialog from "./EditProfileDialog";
 import EditAvatarDialog from "./EditAvatarDialog";
+import ChangePasswordDialog from "./ChangePasswordDialog";
 
 export default function UserProfileCard() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
-  const [setError] = useState(null);
+  const [error, setError] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isEditAvatarDialogOpen, setIsEditAvatarDialogOpen] = useState(false);
-  const isLoading =
-    status === "loading" || (status === "authenticated" && !user);
+  const [isChangePasswordDialogOpen, setIsChangePasswordDialogOpen] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     if (status !== "authenticated") return;
 
     const fetchUserData = async () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
-          headers: {
-            Authorization: `Bearer ${session.backendToken}`,
-          },
+          headers: { Authorization: `Bearer ${session.backendToken}` },
         });
 
         if (res.status === 401) {
           console.warn("⚠️ Token expired or unauthorized, signing out...");
-          signOut(); // force logout
+          signOut();
           return;
         }
 
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
         const data = await res.json();
-        console.log("✅ User data fetched:", data);
-
-        if (!data?.data?.user) {
-          throw new Error("No user data received");
+        if (isMounted) {
+          if (!data?.data?.user) throw new Error("No user data received");
+          setUser(data.data.user);
         }
-
-        setUser(data.data.user);
       } catch (err) {
         console.error("🔥 Fetch user error:", err);
-        setError("ไม่สามารถโหลดข้อมูลผู้ใช้ได้");
+        if (isMounted) setError("ไม่สามารถโหลดข้อมูลผู้ใช้ได้");
       }
     };
 
     fetchUserData();
+    return () => { isMounted = false; };
   }, [session, status]);
 
-  if (isLoading) {
-    return (
-      <StyledCard>
-        <CircularProgress sx={{ color: "#cc8f2a" }} size={48} />
-        <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>
-          Loading Profile...
-        </Typography>
-      </StyledCard>
-    );
-  }
+  const isLoading = status === "loading" || (status === "authenticated" && !user);
 
   return (
     <StyledCard>
-      <Avatar
-        sx={{
-          width: 96,
-          height: 96,
-          mb: 2,
-          bgcolor: (theme) => theme.palette.primary.main,
-          fontSize: 48,
-        }}
-        src={user.avatarUrl || ""}
-        alt={user.name || "User Avatar"}
-        onClick={() => setIsEditAvatarDialogOpen(true)}
-      >
-      </Avatar>
-
-      <Typography
-        variant="h5"
-        sx={{ mt: 2, fontWeight: 700, color: (theme) => theme.palette.text.primary }}
-      >
-        {user.name || "ผู้ใช้ไม่ระบุ"}
-      </Typography>
-
-      <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
-        {user.email || "อีเมลไม่ระบุ"}
-      </Typography>
-
-      <Divider sx={{ my: 3, width: "100%" }} />
-
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 1.5,
-          width: "100%",
-        }}
-      >
-        <InfoItem
-          label="📅 วันที่สมัครสมาชิก"
-          value={formatDate(user.createdAt)}
-        />
-        <InfoItem
-          label="🛠️ วันที่แก้ไขล่าสุด"
-          value={formatDateTime(user.updatedAt)}
-        />
-      </Box>
-      <Box
-        sx={{
-          mt: 2,
-          textAlign: "center",
-        }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          sx={(theme) => ({
-            fontWeight: 600,
-            backgroundColor: theme.palette.primary.main,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.dark,
-            },
-          })}
-          onClick={() => setIsEditDialogOpen(true)}
-        >
-          <Typography variant="button" sx={{ color: (theme) => theme.palette.primary.contrastText }}>
-            แก้ไขโปรไฟล์
+      {isLoading ? (
+        <>
+          <Skeleton variant="circular" width={96} height={96} />
+          <Skeleton variant="text" width="60%" sx={{ mt: 2 }} />
+          <Skeleton variant="text" width="80%" />
+          <Skeleton variant="rectangular" width="100%" height={80} sx={{ mt: 2 }} />
+        </>
+      ) : error ? (
+        <Typography color="error">{error}</Typography>
+      ) : (
+        <>
+          <Avatar
+            src={user.avatarUrl || "/default-avatar.png"}
+            sx={{
+              width: 96,
+              height: 96,
+              mb: 2,
+              bgcolor: (theme) => theme.palette.primary.main,
+              fontSize: 48,
+              cursor: "pointer",
+            }}
+            alt={user.name || "User Avatar"}
+            onClick={() => setIsEditAvatarDialogOpen(true)}
+            onError={(e) => { e.currentTarget.src = "/default-avatar.png"; }}
+          />
+          <Typography variant="h5" sx={{ mt: 2, fontWeight: 700 }}>
+            {user.name || "ผู้ใช้ไม่ระบุ"}
           </Typography>
-        </Button>
-      </Box>
+          <Typography variant="body1" color="text.secondary">
+            {user.email || "อีเมลไม่ระบุ"}
+          </Typography>
 
-      <EditProfileDialog
-        open={isEditDialogOpen}
-        onClose={() => setIsEditDialogOpen(false)}
-        user={user}
-        token={session.backendToken}
-        onUpdated={(updatedUser) => setUser(updatedUser)}
-      />
+          <Divider sx={{ my: 3, width: "100%" }} />
 
-      <EditAvatarDialog
-        open={isEditAvatarDialogOpen}
-        onClose={() => setIsEditAvatarDialogOpen(false)}
-        user={user}
-        token={session.backendToken}
-        onUpdated={(updatedUser) => setUser(updatedUser)}
-      />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, width: "100%" }}>
+            <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.createdAt)} />
+            <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDateTime(user.updatedAt)} />
+          </Box>
 
+          <Box sx={{ mt: 3, textAlign: "center", display: "flex", gap: 1 }}>
+            <Button variant="contained" color="primary" onClick={() => setIsEditDialogOpen(true)}>
+              แก้ไขโปรไฟล์
+            </Button>
+            <Button variant="outlined" color="info" onClick={() => setIsChangePasswordDialogOpen(true)}>
+              เปลี่ยนรหัสผ่าน
+            </Button>
+          </Box>
+
+          <EditProfileDialog
+            open={isEditDialogOpen}
+            onClose={() => setIsEditDialogOpen(false)}
+            user={user}
+            token={session.backendToken}
+            onUpdated={(updatedUser) => setUser(updatedUser)}
+          />
+
+          <EditAvatarDialog
+            open={isEditAvatarDialogOpen}
+            onClose={() => setIsEditAvatarDialogOpen(false)}
+            user={user}
+            token={session.backendToken}
+            onUpdated={(updatedUser) => setUser(updatedUser)}
+          />
+
+          <ChangePasswordDialog
+            open={isChangePasswordDialogOpen}
+            onClose={() => setIsChangePasswordDialogOpen(false)}
+            token={session.backendToken}
+            onUpdated={(updatedUser) => setUser(updatedUser)}
+          />
+        </>
+      )}
     </StyledCard>
   );
 }
 
 function InfoItem({ label, value }) {
   return (
-    <Box
-      sx={(theme) => ({
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      })}
-    >
-      <Typography
-        variant="body2"
-        sx={(theme) => ({
-          fontWeight: 500,
-          color: theme.palette.text.secondary,
-        })}
-      >
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.secondary' }}>
         {label}:
       </Typography>
       <Box
@@ -188,14 +150,10 @@ function InfoItem({ label, value }) {
           py: 0.5,
           fontSize: '0.85rem',
           fontFamily: 'monospace',
-          backgroundColor:
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[800],
+          backgroundColor: theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[800],
           borderRadius: '9999px',
           minWidth: 100,
           textAlign: 'center',
-          color: theme.palette.text.primary,
         })}
       >
         {value}
@@ -205,23 +163,11 @@ function InfoItem({ label, value }) {
 }
 
 function formatDate(date) {
-  if (!date) return "-";
-  return new Date(date).toLocaleDateString("th-TH", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
+  return date ? new Date(date).toLocaleDateString("th-TH") : "-";
 }
 
 function formatDateTime(date) {
-  if (!date) return "-";
-  return new Date(date).toLocaleString("th-TH", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  return date ? new Date(date).toLocaleString("th-TH") : "-";
 }
 
 const StyledCard = styled(Card)(({ theme }) => ({

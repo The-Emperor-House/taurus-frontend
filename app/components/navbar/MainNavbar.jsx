@@ -63,6 +63,9 @@ export default function MainNavbar() {
     : isDarkMode
       ? "/navbar/logo webp/taurusWhite.webp"
       : "/navbar/logo webp/taurusDark.webp";
+  const baseWidth = 120;
+  const baseHeight = 40;
+  const scale = isScrolled ? 0.8 : 1; // 0.8 = ลดเหลือ 80%
 
   return (
     <motion.nav
@@ -79,7 +82,12 @@ export default function MainNavbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center group">
           <motion.div animate={{ scale: isScrolled ? 0.85 : 1 }} transition={{ duration: 0.3 }} whileHover={{ scale: 1.05 }}>
-            <Image src={logoSrc} alt="Logo" width={isScrolled ? 100 : 120} height={isScrolled ? 33 : 40} priority />
+            <Image 
+              src={logoSrc}   alt="Logo"
+              width={baseWidth * scale}
+              height={baseHeight * scale}
+              priority 
+            />
           </motion.div>
         </Link>
 

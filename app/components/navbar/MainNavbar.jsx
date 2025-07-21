@@ -56,9 +56,13 @@ export default function MainNavbar() {
   };
 
   const textColor = isDarkMode ? "text-white" : "text-gray-800";
-  const bgColor = isDarkMode ? "bg-black/80" : "bg-[#404040]/80";
-  const hamburgerColor = isDarkMode ? "bg-white" : "bg-gray-800";
-  const logoSrc = isScrolled ? "/navbar/logo webp/taurusOrange.webp" : "/navbar/logo webp/taurusWhite.webp";
+  const bgColor = isDarkMode ? "bg-black/80" : "bg-white/80";
+  const hamburgerColor = isDarkMode ? "bg-white" : "bg-white";
+  const logoSrc = isScrolled
+    ? "/navbar/logo webp/taurusOrange.webp"
+    : isDarkMode
+      ? "/navbar/logo webp/taurusWhite.webp"
+      : "/navbar/logo webp/taurusDark.webp";
 
   return (
     <motion.nav
@@ -129,7 +133,7 @@ export default function MainNavbar() {
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.3 }}
-            className={`md:hidden ${isDarkMode ? "bg-black" : "bg-[#404040]"} overflow-hidden`}
+            className={`md:hidden ${isDarkMode ? "bg-black" : "bg-white"} overflow-hidden`}
           >
             <div className="flex flex-col p-4 space-y-2">
               {navLinks.map((link) => {

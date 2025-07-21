@@ -19,6 +19,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 export default function AccountMenu({ user }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [imageError, setImageError] = useState(false); // 🔥 เพิ่ม state เช็คโหลดรูปไม่สำเร็จ
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -34,11 +35,7 @@ export default function AccountMenu({ user }) {
   };
 
   const firstLetter = user?.name?.charAt(0)?.toUpperCase() || 'U';
-  const fullAvatarUrl = user.avatarUrl
-
-  console.log("AccountMenu user:", user);
-  console.log("Full avatar URL:", fullAvatarUrl);
-
+  const fullAvatarUrl = !imageError ? user?.avatarUrl : undefined; // 🔥 ถ้า error จะเป็น undefined
 
   return (
     <>
@@ -52,9 +49,13 @@ export default function AccountMenu({ user }) {
       >
         <Avatar
           src={fullAvatarUrl}
+          alt={user?.name || 'User'}
           sx={{ width: 40, height: 40 }}
+          imgProps={{
+            onError: () => setImageError(true), // 🔥 ถ้ารูปโหลด error → อัปเดต state
+          }}
         >
-          {!fullAvatarUrl && firstLetter}
+          {firstLetter}
         </Avatar>
       </IconButton>
 

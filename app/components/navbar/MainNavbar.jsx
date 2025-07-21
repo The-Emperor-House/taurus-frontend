@@ -79,41 +79,27 @@ export default function MainNavbar() {
 
       <div className="container mx-auto flex justify-between items-center px-4 py-3">
         {/* Logo with hover effect */}
-        <Link href="/" className="flex items-center group">
-          <motion.div
-            animate={{ scale: isScrolled ? 0.85 : 1 }}
-            transition={{ duration: 0.3 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            {/* LIGHT MODE */}
-            <Image
-              src={
-                isScrolled
-                  ? "/navbar/logo webp/taurusOrange.webp"
-                  : "/navbar/logo webp/taurusDark.webp"
-              }
-              alt="Logo light"
-              width={isScrolled ? 100 : 120}
-              height={0}
-              priority
-              className={`${isDarkMode ? "hidden" : "block"}`}
-            />
-
-            {/* DARK MODE */}
-            <Image
-              src={
-                isScrolled
-                  ? "/navbar/logo webp/taurusOrange.webp"
-                  : "/navbar/logo webp/taurusWhite.webp"
-              }
-              alt="Logo dark"
-              width={isScrolled ? 100 : 120}
-              height={0}
-              priority
-              className={`${isDarkMode ? "block" : "hidden"}`}
-            />
-          </motion.div>
-        </Link>
+     <Link href="/" className="flex items-center group">
+        <motion.div
+          animate={{ scale: isScrolled ? 0.85 : 1 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ scale: 1.05 }}
+        >
+          <Image
+            src={
+              isScrolled
+                ? '/navbar/logo webp/taurusOrange.webp'
+                : isDarkMode
+                ? '/navbar/logo webp/taurusWhite.webp'
+                : '/navbar/logo webp/taurusDark.webp'
+            }
+            alt="Logo"
+            width={isScrolled ? 100 : 120}
+            height={isScrolled ? 33 : 40} // 💥 ให้สัมพันธ์กับ width
+            priority
+          />
+        </motion.div>
+      </Link>
 
         {/* Desktop menu */}
         <div className="hidden md:flex items-center space-x-6">

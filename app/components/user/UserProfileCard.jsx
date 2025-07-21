@@ -77,25 +77,22 @@ export default function UserProfileCard() {
   return (
     <StyledCard>
       <Avatar
-        src={user.avatarUrl && user.avatarUrl !== 'null' ? user.avatarUrl : undefined}
-        alt={user.name || 'User Avatar'}
         sx={{
           width: 96,
           height: 96,
           mb: 2,
-          cursor: 'pointer',
-          bgcolor: user.avatarUrl ? 'transparent' : 'primary.main',
+          bgcolor: (theme) => theme.palette.primary.main,
+          fontSize: 48,
         }}
+        src={user.avatarUrl || ""}
+        alt={user.name || "User Avatar"}
         onClick={() => setIsEditAvatarDialogOpen(true)}
       >
-        {!user.avatarUrl || user.avatarUrl === 'null' ? (
-          <PersonIcon sx={{ fontSize: 48, color: '#cc8f2a' }} />
-        ) : null}
       </Avatar>
 
       <Typography
         variant="h5"
-        sx={{ mt: 2, fontWeight: 700, color: "text.primary" }}
+        sx={{ mt: 2, fontWeight: 700, color: (theme) => theme.palette.text.primary }}
       >
         {user.name || "ผู้ใช้ไม่ระบุ"}
       </Typography>

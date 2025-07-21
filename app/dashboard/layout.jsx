@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useMediaQuery, Box } from '@mui/material';
 import Sidebar from '../components/dashboard/Sidebar';
 import DashboardNavbar from '../components/dashboard/DashboardAppBar';
+import Footer from '../components/common/Footer';
 
 export default function DashboardLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,22 +24,25 @@ export default function DashboardLayout({ children }) {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      <DashboardNavbar
-        onMenuClick={handleDrawerToggle}
-        isDesktop={isDesktop}
-        isScrolled={isScrolled}
-      />
+    <>
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <DashboardNavbar
+          onMenuClick={handleDrawerToggle}
+          isDesktop={isDesktop}
+          isScrolled={isScrolled}
+        />
 
-      <Sidebar
-        open={isDesktop || mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        variant={isDesktop ? 'permanent' : 'temporary'}
-      />
+        <Sidebar
+          open={isDesktop || mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          variant={isDesktop ? 'permanent' : 'temporary'}
+        />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3, mt: '64px' }}>
-        {children}
+        <Box component="main" sx={{ flexGrow: 1, p: 3, mt: '64px' }}>
+          {children}
+        </Box>
       </Box>
-    </Box>
+      <Footer />
+    </>
   );
 }

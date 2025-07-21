@@ -14,12 +14,16 @@ export default function MainNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeHash, setActiveHash] = useState("");
+  const [isClient, setIsClient] = useState(false); // ✅ เพิ่มตัวนี้
+
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
 
   useEffect(() => {
+    setIsClient(true); // ✅ set ว่าตอนนี้อยู่ฝั่ง client
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -58,14 +62,16 @@ export default function MainNavbar() {
   const textColor = isDarkMode ? "text-white" : "text-gray-800";
   const bgColor = isDarkMode ? "bg-black/80" : "bg-white/80";
   const hamburgerColor = isDarkMode ? "bg-white" : "bg-gray-800";
+
+  const baseWidth = 120;
+  const baseHeight = 40;
+  const scale = isScrolled ? 0.8 : 1;
+
   const logoSrc = isScrolled
     ? "/navbar/logo webp/taurusOrange.webp"
     : isDarkMode
       ? "/navbar/logo webp/taurusWhite.webp"
       : "/navbar/logo webp/taurusDark.webp";
-  const baseWidth = 120;
-  const baseHeight = 40;
-  const scale = isScrolled ? 0.8 : 1; // 0.8 = ลดเหลือ 80%
 
   return (
     <motion.nav
@@ -82,12 +88,15 @@ export default function MainNavbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center group">
           <motion.div animate={{ scale: isScrolled ? 0.85 : 1 }} transition={{ duration: 0.3 }} whileHover={{ scale: 1.05 }}>
-            <Image 
-              src={logoSrc}   alt="Logo"
-              width={baseWidth * scale}
-              height={baseHeight * scale}
-              priority 
-            />
+            {isClient && ( // ✅ แก้: render Image เฉพาะหลัง mount
+              <Image 
+                src={logoSrc}
+                alt="Logo"
+                width={baseWidth * scale}
+                height={baseHeight * scale}
+                priority 
+              />
+            )}
           </motion.div>
         </Link>
 

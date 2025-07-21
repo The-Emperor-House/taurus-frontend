@@ -3,14 +3,26 @@ import Footer from "./components/common/Footer";
 import MuiThemeProviderWrapper from "./components/common/MuiThemeProviderWrapper";
 import { Prompt, Poppins } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
+import { Providers } from "./components/common/providers";
 import PageTransition from "./components/common/PageTransition";
 
 export const metadata = {
-  title: "TAURUS",
-  description: "by emperor",
+  title: "TAURUS by emperor",
+  description:
+    "TAURUS - Renovate & Interior Design, specializing in contemporary and modern style with imported furniture. Transform your space with elegance and premium craftsmanship.",
+  keywords: [
+    "renovate",
+    "interior design",
+    "contemporary style",
+    "modern style",
+    "imported furniture",
+    "luxury renovation",
+    "premium design",
+    "Taurus",
+    "Emperor"
+  ],
   icons: {
-    icon: "/logo.webp",
+    icon: "/logo.ico",
   },
 };
 

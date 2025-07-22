@@ -4,7 +4,7 @@ import Image from "next/image";
 import SwiperCarousel from "./SwiperCarousel";
 import AnimatedHeading from "./AnimatedHeading";
 import { Typography } from "@mui/material";
-import AboutUs from "./AboutUs";
+import AboutUsSection from "../about/AboutUsSection";
 import ProjectCards from "./ProjectCards";
 import MapCards from "./MapCards";
 
@@ -72,7 +72,7 @@ export default function HomePage() {
       </section>
 
       <section>
-          <AboutUs />
+        <AboutUsSection />
       </section>
 
       <section>

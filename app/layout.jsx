@@ -18,9 +18,20 @@ const prompt = Prompt({
   variable: '--font-prompt',
 });
 
+export const metadata = {
+  title: 'Taurus: WE RENEW',
+  description: 'เปลี่ยนบ้านหลังเก่าให้เป็นไปตามจินตนาการของคุณ',
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="th" className={`${poppins.variable} ${prompt.variable}`}>
+      <head>
+        {/* Favicon / Logo */}
+        <link rel="icon" href="/logo.ico" />
+        <meta name="description" content={metadata.description} />
+        <title>{metadata.title}</title>
+      </head>
       <body>
         <MuiThemeProviderWrapper>
           <Providers>
@@ -36,9 +47,9 @@ export default function RootLayout({ children }) {
                     gap: 2,
                   }}
                 >
-                  <CircularProgress />
-                  <Typography variant="h6" color="text.secondary">
-                    กำลังโหลดหน้า...
+                  <CircularProgress size={60} />
+                  <Typography variant="h5" color="text.secondary">
+                    กำลังโหลด...
                   </Typography>
                 </Box>
               }

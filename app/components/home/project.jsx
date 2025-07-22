@@ -1,7 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  Grid,
+  Card,
+  CardActionArea,
+  CardMedia,
+  Typography,
+  Box,
+  Skeleton,
+  useTheme,
+} from "@mui/material";
+import { useState } from "react";
 
 const projects = [
   {
@@ -27,42 +38,121 @@ const projects = [
   },
 ];
 
+// motion configs
+const overlayMotion = {
+  initial: { opacity: 0, y: 30 },
+  hover: { opacity: 1, y: 0 },
+};
+
+const glowMotion = {
+  animate: { opacity: [0.2, 0.5, 0.2] },
+  transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+};
+
 export default function ProjectCards() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {projects.map((project) => (
-          <div
-            key={project.id}
-            className="group relative overflow-hidden rounded-lg shadow-lg transition-transform duration-500 hover:scale-105"
-          >
-            <Link href={project.link} className="block h-full relative">
-              {/* ภาพพื้นหลัง */}
-              <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-all duration-500 group-hover:scale-105 hover:shadow-lg"
-                  sizes="(max-width: 640px) 90vw, (max-width: 768px) 45vw, 30vw"
-                  priority={project.id <= 3}
-                />
-              </div>
+    <Grid container spacing={2}>
+      {projects.map((p) => (
+        <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4 }}>
+          <ImageCard project={p} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+}
 
-              {/* hover */}
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center p-6 text-center">
-                <h3 className="text-white text-2xl font-bold mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  {project.title}
-                </h3>
-                <div className="w-12 h-0.5 bg-white my-3 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"></div>
-                <p className="text-white/90 text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
-                  {project.description}
-                </p>
-              </div>
-            </Link>
-          </div>
-        ))}
-      </div>
-    </div>
+function ImageCard({ project }) {
+  const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 250, damping: 20 }}
+      style={{ borderRadius: 12, overflow: "hidden", position: "relative" }}
+    >
+      <Card sx={{ position: "relative", height: "100%" }}>
+        <Link href={project.link} style={{ textDecoration: "none" }}>
+          <CardActionArea sx={{ height: "100%" }}>
+            {/* Image Layer */}
+            <Box sx={{ position: "relative", pt: "56.25%" }}>
+              {loading && (
+                <Skeleton
+                  variant="rectangular"
+                  sx={{ position: "absolute", inset: 0 }}
+                />
+              )}
+              <CardMedia
+                component="img"
+                src={project.image}
+                alt={project.title}
+                onLoad={() => setLoading(false)}
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  objectFit: "cover",
+                  opacity: loading ? 0 : 1,
+                  transition: theme.transitions.create("opacity", {
+                    duration: theme.transitions.duration.standard,
+                  }),
+                }}
+              />
+            </Box>
+
+            {/* Glow Layer */}
+            <motion.div
+              {...glowMotion}
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "radial-gradient(circle at center, rgba(204,143,42,0.3), transparent)",
+                zIndex: 1,
+              }}
+            />
+
+            {/* Overlay Layer */}
+            <motion.div
+              variants={overlayMotion}
+              initial="initial"
+              whileHover="hover"
+              transition={{ duration: 0.5 }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "rgba(0,0,0,0.6)",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: theme.spacing(2),
+                textAlign: "center",
+                zIndex: 2,
+              }}
+            >
+              <Typography variant="h5" sx={{ color: "white", mb: 1 }}>
+                {project.title}
+              </Typography>
+              <Box
+                sx={{
+                  width: "50px",
+                  height: "2px",
+                  bgcolor: "white",
+                  mb: 1,
+                  transform: "scaleX(0)",
+                  transition: "transform 0.5s",
+                  ".MuiCardActionArea-root:hover &": {
+                    transform: "scaleX(1)",
+                  },
+                }}
+              />
+              <Typography variant="body2" sx={{ color: "white" }}>
+                {project.description}
+              </Typography>
+            </motion.div>
+          </CardActionArea>
+        </Link>
+      </Card>
+    </motion.div>
   );
 }

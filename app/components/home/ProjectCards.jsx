@@ -71,37 +71,34 @@ function ImageCard({ project }) {
       transition={{ type: "spring", stiffness: 250, damping: 20 }}
       style={{ borderRadius: 12, overflow: "hidden", position: "relative" }}
     >
-      <Card sx={{ position: "relative", height: "100%" }}>
+      <Card sx={{ position: "relative", width: "100%", height: { xs: 300, sm: 400, md: 450 } }}>
         <Link href={project.link} style={{ textDecoration: "none" }}>
-          <CardActionArea sx={{ height: "100%" }}>
+          <CardActionArea sx={{ width: "100%", height: "100%" }}>
             {/* Image Layer */}
-            <Box sx={{ position: "relative", pt: "56.25%" }}>
-              {loading && (
-                <Skeleton
-                  variant="rectangular"
-                  sx={{ position: "absolute", inset: 0 }}
-                />
-              )}
-              <Card sx={{ position: "relative", width: "100%", height: { xs: 300, sm: 400, md: 450 }, }}>
-                <CardMedia
-                  component="img"
-                  src={project.image}
-                  alt={project.title}
-                  onLoad={() => setLoading(false)}
-                  sx={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    opacity: loading ? 0 : 1,
-                    transition: theme.transitions.create("opacity", {
-                      duration: theme.transitions.duration.standard,
-                    }),
-                  }}
-                />
-              </Card>
-            </Box>
+            {loading && (
+              <Skeleton
+                variant="rectangular"
+                sx={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+              />
+            )}
+            <CardMedia
+              component="img"
+              src={project.image}
+              alt={project.title}
+              onLoad={() => setLoading(false)}
+              sx={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                borderRadius: "12px",
+                objectFit: "cover",
+                opacity: loading ? 0 : 1,
+                transition: theme.transitions.create("opacity", {
+                  duration: theme.transitions.duration.standard,
+                }),
+              }}
+            />
 
             {/* Glow Layer */}
             <motion.div

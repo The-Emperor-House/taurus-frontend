@@ -30,9 +30,9 @@ const designCategories = [
 export default function DesignLanding() {
   return (
     <Box sx={{ px: 2, py: 6, maxWidth: '1200px', mx: 'auto' }}>
-      <Typography variant="h4" fontWeight="light" textAlign="center" mb={4}>
+      {/* <Typography variant="h4" fontWeight="light" textAlign="center" mb={4}>
         DESIGN
-      </Typography>
+      </Typography> */}
 
       <Grid container spacing={4} justifyContent="center">
         {designCategories.map((cat, index) => (

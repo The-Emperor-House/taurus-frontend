@@ -82,21 +82,25 @@ function ImageCard({ project }) {
                   sx={{ position: "absolute", inset: 0 }}
                 />
               )}
-              <CardMedia
-                component="img"
-                src={project.image}
-                alt={project.title}
-                onLoad={() => setLoading(false)}
-                sx={{
-                  position: "absolute",
-                  inset: 0,
-                  objectFit: "cover",
-                  opacity: loading ? 0 : 1,
-                  transition: theme.transitions.create("opacity", {
-                    duration: theme.transitions.duration.standard,
-                  }),
-                }}
-              />
+              <Card sx={{ position: "relative", width: "100%", height: 300 }}>
+                <CardMedia
+                  component="img"
+                  src={project.image}
+                  alt={project.title}
+                  onLoad={() => setLoading(false)}
+                  sx={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    opacity: loading ? 0 : 1,
+                    transition: theme.transitions.create("opacity", {
+                      duration: theme.transitions.duration.standard,
+                    }),
+                  }}
+                />
+              </Card>
             </Box>
 
             {/* Glow Layer */}

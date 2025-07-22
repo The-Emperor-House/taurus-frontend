@@ -22,7 +22,7 @@ export default function MainNavbar() {
   const isDarkMode = theme.palette.mode === "dark";
 
   useEffect(() => {
-    setIsClient(true); // ✅ set ว่าตอนนี้อยู่ฝั่ง client
+    setIsClient(true);
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -170,6 +170,7 @@ export default function MainNavbar() {
                   </Link>
                 );
               })}
+              
               {status === "authenticated" && <AccountMenu user={session.user} />}
             </div>
           </motion.div>

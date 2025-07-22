@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Grid, Divider, Typography } from '@mui/material';
+import { Box, Grid, Divider, Typography, } from '@mui/material';
 import { motion } from 'framer-motion';
 import AboutBlock from './AboutBlock';
 import ServiceBlock from './ServiceBlock';

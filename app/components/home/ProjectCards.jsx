@@ -82,7 +82,7 @@ function ImageCard({ project }) {
                   sx={{ position: "absolute", inset: 0 }}
                 />
               )}
-              <Card sx={{ position: "relative", width: "100%", height: 300 }}>
+              <Card sx={{ position: "relative", width: "100%", height: { xs: 300, sm: 400, md: 450 }, }}>
                 <CardMedia
                   component="img"
                   src={project.image}

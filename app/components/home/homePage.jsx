@@ -3,21 +3,49 @@
 import Image from "next/image";
 import SwiperCarousel from "./SwiperCarousel";
 import AnimatedHeading from "./AnimatedHeading";
+import { Typography } from "@mui/material";
 import Project from "./project";
 import Map from "./map";
 
 export default function homePage() {
   const sharedContent = (
     <div>
-      <h2 className="text-5xl font-extrabold drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)] text-[#cc8f2a]">
-        TRANSFORM
-      </h2>
-      <h2 className="text-5xl font-light drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)] text-[#fdfdfd]">
-        & DECORATE
-      </h2>
-      <h3 className="text-[#fdfdfd] drop-shadow-lg mt-4">
-        &quot;เปลี่ยนบ้านหลังเก่าให้เป็นไปตามจินตนาการของคุณ&quot;
-      </h3>
+      <Typography
+        variant="h1"
+        sx={{
+          fontWeight: "semi-bold",
+          fontSize: "3rem", // Adjusted for better readability on mobile
+          textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
+          color: "#cc8f2a",
+        }}
+      >
+        TAURUS:
+      </Typography>
+
+      <Typography
+        variant="h2"
+        sx={{
+          fontWeight: "semi-bold",
+          fontSize: "2.5rem", // Adjusted for better readability on mobile
+          textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
+          color: "#fdfdfd",
+        }}
+      >
+        WE RENEW
+      </Typography>
+
+      <Typography
+        variant="h3"
+        sx={{
+          fontWeight: "semi-bold",
+          fontSize: "1.5rem", // Adjusted for better readability on mobile
+          color: "#fdfdfd",
+          textShadow: "0 4px 6px rgba(0,0,0,0.5)", // drop-shadow-lg
+          mt: 2, // mt-4 ≈ theme.spacing(2)
+        }}
+      >
+        &quot;สร้างบ้านหลังใหม่ ในที่อยู่อาศัยเดิมของคุณ&quot;
+      </Typography>
     </div>
   );
 
@@ -39,32 +67,20 @@ export default function homePage() {
   return (
     <main className="flex flex-col">
       <section className="relative h-screen overflow-hidden">
-        {/* โลโก้ลายน้ำพื้นหลัง - ปรับขนาดสำหรับมือถือ */}
         <SwiperCarousel slides={carouselSlides} />
       </section>
 
-      <section className="bg-[#404040] relative overflow-hidden">
-        {/* โลโก้ลายน้ำพื้นหลัง - ปรับขนาดสำหรับมือถือ */}
-        {/* <div className="absolute inset-0 items-center justify-start opacity-5 md:opacity-10 pointer-events-none flex">
-          <Image
-            src="/home/projects/water-mark.png"
-            alt="Taurus Logo Watermark"
-            width={300}
-            height={300}
-            className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-auto object-contain mx-auto"
-            priority
-          />
-        </div> */}
-
-        {/* เนื้อหาหลัก */}
+      <section>
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 relative z-10">
           {/* หัวข้อ - ปรับขนาดฟอนต์สำหรับมือถือ */}
           <div className="text-center py-8">
             <AnimatedHeading
               title="PROJECTS"
-              textColor="text-white"
-              lineColor="bg-white"
-              mobileSize="text-3xl" // ขนาดเล็กลงบนมือถือ
+              className="text-4xl md:text-5xl lg:text-6xl"
+              subtitleClassName="text-2xl md:text-3xl lg:text-4xl"
+              textColor="#cc8f2a"
+              textShadow="2px 2px 4px rgba(0,0,0,0.7)"              
+              textAlign="center"
             />
           </div>
 
@@ -78,7 +94,6 @@ export default function homePage() {
       <section>
         <Map />
       </section>
-
     </main>
   );
 }

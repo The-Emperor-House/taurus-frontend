@@ -4,6 +4,7 @@ import Image from "next/image";
 import SwiperCarousel from "./SwiperCarousel";
 import AnimatedHeading from "./AnimatedHeading";
 import { Typography } from "@mui/material";
+import AboutUs from "./AboutUs";
 import ProjectCards from "./ProjectCards";
 import MapCards from "./MapCards";
 
@@ -68,6 +69,10 @@ export default function HomePage() {
     <main className="flex flex-col">
       <section className="relative h-screen overflow-hidden">
         <SwiperCarousel slides={carouselSlides} />
+      </section>
+
+      <section>
+          <AboutUs />
       </section>
 
       <section>

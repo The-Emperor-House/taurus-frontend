@@ -4,8 +4,8 @@ import Image from "next/image";
 import SwiperCarousel from "./SwiperCarousel";
 import AnimatedHeading from "./AnimatedHeading";
 import { Typography } from "@mui/material";
-import Project from "./project";
-import Map from "./map";
+import Project from "./Project";
+import Map from "./Map";
 
 export default function homePage() {
   const sharedContent = (

@@ -1,60 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import SwiperCarousel from "./SwiperCarousel";
 import AnimatedHeading from "./AnimatedHeading";
-import { Typography } from "@mui/material";
+import SlideContent from "./SlideContent";
 import AboutUsSection from "../about/AboutUsSection";
 import ProjectCards from "./ProjectCards";
 import MapCards from "./MapCards";
 
 export default function HomePage() {
-  const sharedContent = (
-    <div>
-      <Typography
-        variant="h1"
-        sx={{
-          fontWeight: "semi-bold",
-          fontSize: "3rem",
-          textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
-          color: "#cc8f2a",
-        }}
-      >
-        TAURUS:
-      </Typography>
-
-      <Typography
-        variant="h2"
-        sx={{
-          fontWeight: "semi-bold",
-          fontSize: "2.5rem",
-          textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
-          color: "#fdfdfd",
-        }}
-      >
-        WE RENEW
-      </Typography>
-
-      <Typography
-        variant="h3"
-        sx={{
-          fontWeight: "semi-bold",
-          fontSize: "1.5rem",
-          color: "#fdfdfd",
-          textShadow: "0 4px 6px rgba(0,0,0,0.5)",
-          mt: 2,
-        }}
-      >
-        &quot;สร้างบ้านหลังใหม่ ในที่อยู่อาศัยเดิมของคุณ&quot;
-      </Typography>
-    </div>
-  );
-
   const carouselSlides = [1, 2, 3, 4, 5, 6, 7].map((num) => ({
     id: num,
     imageSrc: `/home/swiper/${String(num).padStart(2, '0')}.webp`,
     alt: `Slide ${num}`,
-    content: sharedContent,
+    content: <SlideContent num={num} />,
   }));
 
   return (

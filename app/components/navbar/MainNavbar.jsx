@@ -56,7 +56,7 @@ export default function MainNavbar() {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
-    { href: "/#design", label: "Design" },
+    { href: "/design", label: "Design" },
     { href: "/#projects", label: "Projects" },
     { href: "/#showroom", label: "Showroom" },
     { href: "/#news", label: "News & Events" },

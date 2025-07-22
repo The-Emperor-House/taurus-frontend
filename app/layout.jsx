@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import MuiThemeProviderWrapper from './components/common/MuiThemeProviderWrapper';
 import { Providers } from './components/common/Providers';
 import RootContent from './components/common/RootContent';
-import { Prompt, Poppins } from 'next/font/google';
+import { Poppins, Prompt } from 'next/font/google';
 import './globals.css';
 import { CircularProgress, Typography, Box } from '@mui/material';
 
@@ -27,7 +27,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="th" className={`${poppins.variable} ${prompt.variable}`}>
       <head>
-        {/* Favicon / Logo */}
         <link rel="icon" href="/logo.ico" />
         <meta name="description" content={metadata.description} />
         <title>{metadata.title}</title>

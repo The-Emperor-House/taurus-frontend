@@ -6,7 +6,7 @@ import { getTheme } from '@/lib/theme';
 import ThemeToggleButton from './ThemeToggleButton';
 
 export default function MuiThemeProviderWrapper({ children }) {
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState(null);
 
   useEffect(() => {
     const savedMode = localStorage.getItem('theme') || 'light';
@@ -14,7 +14,10 @@ export default function MuiThemeProviderWrapper({ children }) {
     document.documentElement.classList.toggle('dark', savedMode === 'dark');
   }, []);
 
-  const theme = useMemo(() => getTheme(mode), [mode]);
+  const theme = useMemo(() => {
+    if (!mode) return getTheme('light');
+    return getTheme(mode);
+  }, [mode]);
 
   const toggleMode = () => {
     const newMode = mode === 'light' ? 'dark' : 'light';
@@ -22,6 +25,8 @@ export default function MuiThemeProviderWrapper({ children }) {
     localStorage.setItem('theme', newMode);
     document.documentElement.classList.toggle('dark', newMode === 'dark');
   };
+
+  if (!mode) return null;
 
   return (
     <ThemeProvider theme={theme}>

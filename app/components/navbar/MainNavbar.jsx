@@ -112,7 +112,7 @@ export default function MainNavbar() {
           <motion.div
             animate={{ scale: isScrolled ? 0.85 : 1 }}
             transition={{ duration: 0.3 }}
-            style={{ width: 120, height: 40, position: "relative" }}
+            style={{ width: 120, height: 80, position: "relative" }}
           >
             <Image
               src={logoSrc}

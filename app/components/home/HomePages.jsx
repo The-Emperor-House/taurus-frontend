@@ -52,16 +52,8 @@ export default function HomePage() {
 
   const carouselSlides = [1, 2, 3, 4, 5, 6, 7].map((num) => ({
     id: num,
-    background: (
-    <Image
-      src={`/home/swiper/${String(num).padStart(2, "0")}.webp`}
-      className="w-full h-full object-cover rounded-lg"
-      alt={`slide ${num}`}
-      fill
-      sizes="(max-width: 768px) 100vw, 50vw"
-      priority={num === 1}
-    />
-    ),
+    imageSrc: `/home/swiper/${String(num).padStart(2, '0')}.webp`,
+    alt: `Slide ${num}`,
     content: sharedContent,
   }));
 

@@ -1,51 +1,84 @@
-'use client'
+'use client';
 
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Pagination } from 'swiper/modules'
+import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/autoplay'
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 
-export default function SwiperCarousel({ slides }) {
+export default function SwiperCarousel({ slides = [] }) {
+  if (slides.length === 0) {
+    return (
+      <div className="flex items-center justify-center w-full h-screen bg-black text-white">
+        No slides available.
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
       <Swiper
         modules={[Autoplay, Pagination]}
+        slidesPerView={1}
+        loop
         speed={800}
         spaceBetween={0}
-        slidesPerView={1}
-        autoplay={{ 
+        autoplay={{
           delay: 5000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
-        loop={true}
         pagination={{ clickable: true }}
-        className="h-full w-full"
+        className="w-full h-full"
       >
-        <div 
-          slot="container-start" 
-          className="absolute top-0 left-0 w-full h-full z-0"
-        >
-          <div className="w-full h-full bg-gradient-to-tr from-black/80 via-transparent to-black/40" />
-        </div>
+        {/* Gradient overlay */}
+        <div
+          slot="container-start"
+          className="absolute inset-0 z-0 bg-gradient-to-tr from-black/60 via-transparent to-black/20"
+        />
 
         {slides.map((slide) => (
-          <SwiperSlide key={slide.id} className="relative h-full w-full">
-            <div 
-              className="absolute inset-0 w-full h-full z-[-1] object-cover opacity-90"
-            >
-              {slide.background}
-            </div>
+          <SwiperSlide key={slide.id} className="relative w-full h-full">
+            <BackgroundImage src={slide.imageSrc} alt={slide.alt || `Slide ${slide.id}`} />
 
-            {/* Content Layer */}
-            <div className="absolute inset-0 flex items-center justify-start pl-8 md:pl-16 transition-opacity duration-700 ease-in-out">
+            {/* Content Layer with framer-motion */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="absolute inset-0 flex items-center justify-start pl-8 md:pl-16 z-10"
+            >
               {slide.content}
-            </div>
+            </motion.div>
           </SwiperSlide>
         ))}
       </Swiper>
     </div>
-  )
+  );
+}
+
+// ✅ BackgroundImage component with loading skeleton
+function BackgroundImage({ src, alt }) {
+  const [loading, setLoading] = useState(true);
+
+  return (
+    <div className="absolute inset-0 w-full h-full z-0">
+      {loading && (
+        <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+      )}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className={`object-cover transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
+        onLoad={() => setLoading(false)}
+        sizes="(max-width: 768px) 100vw, 50vw"
+        priority
+      />
+    </div>
+  );
 }

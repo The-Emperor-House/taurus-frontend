@@ -4,10 +4,10 @@ import Image from "next/image";
 import SwiperCarousel from "./SwiperCarousel";
 import AnimatedHeading from "./AnimatedHeading";
 import { Typography } from "@mui/material";
-import Project from "./Project";
-import Map from "./Map";
+import ProjectCards from "./ProjectCards";
+import MapCards from "./MapCards";
 
-export default function homePage() {
+export default function HomePage() {
   const sharedContent = (
     <div>
       <Typography
@@ -86,13 +86,13 @@ export default function homePage() {
 
           {/* โปรเจคทั้งหมด */}
           <div>
-            <Project />
+            <ProjectCards />
           </div>
         </div>
       </section>
 
       <section>
-        <Map />
+        <MapCards />
       </section>
     </main>
   );

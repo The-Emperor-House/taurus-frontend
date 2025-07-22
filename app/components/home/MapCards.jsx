@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-const Map = () => {
+const MapCards = () => {
   return (
     <div className="flex flex-col md:flex-row h-full">
         {/* Left Side: Team Image - แสดงบน Mobile และ Desktop */}
@@ -39,4 +39,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default MapCards;

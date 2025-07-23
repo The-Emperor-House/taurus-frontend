@@ -96,7 +96,8 @@ export default function UserProfileCard() {
           <Divider sx={{ my: 3, width: "100%" }} />
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, width: "100%" }}>
-            <InfoItem label="📅 วันที่สมัครสมาชิก" value={formatDate(user.createdAt)} />
+            <InfoItem label="👥 บทบาท" value={user.role || "ไม่ระบุ"} />
+            <InfoItem label="📅 วันที่ลงทะเบียน" value={formatDate(user.createdAt)} />
             <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDateTime(user.updatedAt)} />
           </Box>
 

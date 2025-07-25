@@ -197,14 +197,7 @@ function SectionBlock({ title, items, loading, onEdit, onDelete, onAdd }) {
 
       <Grid container spacing={3}>
         {(loading ? Array.from({ length: 3 }) : items).map((item, index) => (
-          <Grid
-            key={item?.id || index}
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
+          <Grid key={item?.id || index} size={{ xs: 12, sm: 6, md: 4 }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

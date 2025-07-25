@@ -1,6 +1,30 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+// ฟังก์ชัน refresh access token
+async function refreshAccessToken(token) {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/refresh-token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken: token.refreshToken }),
+    });
+    const data = await res.json();
+
+    if (res.ok && data.status === "success" && data.data?.accessToken) {
+      return {
+        ...token,
+        backendToken: data.data.accessToken,
+        tokenExpiresIn: data.data.accessTokenExpiresIn,
+        refreshToken: data.data.refreshToken || token.refreshToken, // ใช้ refreshToken ใหม่ถ้ามี
+      };
+    }
+    return { ...token, error: "RefreshAccessTokenError" };
+  } catch (err) {
+    return { ...token, error: "RefreshAccessTokenError" };
+  }
+}
+
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -18,28 +42,28 @@ const handler = NextAuth({
             body: JSON.stringify({
               email: credentials.email,
               password: credentials.password,
-              rememberMe: credentials.rememberMe === "on",
+              rememberMe: credentials.rememberMe ? true : false,
             }),
           });
 
           const data = await res.json();
-          console.log("👉 API response:", data);
 
           if (res.ok && data.status === "success" && data.data?.user) {
             return {
               id: data.data.user.userId,
               name: data.data.user.name,
               email: data.data.user.email,
+              role: data.data.user.role,
               avatarUrl: data.data.user.avatarUrl,
-              backendToken: data.data.token,
-              tokenExpiresIn: data.data.tokenExpiresIn,
+              backendToken: data.data.accessToken,
+              tokenExpiresIn: data.data.accessTokenExpiresIn,
+              refreshToken: data.data.refreshToken,
+              accessTokenExpires: Date.now() + 2 * 60 * 60 * 1000, // 2 ชั่วโมง (หรือใช้ data.data.accessTokenExpiresIn)
             };
           }
 
-          console.warn("❌ Login failed, API responded:", res.status, data.message);
           return null;
         } catch (error) {
-          console.error("🔥 authorize() error:", error);
           return null;
         }
       },
@@ -48,14 +72,25 @@ const handler = NextAuth({
 
   callbacks: {
     async jwt({ token, user }) {
+      // Initial sign in
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
+        token.role = user.role;
         token.avatarUrl = user.avatarUrl;
-        token.backendToken = user.backendToken;  // ✅ ใส่ backend token ลง jwt
+        token.backendToken = user.backendToken;
         token.tokenExpiresIn = user.tokenExpiresIn;
+        token.refreshToken = user.refreshToken;
+        token.accessTokenExpires = user.accessTokenExpires || Date.now() + 2 * 60 * 60 * 1000;
       }
+
+      // เช็ค access token หมดอายุหรือยัง
+      if (token.accessTokenExpires && Date.now() > token.accessTokenExpires) {
+        // ถ้าหมดอายุ ให้ refresh
+        return await refreshAccessToken(token);
+      }
+
       return token;
     },
 
@@ -63,9 +98,13 @@ const handler = NextAuth({
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;
+      session.user.role = token.role;
       session.user.avatarUrl = token.avatarUrl;
-      session.backendToken = token.backendToken;  // ✅ ให้ session เอาไปใช้เรียก API
+      session.backendToken = token.backendToken;
       session.tokenExpiresIn = token.tokenExpiresIn;
+      session.refreshToken = token.refreshToken;
+      session.accessTokenExpires = token.accessTokenExpires;
+      session.error = token.error;
       return session;
     },
   },

@@ -30,7 +30,7 @@ export default function UserProfileCard() {
 
     const fetchUserData = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${session.backendToken}` },
         });
 

@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 // ฟังก์ชัน refresh access token
 async function refreshAccessToken(token) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/refresh-token`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh-token`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ refreshToken: token.refreshToken }),
@@ -16,7 +16,7 @@ async function refreshAccessToken(token) {
         ...token,
         backendToken: data.data.accessToken,
         tokenExpiresIn: data.data.accessTokenExpiresIn,
-        refreshToken: data.data.refreshToken || token.refreshToken, // ใช้ refreshToken ใหม่ถ้ามี
+        refreshToken: data.data.refreshToken || token.refreshToken,
       };
     }
     return { ...token, error: "RefreshAccessTokenError" };
@@ -36,7 +36,7 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

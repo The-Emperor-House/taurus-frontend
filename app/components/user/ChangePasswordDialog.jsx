@@ -48,7 +48,7 @@ export default function ChangePasswordDialog({ open, onClose, user, token }) {
     try {
       showModal('loading', { message: 'กำลังเปลี่ยนรหัสผ่าน...' });
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/change-password`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/change-password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

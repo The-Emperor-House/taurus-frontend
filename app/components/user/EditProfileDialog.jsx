@@ -61,7 +61,7 @@ export default function EditProfileDialog({
     try {
       showModal("loading", { message: "กำลังอัปเดตข้อมูล..." });
       const userId = user?.userId || user?.id;
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

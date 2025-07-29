@@ -44,7 +44,7 @@ export default function EditProfileDialog({
       const formData = new FormData();
       formData.append("avatar", avatarFile);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/avatar`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/avatar`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

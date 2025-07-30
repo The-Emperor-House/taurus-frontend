@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
@@ -55,12 +56,12 @@ export default function MainNavbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About Us" },
-    { href: "/design", label: "Design" },
+    { href: "/page/about", label: "About Us" },
+    { href: "/page/design", label: "Design" },
     { href: "/#projects", label: "Projects" },
     { href: "/#showroom", label: "Showroom" },
     { href: "/#news", label: "News & Events" },
-    { href: "/contact", label: "Contact" },
+    { href: "/page/contact", label: "Contact" },
   ];
 
   const handleSmoothScroll = (e, href) => {
@@ -79,8 +80,8 @@ export default function MainNavbar() {
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
   const handleLogout = () => {
+    signOut({ callbackUrl: "/" });
     handleMenuClose();
-    signOut({ callbackUrl: "/auth/login" });
   };
 
   const logoSrc = isScrolled
@@ -168,13 +169,13 @@ export default function MainNavbar() {
                   transformOrigin={{ horizontal: "right", vertical: "top" }}
                   anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
-                  <MenuItem component={Link} href="/dashboard/contact">
+                  <MenuItem component={Link} href="/page/dashboard/contact">
                     <ListItemIcon>
                       <DashboardIcon fontSize="small" />
                     </ListItemIcon>
                     Contact
                   </MenuItem>
-                  <MenuItem component={Link} href="/dashboard/profile">
+                  <MenuItem component={Link} href="/page/dashboard/profile">
                     <ListItemIcon>
                       <AccountCircleIcon fontSize="small" />
                     </ListItemIcon>

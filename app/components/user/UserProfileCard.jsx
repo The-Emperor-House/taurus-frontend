@@ -73,7 +73,7 @@ export default function UserProfileCard() {
       ) : (
         <>
           <Avatar
-            src={user.avatarUrl || "/default-avatar.png"}
+            src={user?.avatar || "/default-avatar.png"}
             sx={{
               width: 96,
               height: 96,
@@ -82,23 +82,23 @@ export default function UserProfileCard() {
               fontSize: 48,
               cursor: "pointer",
             }}
-            alt={user.name || "User Avatar"}
+            alt={user?.name || "ผู้ใช้ไม่ระบุ"}
             onClick={() => setIsEditAvatarDialogOpen(true)}
             onError={(e) => { e.currentTarget.src = "/default-avatar.png"; }}
           />
           <Typography variant="h5" sx={{ mt: 2, fontWeight: 700 }}>
-            {user.name || "ผู้ใช้ไม่ระบุ"}
+            {user?.name || "ผู้ใช้ไม่ระบุ"}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            {user.email || "อีเมลไม่ระบุ"}
+            {user?.email || "อีเมลไม่ระบุ"}
           </Typography>
 
           <Divider sx={{ my: 3, width: "100%" }} />
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, width: "100%" }}>
-            <InfoItem label="👥 บทบาท" value={user.role || "ไม่ระบุ"} />
-            <InfoItem label="📅 วันที่ลงทะเบียน" value={formatDate(user.createdAt)} />
-            <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDateTime(user.updatedAt)} />
+            <InfoItem label="👥 บทบาท" value={user?.role || "ไม่ระบุ"} />
+            <InfoItem label="📅 วันที่ลงทะเบียน" value={formatDate(user?.createdAt)} />
+            <InfoItem label="🛠️ วันที่แก้ไขล่าสุด" value={formatDateTime(user?.updatedAt)} />
           </Box>
 
           <Box sx={{ mt: 3, textAlign: "center", display: "flex", gap: 1 }}>

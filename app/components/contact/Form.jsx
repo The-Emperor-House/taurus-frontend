@@ -31,10 +31,10 @@ const initialState = {
   accept: false,
 };
 
-const serviceLabels = {
-  renovate: "รีโนเวท ปรับปรุง/ต่อเติม",
-  interior: "ออกแบบตกแต่งภายใน",
-  construction: "ก่อสร้าง โครงสร้าง",
+const services = {
+  renovate: { label: "รีโนเวท ปรับปรุง/ต่อเติม", value: "RENOVATION" },
+  interior: { label: "ออกแบบตกแต่งภายใน", value: "INTERIOR" },
+  construction: { label: "ก่อสร้าง โครงสร้าง", value: "CONSTRUCTION" },
 };
 
 export default function ContactForm() {
@@ -81,7 +81,7 @@ export default function ContactForm() {
 
     const selectedNeeds = Object.entries(formData.services)
       .filter(([_, v]) => v)
-      .map(([k]) => serviceLabels[k]);
+      .map(([k]) => services[k].value);
 
     const payload = {
       fullName: formData.fullName,
@@ -94,7 +94,7 @@ export default function ContactForm() {
     };
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contact`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contacts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -134,7 +134,7 @@ export default function ContactForm() {
                 <FormControlLabel
                   key={key}
                   control={<Checkbox checked={formData.services[key]} onChange={handleChange} name={key} />}
-                  label={serviceLabels[key]}
+                  label={services[key]?.label}
                 />
               ))}
             </FormGroup>

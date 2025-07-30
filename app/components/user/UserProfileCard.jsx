@@ -73,7 +73,7 @@ export default function UserProfileCard() {
       ) : (
         <>
           <Avatar
-            src={user?.avatar || "/default-avatar.png"}
+            src={user?.avatarUrl || "/default-avatar.png"}
             sx={{
               width: 96,
               height: 96,

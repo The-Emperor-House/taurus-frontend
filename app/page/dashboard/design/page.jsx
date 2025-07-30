@@ -504,7 +504,7 @@ export default function DashboardDesign() {
             <Button 
               variant="contained" 
               onClick={handleSubmit} 
-              disabled={!coverPreview} 
+              disabled={!coverPreview}
             >
               {isEditing ? "Update" : "Create"}
             </Button>

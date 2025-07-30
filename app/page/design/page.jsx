@@ -17,13 +17,13 @@ const designCategories = [
     id: 'architectural',
     title: 'ARCHITECTURAL DESIGN',
     image: '/mock/architectural-cover.jpg',
-    link: '/design/architectural',
+    link: 'design/architectural',
   },
   {
     id: 'interior',
     title: 'INTERIOR DESIGN',
     image: '/mock/interior-cover.jpg',
-    link: '/design/interior',
+    link: 'design/interior',
   },
 ];
 

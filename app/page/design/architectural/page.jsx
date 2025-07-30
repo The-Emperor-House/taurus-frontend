@@ -27,7 +27,7 @@ export default function ArchitecturalPage() {
     const loadDesigns = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/designs?type=ARCHITECTURAL`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/designs?type=ARCHITECTURAL`
         );
         const data = await res.json();
 

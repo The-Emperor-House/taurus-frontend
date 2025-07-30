@@ -39,7 +39,7 @@ export default function DashboardDesign() {
   const fetchDesigns = async () => {
     try {
       const session = await import("next-auth/react").then((mod) => mod.getSession());
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/designs`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/designs`, {
         headers: {
           Authorization: `Bearer ${session?.backendToken}`,
         },
@@ -76,7 +76,7 @@ export default function DashboardDesign() {
     if (!confirm("Are you sure you want to delete this design?")) return;
     try {
       const session = await import("next-auth/react").then((mod) => mod.getSession());
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/designs/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/designs/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${session?.backendToken}`,
@@ -103,8 +103,8 @@ export default function DashboardDesign() {
 
     const method = isEditing ? "PUT" : "POST";
     const url = isEditing
-      ? `${process.env.NEXT_PUBLIC_API_URL}/designs/${formData.id}`
-      : `${process.env.NEXT_PUBLIC_API_URL}/designs`;
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/designs/${formData.id}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/designs`;
 
     try {
       const session = await import("next-auth/react").then((mod) => mod.getSession());

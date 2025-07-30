@@ -19,12 +19,14 @@ import {
   MenuItem,
   InputLabel,
   IconButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-  Close as CloseIcon, // Added CloseIcon for image removal
+  Close as CloseIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 
@@ -37,162 +39,207 @@ export default function DashboardDesign() {
     id: null,
     name: "",
     type: "ARCHITECTURAL",
-    coverUrl: "", // For displaying current cover in edit mode
+    coverUrl: "",
+    images: [], // Existing images from backend: { id, imageUrl }
   });
   const [isEditing, setIsEditing] = useState(false);
 
+  // Preview States
+  const [coverPreview, setCoverPreview] = useState(null);
+  const [imagesPreview, setImagesPreview] = useState([]); // Mixed: existing image URLs + new files as URL
+  const [deleteImageIds, setDeleteImageIds] = useState(new Set()); // IDs of images marked for deletion
+
+  // Refs for file inputs
   const coverInputRef = useRef(null);
   const imagesInputRef = useRef(null);
 
-  // State for previewing selected images (cover + additional)
-  const [coverPreview, setCoverPreview] = useState(null);
-  const [imagesPreview, setImagesPreview] = useState([]);
+  // Snackbar for feedback
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
 
-  // Fetch designs from the API
+  // Fetch all designs from API
   const fetchDesigns = async () => {
-    setLoading(true); // Set loading to true before fetching
+    setLoading(true);
     try {
-      const session = await import("next-auth/react").then((mod) =>
-        mod.getSession()
-      );
+      const { getSession } = await import("next-auth/react");
+      const session = await getSession();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/designs`, {
-        headers: {
-          Authorization: `Bearer ${session?.backendToken}`,
-        },
+        headers: { Authorization: `Bearer ${session?.backendToken}` },
       });
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
-      const arch = data.filter((d) => d.type === "ARCHITECTURAL");
-      const inter = data.filter((d) => d.type === "INTERIOR");
-      setArchitectural(arch);
-      setInterior(inter);
+
+      setArchitectural(data.filter((d) => d.type === "ARCHITECTURAL"));
+      setInterior(data.filter((d) => d.type === "INTERIOR"));
     } catch (err) {
       console.error("Failed to load designs:", err);
-      // Optionally, display an error message to the user
+      setSnackbar({ open: true, message: "Failed to load designs", severity: "error" });
     } finally {
       setLoading(false);
     }
   };
 
-  // Effect to fetch designs on component mount
   useEffect(() => {
     fetchDesigns();
   }, []);
 
-  // Effect to manage image previews when the form is opened/closed or formData changes
-  useEffect(() => {
-    if (openForm) {
-      setCoverPreview(isEditing && formData.coverUrl ? formData.coverUrl : null);
-      setImagesPreview(formData.images ? formData.images.map((img) => img.imageUrl) : []);
-      if (coverInputRef.current) coverInputRef.current.value = null;
-      if (imagesInputRef.current) imagesInputRef.current.value = null;
-    }
-  }, [openForm, formData.coverUrl, formData.images, isEditing]);
-
+  // Open Add Form
   const handleOpenAdd = () => {
-    setFormData({ id: null, name: "", type: "ARCHITECTURAL", coverUrl: "" });
+    setFormData({
+      id: null,
+      name: "",
+      type: "ARCHITECTURAL",
+      coverUrl: "",
+      images: [],
+    });
+    setCoverPreview(null);
+    setImagesPreview([]);
+    setDeleteImageIds(new Set());
     setIsEditing(false);
     setOpenForm(true);
+    resetFileInputs();
   };
 
+  // Open Edit Form
   const handleEdit = (item) => {
     setFormData({
       id: item.id,
       name: item.name,
       type: item.type,
       coverUrl: item.coverUrl || "",
-      images: item.images || [],
+      images: item.images || [], // array of {id, imageUrl}
     });
     setCoverPreview(item.coverUrl || null);
-    setImagesPreview(item.images || []);
+    setImagesPreview(item.images ? item.images.map((img) => img.imageUrl) : []);
+    setDeleteImageIds(new Set());
     setIsEditing(true);
     setOpenForm(true);
+    resetFileInputs();
   };
 
+  // Reset file inputs manually
+  const resetFileInputs = () => {
+    if (coverInputRef.current) coverInputRef.current.value = null;
+    if (imagesInputRef.current) imagesInputRef.current.value = null;
+  };
+
+  // Handle Delete Design
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this design?")) return;
     try {
-      const session = await import("next-auth/react").then((mod) =>
-        mod.getSession()
-      );
+      const { getSession } = await import("next-auth/react");
+      const session = await getSession();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/designs/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${session?.backendToken}`,
-        },
+        headers: { Authorization: `Bearer ${session?.backendToken}` },
       });
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      fetchDesigns(); // Re-fetch designs after successful deletion
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      setSnackbar({ open: true, message: "Design deleted successfully", severity: "success" });
+      fetchDesigns();
     } catch (err) {
       console.error("Failed to delete design:", err);
-      // Optionally, display an error message to the user
+      setSnackbar({ open: true, message: "Failed to delete design", severity: "error" });
     }
   };
 
-  // Handle new cover image selection for preview
+  // Cover Image Change (preview)
   const handleCoverChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setCoverPreview(URL.createObjectURL(file));
-    } else {
-      // If no file selected, revert to previous coverUrl if editing, or clear
-      setCoverPreview(isEditing && formData.coverUrl ? formData.coverUrl : null);
-    }
+    if (file) setCoverPreview(URL.createObjectURL(file));
+    else setCoverPreview(isEditing ? formData.coverUrl : null);
   };
 
-  // Handle new additional images selection for preview
+  // Additional Images Change (preview + accumulate new files)
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
       const newPreviews = files.map((file) => URL.createObjectURL(file));
       setImagesPreview((prev) => [...prev, ...newPreviews]);
-    } else {
-      setImagesPreview([]);
     }
   };
 
-  // Remove selected cover image preview and clear the file input
+  // Remove cover image (clear preview and file input)
   const handleRemoveCover = () => {
     setCoverPreview(null);
-    if (coverInputRef.current) {
-      coverInputRef.current.value = null; // Clear the file input
+    if (coverInputRef.current) coverInputRef.current.value = null;
+  };
+
+  // Remove one image from preview (existing or new)
+  // For existing image URLs, mark for deletion by id
+  // For new files, remove from preview and also from input.files
+  const handleRemoveImage = (index) => {
+    if (!isEditing) {
+      // Simple case: just remove from previews (new images only)
+      const updated = imagesPreview.filter((_, i) => i !== index);
+      setImagesPreview(updated);
+      updateFilesInput(imagesInputRef.current, updated);
+      return;
+    }
+
+    const urlToRemove = imagesPreview[index];
+
+    // Check if this URL matches an existing image
+    const existingImage = formData.images.find((img) => img.imageUrl === urlToRemove);
+
+    if (existingImage) {
+      // Mark this image id for deletion
+      setDeleteImageIds((prev) => new Set(prev).add(existingImage.id));
+
+      // Remove URL from preview
+      const updated = imagesPreview.filter((_, i) => i !== index);
+      setImagesPreview(updated);
+    } else {
+      // It's a new uploaded image (preview URL)
+      const updated = imagesPreview.filter((_, i) => i !== index);
+      setImagesPreview(updated);
+      updateFilesInput(imagesInputRef.current, updated);
     }
   };
 
-  // Remove a specific additional image preview and update the file input's files
-  const handleRemoveImage = (indexToRemove) => {
-    setImagesPreview((prev) => prev.filter((_, i) => i !== indexToRemove));
+  // Helper: update input files based on remaining preview URLs (only for new files)
+  const updateFilesInput = (inputRef, updatedPreviews) => {
+    if (!inputRef?.current) return;
+    const dt = new DataTransfer();
+    const currentFiles = inputRef.current.files;
 
-    // Also update the actual files in the input element
-    if (imagesInputRef.current) {
-      const dataTransfer = new DataTransfer();
-      Array.from(imagesInputRef.current.files)
-        .filter((_, i) => i !== indexToRemove)
-        .forEach((file) => dataTransfer.items.add(file));
-      imagesInputRef.current.files = dataTransfer.files;
+    // Filter currentFiles by matching their preview URLs in updatedPreviews
+    for (let i = 0; i < currentFiles.length; i++) {
+      const file = currentFiles[i];
+      const url = URL.createObjectURL(file);
+      if (updatedPreviews.includes(url)) {
+        dt.items.add(file);
+      } else {
+        URL.revokeObjectURL(url);
+      }
     }
+    inputRef.current.files = dt.files;
   };
 
-  // Handle form submission (create or update)
+  // Handle Submit (create/update)
   const handleSubmit = async () => {
+    if (!formData.name.trim()) {
+      setSnackbar({ open: true, message: "Name is required", severity: "warning" });
+      return;
+    }
+
     const form = new FormData();
     form.append("name", formData.name);
     form.append("type", formData.type);
 
-    // Only append cover if a new one is selected
+    // Append cover image only if selected (new)
     if (coverInputRef.current?.files[0]) {
       form.append("cover", coverInputRef.current.files[0]);
     }
 
-    // Append all selected additional images
+    // Append additional images (newly selected)
     if (imagesInputRef.current?.files?.length) {
       Array.from(imagesInputRef.current.files).forEach((file) => {
         form.append("images", file);
       });
+    }
+
+    // Append deleteImageIds as comma-separated string (if any)
+    if (deleteImageIds.size > 0) {
+      form.append("deleteImageIds", Array.from(deleteImageIds).join(","));
     }
 
     const method = isEditing ? "PUT" : "POST";
@@ -201,9 +248,9 @@ export default function DashboardDesign() {
       : `${process.env.NEXT_PUBLIC_API_URL}/api/designs`;
 
     try {
-      const session = await import("next-auth/react").then((mod) =>
-        mod.getSession()
-      );
+      const { getSession } = await import("next-auth/react");
+      const session = await getSession();
+
       const res = await fetch(url, {
         method,
         headers: {
@@ -213,15 +260,20 @@ export default function DashboardDesign() {
       });
 
       if (!res.ok) {
-        // You might want to parse the error response from your API
         const errorData = await res.json();
         throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
       }
+
+      setSnackbar({
+        open: true,
+        message: isEditing ? "Design updated successfully" : "Design created successfully",
+        severity: "success",
+      });
       setOpenForm(false);
-      fetchDesigns(); // Re-fetch designs after successful submission
+      fetchDesigns();
     } catch (err) {
       console.error("Failed to submit design:", err);
-      // Optionally, display an error message to the user (e.g., using a Snackbar)
+      setSnackbar({ open: true, message: "Failed to submit design", severity: "error" });
     }
   };
 
@@ -239,7 +291,6 @@ export default function DashboardDesign() {
         onDelete={handleDelete}
         onAdd={handleOpenAdd}
       />
-      {/* Spacer between sections */}
       <Box my={4} />
       <SectionBlock
         title="Interior Design"
@@ -250,7 +301,6 @@ export default function DashboardDesign() {
         onAdd={handleOpenAdd}
       />
 
-      {/* Design Add/Edit Dialog */}
       <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth maxWidth="sm">
         <DialogTitle>{isEditing ? "Edit Design" : "Add New Design"}</DialogTitle>
         <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
@@ -273,7 +323,8 @@ export default function DashboardDesign() {
             <MenuItem value="INTERIOR">INTERIOR</MenuItem>
           </TextField>
 
-          <InputLabel shrink htmlFor="cover-image-upload">
+          {/* Cover Image */}
+          <InputLabel shrink htmlFor="cover-image-upload" sx={{ mt: 2 }}>
             Cover Image
           </InputLabel>
           <input
@@ -316,6 +367,7 @@ export default function DashboardDesign() {
             </Box>
           )}
 
+          {/* Additional Images */}
           <InputLabel shrink sx={{ mt: 2 }} htmlFor="additional-images-upload">
             Additional Images
           </InputLabel>
@@ -364,7 +416,6 @@ export default function DashboardDesign() {
             </Stack>
           )}
         </DialogContent>
-
         <DialogActions>
           <Button onClick={() => setOpenForm(false)}>Cancel</Button>
           <Button variant="contained" onClick={handleSubmit}>
@@ -372,11 +423,25 @@ export default function DashboardDesign() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
 
-// SectionBlock component for displaying design categories
 function SectionBlock({ title, items, loading, onEdit, onDelete, onAdd }) {
   return (
     <Box>
@@ -398,11 +463,11 @@ function SectionBlock({ title, items, loading, onEdit, onDelete, onAdd }) {
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              style={{ width: "100%", maxWidth: 350 }}
+              style={{ width: "100%", maxWidth: 350, margin: "auto" }}
             >
               <Card
                 sx={{
-                  height: "100%", // Make card fill the height of its parent motion.div
+                  height: "100%",
                   display: "flex",
                   flexDirection: "column",
                   borderRadius: 3,
@@ -426,7 +491,7 @@ function SectionBlock({ title, items, loading, onEdit, onDelete, onAdd }) {
                     <CardMedia
                       component="img"
                       height="180"
-                      image={item.coverUrl || "/no-image.jpg"} // Fallback image
+                      image={item.coverUrl || "/no-image.jpg"}
                       alt={item.name}
                       sx={{ objectFit: "cover" }}
                     />

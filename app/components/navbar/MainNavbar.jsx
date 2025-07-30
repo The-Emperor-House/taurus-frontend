@@ -172,6 +172,12 @@ export default function MainNavbar() {
                   transformOrigin={{ horizontal: "right", vertical: "top" }}
                   anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
+                  <MenuItem component={Link} href="/page/dashboard/design">
+                    <ListItemIcon>
+                      <DashboardIcon fontSize="small" />
+                    </ListItemIcon>
+                    Design
+                  </MenuItem>
                   <MenuItem component={Link} href="/page/dashboard/contact">
                     <ListItemIcon>
                       <DashboardIcon fontSize="small" />

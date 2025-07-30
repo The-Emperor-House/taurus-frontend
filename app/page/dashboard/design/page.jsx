@@ -54,7 +54,11 @@ export default function DashboardDesign() {
   const imagesInputRef = useRef(null);
 
   // Snackbar for feedback
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   // Fetch all designs from API
   const fetchDesigns = async () => {
@@ -62,9 +66,12 @@ export default function DashboardDesign() {
     try {
       const { getSession } = await import("next-auth/react");
       const session = await getSession();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/designs`, {
-        headers: { Authorization: `Bearer ${session?.backendToken}` },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/designs`,
+        {
+          headers: { Authorization: `Bearer ${session?.backendToken}` },
+        }
+      );
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
 
@@ -72,7 +79,11 @@ export default function DashboardDesign() {
       setInterior(data.filter((d) => d.type === "INTERIOR"));
     } catch (err) {
       console.error("Failed to load designs:", err);
-      setSnackbar({ open: true, message: "Failed to load designs", severity: "error" });
+      setSnackbar({
+        open: true,
+        message: "Failed to load designs",
+        severity: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -128,16 +139,27 @@ export default function DashboardDesign() {
     try {
       const { getSession } = await import("next-auth/react");
       const session = await getSession();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/designs/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${session?.backendToken}` },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/designs/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${session?.backendToken}` },
+        }
+      );
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      setSnackbar({ open: true, message: "Design deleted successfully", severity: "success" });
+      setSnackbar({
+        open: true,
+        message: "Design deleted successfully",
+        severity: "success",
+      });
       fetchDesigns();
     } catch (err) {
       console.error("Failed to delete design:", err);
-      setSnackbar({ open: true, message: "Failed to delete design", severity: "error" });
+      setSnackbar({
+        open: true,
+        message: "Failed to delete design",
+        severity: "error",
+      });
     }
   };
 
@@ -178,7 +200,9 @@ export default function DashboardDesign() {
     const urlToRemove = imagesPreview[index];
 
     // Check if this URL matches an existing image
-    const existingImage = formData.images.find((img) => img.imageUrl === urlToRemove);
+    const existingImage = formData.images.find(
+      (img) => img.imageUrl === urlToRemove
+    );
 
     if (existingImage) {
       // Mark this image id for deletion
@@ -217,7 +241,11 @@ export default function DashboardDesign() {
   // Handle Submit (create/update)
   const handleSubmit = async () => {
     if (!formData.name.trim()) {
-      setSnackbar({ open: true, message: "Name is required", severity: "warning" });
+      setSnackbar({
+        open: true,
+        message: "Name is required",
+        severity: "warning",
+      });
       return;
     }
 
@@ -261,19 +289,27 @@ export default function DashboardDesign() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+        throw new Error(
+          errorData.message || `HTTP error! status: ${res.status}`
+        );
       }
 
       setSnackbar({
         open: true,
-        message: isEditing ? "Design updated successfully" : "Design created successfully",
+        message: isEditing
+          ? "Design updated successfully"
+          : "Design created successfully",
         severity: "success",
       });
       setOpenForm(false);
       fetchDesigns();
     } catch (err) {
       console.error("Failed to submit design:", err);
-      setSnackbar({ open: true, message: "Failed to submit design", severity: "error" });
+      setSnackbar({
+        open: true,
+        message: "Failed to submit design",
+        severity: "error",
+      });
     }
   };
 
@@ -301,9 +337,18 @@ export default function DashboardDesign() {
         onAdd={handleOpenAdd}
       />
 
-      <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth maxWidth="sm">
-        <DialogTitle>{isEditing ? "Edit Design" : "Add New Design"}</DialogTitle>
-        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
+      <Dialog
+        open={openForm}
+        onClose={() => setOpenForm(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          {isEditing ? "Edit Design" : "Add New Design"}
+        </DialogTitle>
+        <DialogContent
+          sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}
+        >
           <TextField
             label="Name"
             value={formData.name}
@@ -324,104 +369,146 @@ export default function DashboardDesign() {
           </TextField>
 
           {/* Cover Image */}
-          <InputLabel shrink htmlFor="cover-image-upload" sx={{ mt: 2 }}>
+          <InputLabel shrink sx={{ mt: 2 }}>
             Cover Image
           </InputLabel>
           <input
             type="file"
-            id="cover-image-upload"
-            ref={coverInputRef}
             accept="image/*"
+            ref={coverInputRef}
             onChange={handleCoverChange}
+            style={{ display: "none" }}
+            id="cover-file-input"
           />
-          {coverPreview && (
-            <Box
-              sx={{
-                position: "relative",
-                width: 200,
-                height: 120,
-                mt: 1,
-                borderRadius: 2,
-                overflow: "hidden",
-                boxShadow: 1,
-              }}
-            >
-              <img
-                src={coverPreview}
-                alt="Cover Preview"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-              <IconButton
-                size="small"
-                onClick={handleRemoveCover}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+            {coverPreview ? (
+              <Box
                 sx={{
-                  position: "absolute",
-                  top: 4,
-                  right: 4,
-                  bgcolor: "rgba(0,0,0,0.5)",
-                  "&:hover": { bgcolor: "rgba(0,0,0,0.7)" },
+                  position: "relative",
+                  width: 200,
+                  height: 120,
+                  borderRadius: 2,
+                  overflow: "hidden",
+                  boxShadow: 1,
                 }}
               >
-                <CloseIcon fontSize="small" sx={{ color: "white" }} />
-              </IconButton>
-            </Box>
-          )}
+                <img
+                  src={coverPreview}
+                  alt="Cover Preview"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+                <IconButton
+                  size="small"
+                  onClick={handleRemoveCover}
+                  sx={{
+                    position: "absolute",
+                    top: 4,
+                    right: 4,
+                    bgcolor: "rgba(0,0,0,0.5)",
+                    "&:hover": { bgcolor: "rgba(0,0,0,0.7)" },
+                  }}
+                >
+                  <CloseIcon fontSize="small" sx={{ color: "white" }} />
+                </IconButton>
+              </Box>
+            ) : null}
+
+            <Button
+              variant="outlined"
+              startIcon={<AddIcon />}
+              onClick={() => coverInputRef.current?.click()}
+              sx={{ height: 40 }}
+            >
+              {coverPreview ? "Change Cover" : "Add Cover"}
+            </Button>
+          </Box>
 
           {/* Additional Images */}
-          <InputLabel shrink sx={{ mt: 2 }} htmlFor="additional-images-upload">
+          <InputLabel shrink sx={{ mt: 2 }}>
             Additional Images
           </InputLabel>
           <input
             type="file"
-            id="additional-images-upload"
-            ref={imagesInputRef}
             accept="image/*"
             multiple
+            ref={imagesInputRef}
             onChange={handleImagesChange}
+            style={{ display: "none" }}
+            id="additional-files-input"
           />
-          {imagesPreview.length > 0 && (
-            <Stack direction="row" spacing={1} mt={1} flexWrap="wrap">
-              {imagesPreview.map((src, index) => (
-                <Box
-                  key={index}
+          <Stack
+            direction="row"
+            spacing={1}
+            mt={1}
+            flexWrap="wrap"
+            alignItems="center"
+          >
+            {imagesPreview.map((src, index) => (
+              <Box
+                key={index}
+                sx={{
+                  position: "relative",
+                  width: 100,
+                  height: 80,
+                  borderRadius: 1,
+                  overflow: "hidden",
+                  boxShadow: 1,
+                }}
+              >
+                <img
+                  src={src}
+                  alt={`Preview ${index + 1}`}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+                <IconButton
+                  size="small"
+                  onClick={() => handleRemoveImage(index)}
                   sx={{
-                    position: "relative",
-                    width: 100,
-                    height: 80,
-                    borderRadius: 1,
-                    overflow: "hidden",
-                    boxShadow: 1,
+                    position: "absolute",
+                    top: 2,
+                    right: 2,
+                    bgcolor: "rgba(0,0,0,0.5)",
+                    "&:hover": { bgcolor: "rgba(0,0,0,0.7)" },
                   }}
                 >
-                  <img
-                    src={src}
-                    alt={`Preview ${index + 1}`}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                  <IconButton
-                    size="small"
-                    onClick={() => handleRemoveImage(index)}
-                    sx={{
-                      position: "absolute",
-                      top: 2,
-                      right: 2,
-                      bgcolor: "rgba(0,0,0,0.5)",
-                      "&:hover": { bgcolor: "rgba(0,0,0,0.7)" },
-                    }}
-                  >
-                    <CloseIcon fontSize="small" sx={{ color: "white" }} />
-                  </IconButton>
-                </Box>
-              ))}
-            </Stack>
-          )}
+                  <CloseIcon fontSize="small" sx={{ color: "white" }} />
+                </IconButton>
+              </Box>
+            ))}
+
+            {/* ปุ่ม + สำหรับเพิ่มรูปเพิ่มเติม */}
+            <Box
+              onClick={() => imagesInputRef.current?.click()}
+              sx={{
+                cursor: "pointer",
+                width: 100,
+                height: 80,
+                borderRadius: 1,
+                border: "2px dashed #ccc",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "gray",
+                "&:hover": {
+                  borderColor: "primary.main",
+                  color: "primary.main",
+                },
+              }}
+            >
+              <AddIcon fontSize="large" />
+            </Box>
+          </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenForm(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleSubmit}>
-            {isEditing ? "Update" : "Create"}
-          </Button>
-        </DialogActions>
+          <DialogActions>
+            <Button onClick={() => setOpenForm(false)}>Cancel</Button>
+            <Button 
+              variant="contained" 
+              onClick={handleSubmit} 
+              disabled={!coverPreview} 
+            >
+              {isEditing ? "Update" : "Create"}
+            </Button>
+          </DialogActions>
       </Dialog>
 
       <Snackbar
@@ -445,7 +532,12 @@ export default function DashboardDesign() {
 function SectionBlock({ title, items, loading, onEdit, onDelete, onAdd }) {
   return (
     <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
         <Typography variant="h6" fontWeight="bold">
           {title}
         </Typography>
@@ -481,7 +573,12 @@ function SectionBlock({ title, items, loading, onEdit, onDelete, onAdd }) {
                       <Skeleton width="80%" height={24} sx={{ mb: 1 }} />
                       <Skeleton width="60%" height={20} />
                     </CardContent>
-                    <Stack direction="row" spacing={1} p={2} justifyContent="flex-end">
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      p={2}
+                      justifyContent="flex-end"
+                    >
                       <Skeleton variant="rectangular" width={70} height={30} />
                       <Skeleton variant="rectangular" width={70} height={30} />
                     </Stack>
@@ -500,7 +597,12 @@ function SectionBlock({ title, items, loading, onEdit, onDelete, onAdd }) {
                         {item.name}
                       </Typography>
                     </CardContent>
-                    <Stack direction="row" spacing={1} p={2} justifyContent="flex-end">
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      p={2}
+                      justifyContent="flex-end"
+                    >
                       <Button
                         variant="outlined"
                         size="small"

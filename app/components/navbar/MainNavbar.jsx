@@ -115,14 +115,17 @@ export default function MainNavbar() {
             transition={{ duration: 0.3 }}
             style={{ width: 120, height: 80, position: "relative" }}
           >
-            <Image
-              src={logoSrc}
-              alt="Logo"
-              fill
-              sizes="(max-width: 768px) 120px, 160px"
-              style={{ objectFit: "contain" }}
-              priority
-            />
+          <Image
+            src={logoSrc}
+            alt="Logo"
+            fill
+            sizes="(max-width: 768px) 120px, 160px"
+            style={{ objectFit: "contain" }}
+            onError={() => setImageError(true)}
+            className="transition-transform duration-300"
+            priority
+            quality={isScrolled ? 50 : 100}
+          />
           </motion.div>
         </Link>
 

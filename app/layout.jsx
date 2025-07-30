@@ -21,13 +21,14 @@ const prompt = Prompt({
 export const metadata = {
   title: 'Taurus: WE RENEW',
   description: 'เปลี่ยนบ้านหลังเก่าให้เป็นไปตามจินตนาการของคุณ',
+  icon: '/logo.ico',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="th" className={`${poppins.variable} ${prompt.variable}`}>
       <head>
-        <link rel="icon" href="/logo.ico" />
+        <link rel="icon" href={metadata.icon} />
         <meta name="description" content={metadata.description} />
         <title>{metadata.title}</title>
       </head>

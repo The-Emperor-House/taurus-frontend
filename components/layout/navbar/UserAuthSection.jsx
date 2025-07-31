@@ -24,7 +24,7 @@ const UserAuthSection = ({
 
   if (session) {
     return (
-      <Box>
+      <Box display="flex" alignItems="center">
         <IconButton onClick={handleDesktopMenuOpen} size="small" sx={{ ml: 1, p: 0 }}>
           <Avatar
             src={fullAvatarUrl}

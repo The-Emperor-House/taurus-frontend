@@ -117,7 +117,7 @@ export default function MainNavbar() {
         }),
         backgroundColor: isScrolled
           ? (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
-          : "transparent",
+          : (isDarkMode ? "rgba(10,10,10,0.9)" : "rgba(245,245,245,0.9)"),
         boxShadow: isScrolled ? theme.shadows[3] : "none",
         backdropFilter: isScrolled ? "blur(8px)" : "none",
       }}

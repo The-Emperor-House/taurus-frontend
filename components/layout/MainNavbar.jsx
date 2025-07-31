@@ -28,6 +28,8 @@ export default function MainNavbar() {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
 
+  const isHomePage = pathname === "/";
+
   const user = session?.user;
   const firstLetter = user?.name?.charAt(0)?.toUpperCase() || "U";
   const fullAvatarUrl = !imageError ? user?.avatarUrl : undefined;
@@ -115,11 +117,11 @@ export default function MainNavbar() {
           duration: theme.transitions.duration.shorter,
           easing: theme.transitions.easing.easeInOut,
         }),
-        backgroundColor: isScrolled
-          ? (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
-          : (isDarkMode ? "rgba(10,10,10,0.9)" : "rgba(245,245,245,0.9)"),
-        boxShadow: isScrolled ? theme.shadows[3] : "none",
-        backdropFilter: isScrolled ? "blur(8px)" : "none",
+        backgroundColor: isHomePage && !isScrolled
+          ? "transparent"
+          : (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)"),
+        boxShadow: (isHomePage && !isScrolled) ? "none" : theme.shadows[3],
+        backdropFilter: (isHomePage && !isScrolled) ? "none" : "blur(8px)",
       }}
       component={motion.nav}
       initial={{ opacity: 0 }}

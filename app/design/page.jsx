@@ -1,96 +1,87 @@
 'use client';
 
-import {
-  Box,
-  Grid,
-  Typography,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-} from '@mui/material';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { Box } from '@mui/material';
+
+import DesignCategoryCard from './components/DesignCategoryCard';
+import AnimatedHeading from '@/app/home/components/AnimatedHeading'; // นำ AnimatedHeading กลับมาใช้
 
 const designCategories = [
   {
     id: 'architectural',
     title: 'ARCHITECTURAL DESIGN',
     image: '/mock/architectural-cover.jpg',
-    link: 'design/architectural',
+    link: '/design/architectural',
   },
   {
     id: 'interior',
     title: 'INTERIOR DESIGN',
     image: '/mock/interior-cover.jpg',
-    link: 'design/interior',
+    link: '/design/interior',
   },
 ];
 
-export default function DesignLanding() {
+export default function DesignPage() {
   return (
-    <Box sx={{ px: 2, py: 6, maxWidth: '1200px', mx: 'auto' }}>
-      {/* <Typography variant="h4" fontWeight="light" textAlign="center" mb={4}>
-        DESIGN
-      </Typography> */}
+    <Box
+      sx={{
+        px: { xs: 2, sm: 3, md: 4 }, // Responsive padding ซ้าย-ขวา
+        py: { xs: 6, sm: 8 }, // Responsive padding บน-ล่าง
+        pt: { xs: '56px', md: '64px' }, // Padding Top เพื่อหลบ Navbar (ปรับตามความสูง Navbar จริง)
+        minHeight: '100vh', // ความสูงขั้นต่ำเท่า Viewport
+        maxWidth: '1200px', // ความกว้างสูงสุดของเนื้อหา
+        mx: 'auto', // จัดกึ่งกลางในแนวนอน
+        display: 'flex',
+        flexDirection: 'column', // Stack content vertically (heading then cards)
+        justifyContent: 'center', // จัดกึ่งกลางเนื้อหาในแนวตั้ง
+        alignItems: 'center', // จัดกึ่งกลางเนื้อหาในแนวนอน
+        gap: { xs: 4, md: 8 }, // ระยะห่างระหว่าง Heading กับ Cards
+      }}
+    >
+      {/* ส่วนหัว DESIGN */}
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
+        <AnimatedHeading
+          title="DESIGN"
+          textColor="text.primary" // สีตัวอักษรของ Header (ใช้จาก Theme)
+          lineColor="primary.main" // สีเส้น (ใช้จาก Theme)
+          fontSize={{ mobile: "text-4xl", desktop: "text-6xl" }} // ขนาดตัวอักษร
+          fontWeight="font-light" // น้ำหนักตัวอักษร
+          animationDelay={0.1}
+        />
+      </Box>
 
-      <Grid container spacing={4} justifyContent="center">
-        {designCategories.map((cat, index) => (
-          <Grid
-            key={cat.id}
-            size={{ xs: 12, sm: 6, md: 4 }}
+      {/* Flex Container สำหรับ Design Category Cards */}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: { xs: 4, md: 6 }, // Spacing ระหว่าง Card
+          width: '100%',
+        }}
+      >
+        {designCategories.map((category, index) => (
+          <Box
+            key={category.id}
             sx={{
+              width: '100%',
+              flexBasis: { xs: '100%', sm: 'calc(50% - 24px)', md: 'calc(50% - 24px)' }, // 2 Cards ต่อแถวบน md:
+              maxWidth: { xs: 'none', sm: 500, md: 500 }, // Max width per card (ปรับให้ใหญ่ขึ้น)
               display: 'flex',
               justifyContent: 'center',
-              height: '100%',
+              alignItems: 'stretch', // ทำให้ Card มีความสูงเท่ากันในแถว
             }}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2, duration: 0.6, ease: 'easeOut' }}
-              style={{ width: '100%', maxWidth: 350, height: '100%' }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <Link href={cat.link} passHref>
-                <Card
-                  sx={{
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    bgcolor: 'background.paper',
-                    boxShadow: 6,
-                    transition: 'box-shadow 0.3s',
-                    '&:hover': { boxShadow: 12 },
-                  }}
-                >
-                  <CardActionArea sx={{ flex: 1 }}>
-                    <CardMedia
-                      component="img"
-                      height="240"
-                      image={cat.image}
-                      alt={cat.title}
-                      sx={{ objectFit: 'cover' }}
-                    />
-                    <CardContent sx={{ flexGrow: 1, bgcolor: 'background.default' }}>
-                      <Typography
-                        variant="h6"
-                        textAlign="center"
-                        sx={{ fontWeight: 'bold', color: 'text.primary' }}
-                      >
-                        {cat.title}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Link>
-            </motion.div>
-          </Grid>
+            <DesignCategoryCard
+              id={category.id}
+              title={category.title}
+              image={category.image}
+              link={category.link}
+              index={index}
+            />
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }

@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col">
+    <main>
       <HeroSection />
       <AboutUsHomePageSection />
       <ProjectsHomePageSection />

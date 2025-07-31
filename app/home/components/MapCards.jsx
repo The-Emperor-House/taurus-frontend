@@ -2,64 +2,50 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Grid, Box, Typography, Skeleton } from '@mui/material';
+import { Box, Typography, Skeleton } from '@mui/material';
 import { motion } from 'framer-motion';
 
 export default function MapCards() {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   return (
-    <Grid container spacing={0}>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Left: Team Image */}
-      <Grid
-        size={{ xs: 12, md: 6 }}
-        sx={{
-          height: { xs: 300, md: '70vh' },
-          order: { xs: 2, md: 1 },
-          overflow: 'hidden',
-          borderRadius: { xs: 0, md: 3 },
-        }}
+      <div
+        className="relative overflow-hidden rounded-3xl"
+        style={{ height: "70vh" }}
       >
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          style={{ width: '100%', height: '100%' }}
+          className="w-full h-full"
         >
           <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
             <Image
               src="/home/team/104096.webp"
               alt="Taurus Team"
               fill
-              priority={false} // ตั้งเป็น true ถ้า section แรก
+              priority={false}
               sizes="(max-width: 768px) 100vw, 50vw"
-              style={{
-                objectFit: 'cover',
-                objectPosition: 'center 30%',
-              }}
+              className="object-cover object-center rounded-3xl"
             />
           </Box>
         </motion.div>
-      </Grid>
+      </div>
 
       {/* Right: Google Map */}
-      <Grid
-        size={{ xs: 12, md: 6 }}
-        sx={{
-          height: { xs: 300, md: '70vh' },
-          order: { xs: 1, md: 2 },
-          overflow: 'hidden',
-          borderRadius: { xs: 0, md: 3 },
-          position: 'relative',
-        }}
-      >
+        <div
+          className="relative overflow-hidden rounded-3xl"
+          style={{ height: "70vh" }}
+        >
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          style={{ width: '100%', height: '100%' }}
+          className="w-full h-full"
         >
           <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
             {!mapLoaded && (
@@ -82,14 +68,7 @@ export default function MapCards() {
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              style={{
-                border: 0,
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-              }}
+              className="border-0 w-full h-full absolute top-0 left-0"
               onLoad={() => setMapLoaded(true)}
             />
             <noscript>
@@ -111,7 +90,7 @@ export default function MapCards() {
             </noscript>
           </Box>
         </motion.div>
-      </Grid>
-    </Grid>
+        </div>
+      </div>
   );
 }

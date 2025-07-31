@@ -19,6 +19,11 @@ export default function SwiperCarousel({ slides = [] }) {
     );
   }
 
+  const contentTransition = {
+    duration: 0.8,
+    ease: [0.2, 0.65, 0.3, 0.9], // Consistent with SlideContent animation
+  };
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
       <Swiper
@@ -49,7 +54,7 @@ export default function SwiperCarousel({ slides = [] }) {
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+              transition={contentTransition}
               className="absolute inset-0 flex items-center justify-start pl-8 md:pl-16 z-10"
             >
               {slide.content}
@@ -61,12 +66,17 @@ export default function SwiperCarousel({ slides = [] }) {
   );
 }
 
-// ✅ BackgroundImage component with loading skeleton
+// BackgroundImage component with loading skeleton
 function BackgroundImage({ src, alt }) {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="absolute inset-0 w-full h-full z-0">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      className="absolute inset-0 w-full h-full z-0"
+    >
       {loading && (
         <div className="absolute inset-0 bg-gray-800 animate-pulse" />
       )}
@@ -79,6 +89,6 @@ function BackgroundImage({ src, alt }) {
         sizes="(max-width: 768px) 100vw, 50vw"
         priority
       />
-    </div>
+    </motion.div>
   );
 }

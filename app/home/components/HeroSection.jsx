@@ -1,6 +1,6 @@
 'use client';
 
-import SwiperCarousel from "./SwiperCarousel"; 
+import SwiperCarousel from "./SwiperCarousel";
 import SlideContent from "./SlideContent";
 import React from 'react';
 

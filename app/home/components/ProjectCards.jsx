@@ -1,44 +1,27 @@
-"use client";
+'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  Grid,
   Card,
   CardActionArea,
-  CardMedia,
   Typography,
   Box,
   Skeleton,
-  useTheme,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const projects = [
-  {
-    id: 1,
-    title: "TRANSFORM",
-    description: "ปรับปรุง ต่อเติม",
-    image: "/home/projects/transform.webp",
-    link: "/projects/1",
-  },
-  {
-    id: 2,
-    title: "DECORATE",
-    description: "ตกแต่งภายใน",
-    image: "/home/projects/decorate.webp",
-    link: "/projects/2",
-  },
-  {
-    id: 3,
-    title: "CONSTRUCTION",
-    description: "การก่อสร้าง",
-    image: "/home/projects/construction.webp",
-    link: "/projects/3",
-  },
-];
+const fetchProjectsData = async () => {
+  return new Promise(resolve => setTimeout(() => {
+    resolve([
+      { id: 1, title: "TRANSFORM", description: "ปรับปรุง ต่อเติม", image: "/home/projects/transform.webp", link: "/projects/transform" },
+      { id: 2, title: "DECORATE", description: "ตกแต่งภายใน", image: "/home/projects/decorate.webp", link: "/projects/decorate" },
+      { id: 3, title: "CONSTRUCTION", description: "การก่อสร้าง", image: "/home/projects/construction.webp", link: "/projects/construction" },
+    ]);
+  }, 500));
+};
 
-// motion configs
 const overlayMotion = {
   initial: { opacity: 0, y: 30 },
   hover: { opacity: 1, y: 0 },
@@ -50,65 +33,75 @@ const glowMotion = {
 };
 
 export default function ProjectCards() {
+  const [projects, setProjects] = useState([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      setLoadingProjects(true);
+      const data = await fetchProjectsData();
+      setProjects(data);
+      setLoadingProjects(false);
+    };
+    loadProjects();
+  }, []);
+
+  if (loadingProjects) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-4 mx-auto max-w-7xl">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} variant="rectangular" height={550} sx={{ borderRadius: "12px" }} />
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <Grid container spacing={2}>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-4 mx-auto max-w-8xl">
       {projects.map((p) => (
-        <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4 }}>
-          <ImageCard project={p} />
-        </Grid>
+        <ImageCard key={p.id} project={p} />
       ))}
-    </Grid>
+    </div>
   );
 }
 
 function ImageCard({ project }) {
   const [loading, setLoading] = useState(true);
-  const theme = useTheme();
 
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
       transition={{ type: "spring", stiffness: 250, damping: 20 }}
-      style={{ borderRadius: 12, overflow: "hidden", position: "relative" }}
+      className="rounded-xl overflow-hidden relative shadow-lg"
+      style={{
+        height: "550px",
+      }}
     >
-      <Card sx={{ position: "relative", width: "100%", height: { xs: 300, sm: 400, md: 450 } }}>
+      <Card sx={{ position: "relative", width: "100%", height: "100%", borderRadius: "12px" }}>
         <Link href={project.link} style={{ textDecoration: "none" }}>
           <CardActionArea sx={{ width: "100%", height: "100%" }}>
-            {/* Image Layer */}
             {loading && (
               <Skeleton
                 variant="rectangular"
                 sx={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
               />
             )}
-            <CardMedia
-              component="img"
+            <Image
               src={project.image}
               alt={project.title}
+              fill
+              sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+              className={`object-cover rounded-xl transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
               onLoad={() => setLoading(false)}
-              sx={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                borderRadius: "12px",
-                objectFit: "cover",
-                opacity: loading ? 0 : 1,
-                transition: theme.transitions.create("opacity", {
-                  duration: theme.transitions.duration.standard,
-                }),
-              }}
             />
 
             {/* Glow Layer */}
             <motion.div
               {...glowMotion}
+              className="absolute inset-0 z-10"
               style={{
-                position: "absolute",
-                inset: 0,
                 background:
                   "radial-gradient(circle at center, rgba(204,143,42,0.3), transparent)",
-                zIndex: 1,
               }}
             />
 
@@ -118,20 +111,10 @@ function ImageCard({ project }) {
               initial="initial"
               whileHover="hover"
               transition={{ duration: 0.5 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.6)",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: theme.spacing(2),
-                textAlign: "center",
-                zIndex: 2,
-              }}
+              className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-4"
+              style={{ background: "rgba(0, 0, 0, 0.5)" }}
             >
-              <Typography variant="h5" sx={{ color: "white", mb: 1 }}>
+              <Typography variant="h5" sx={{ color: "white", mb: 1, fontWeight: 'bold' }}>
                 {project.title}
               </Typography>
               <Box

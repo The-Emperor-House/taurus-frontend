@@ -1,4 +1,7 @@
+'use client';
+
 import { Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 
 export default function SlideContent({ num }) {
   const titleMap = {
@@ -21,13 +24,28 @@ export default function SlideContent({ num }) {
     7: 'YOUR DREAM, OUR WORK',
   };
 
+  const textVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: {
+      duration: 0.8,
+      ease: [0.2, 0.65, 0.3, 0.9],
+    },
+  };
+
   return (
-    <div>
+    <motion.div
+      variants={textVariants}
+      initial="initial"
+      animate="animate"
+      transition={textVariants.transition}
+      className="p-4"
+    >
       <Typography
         variant="h1"
         sx={{
           fontWeight: 'bold',
-          fontSize: '3rem',
+          fontSize: { xs: '2.5rem', sm: '3rem', md: '4rem' },
           textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
           color: '#cc8f2a',
         }}
@@ -39,7 +57,7 @@ export default function SlideContent({ num }) {
         variant="h2"
         sx={{
           fontWeight: 'bold',
-          fontSize: '2.5rem',
+          fontSize: { xs: '2rem', sm: '2.5rem', md: '3.5rem' },
           textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
           color: '#fdfdfd',
         }}
@@ -51,14 +69,14 @@ export default function SlideContent({ num }) {
         variant="h3"
         sx={{
           fontWeight: 'medium',
-          fontSize: '1.5rem',
+          fontSize: { xs: '1.2rem', sm: '1.5rem', md: '2rem' },
           color: '#fdfdfd',
           textShadow: '0 4px 6px rgba(0,0,0,0.5)',
-          mt: 2,
+          mt: { xs: 1, sm: 2 },
         }}
       >
         "สร้างบ้านหลังใหม่ ในที่อยู่อาศัยเดิมของคุณ"
       </Typography>
-    </div>
+    </motion.div>
   );
 }

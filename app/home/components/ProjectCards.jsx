@@ -23,8 +23,8 @@ const fetchProjectsData = async () => {
 };
 
 const overlayMotion = {
-  initial: { opacity: 0, y: 30 },
-  hover: { opacity: 1, y: 0 },
+  initial: { opacity: 0 },
+  hover: { opacity: 1 },
 };
 
 const glowMotion = {
@@ -67,19 +67,34 @@ export default function ProjectCards() {
 
 function ImageCard({ project }) {
   const [loading, setLoading] = useState(true);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const check = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+      setIsTouchDevice(check);
+    }
+  }, []);
 
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
+      whileHover={isTouchDevice ? undefined : { scale: 1.05 }}
       transition={{ type: "spring", stiffness: 250, damping: 20 }}
       className="rounded-xl overflow-hidden relative shadow-lg"
-      style={{
-        height: "550px",
-      }}
+      style={{ height: "550px" }}
     >
       <Card sx={{ position: "relative", width: "100%", height: "100%", borderRadius: "12px" }}>
         <Link href={project.link} style={{ textDecoration: "none" }}>
-          <CardActionArea sx={{ width: "100%", height: "100%" }}>
+          <CardActionArea 
+            sx={{
+              width: "100%",
+              height: "100%",
+              '&:hover .fade-image': {
+                filter: 'brightness(0.5)',
+                transition: 'filter 0.5s ease',
+              }
+            }}
+          >
             {loading && (
               <Skeleton
                 variant="rectangular"
@@ -109,7 +124,8 @@ function ImageCard({ project }) {
             <motion.div
               variants={overlayMotion}
               initial="initial"
-              whileHover="hover"
+              animate={isTouchDevice ? "hover" : undefined}
+              whileHover={isTouchDevice ? undefined : "hover"}
               transition={{ duration: 0.5 }}
               className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-4"
               style={{ background: "rgba(0, 0, 0, 0.5)" }}

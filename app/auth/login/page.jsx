@@ -19,15 +19,12 @@ import {
   DialogContent,
   LinearProgress,
   Fade,
-  useTheme,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 export default function LoginPage() {
   const router = useRouter();
-  const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -70,7 +67,7 @@ export default function LoginPage() {
     if (successOpen) {
       const timer = setTimeout(async () => {
         router.refresh();
-        await router.push('/page/dashboard/profile');
+        await router.push('/profile');
       }, 1500);
       return () => clearTimeout(timer);
     }

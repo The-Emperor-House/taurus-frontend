@@ -6,7 +6,7 @@ import AboutUsSection from '@/app/about-us/components/AboutUsSection';
 
 export default function AboutUsHomePageSection() {
   return (
-    <SectionWrapper>
+    <SectionWrapper noPadding={true} className="py-16">
       <AboutUsSection />
     </SectionWrapper>
   );

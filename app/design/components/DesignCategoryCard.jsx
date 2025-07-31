@@ -106,8 +106,7 @@ export default function DesignCategoryCard({
                 display: 'flex',
                 alignItems: 'center', // จัดกึ่งกลาง Title ในแนวตั้ง
                 justifyContent: 'center', // จัดกึ่งกลาง Title ในแนวนอน
-                bgcolor: 'background.default', // สีพื้นหลังของ Card Content (จาก MUI Theme)
-                minHeight: '80px', // กำหนดความสูงขั้นต่ำสำหรับส่วน Title
+                minHeight: '80px', // กำหนดความสูงขั้นต่ำเพื่อให้ Title ไม่เล็กเกินไป
                 py: 2, // Padding บน-ล่าง
                 px: 2, // Padding ซ้าย-ขวา
               }}

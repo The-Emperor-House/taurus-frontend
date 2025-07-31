@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
-import MuiThemeProviderWrapper from './components/common/MuiThemeProviderWrapper';
-import { Providers } from './components/common/Providers';
-import RootContent from './components/common/RootContent';
+import MuiThemeProviderWrapper from '@/components/common/MuiThemeProviderWrapper';
+import { Providers } from '@/components/common/Providers';
+import RootContent from '@/components/common/RootContent';
 import { Poppins, Prompt } from 'next/font/google';
 import './globals.css';
 import { CircularProgress, Typography, Box } from '@mui/material';

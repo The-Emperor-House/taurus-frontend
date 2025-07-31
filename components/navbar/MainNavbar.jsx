@@ -56,12 +56,12 @@ export default function MainNavbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/page/about", label: "About Us" },
-    { href: "/page/design", label: "Design" },
+    { href: "/about", label: "About Us" },
+    { href: "/design", label: "Design" },
     { href: "/#projects", label: "Projects" },
     { href: "/#showroom", label: "Showroom" },
     { href: "/#news", label: "News & Events" },
-    { href: "/page/contact", label: "Contact" },
+    { href: "/contact", label: "Contact" },
   ];
 
   const handleSmoothScroll = (e, href) => {
@@ -172,13 +172,13 @@ export default function MainNavbar() {
                   transformOrigin={{ horizontal: "right", vertical: "top" }}
                   anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
-                  <MenuItem component={Link} href="/page/dashboard/design">
+                  <MenuItem component={Link} href="/dashboard/design">
                     <ListItemIcon>
                       <DashboardIcon fontSize="small" />
                     </ListItemIcon>
                     Design
                   </MenuItem>
-                  <MenuItem component={Link} href="/page/dashboard/contact">
+                  <MenuItem component={Link} href="/dashboard/contact">
                     <ListItemIcon>
                       <DashboardIcon fontSize="small" />
                     </ListItemIcon>

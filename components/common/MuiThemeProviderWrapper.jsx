@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { getTheme } from '@/lib/theme';
-import ThemeToggleButton from './ThemeToggleButton';
+import ThemeToggleButton from '@/components/common/ThemeToggleButton';
 
 export default function MuiThemeProviderWrapper({ children }) {
   const [mode, setMode] = useState();

@@ -1,11 +1,14 @@
 import { Suspense } from 'react';
-import MuiThemeProviderWrapper from '@/components/common/MuiThemeProviderWrapper';
-import { Providers } from '@/components/common/Providers';
-import RootContent from '@/components/common/RootContent';
 import { Poppins, Prompt } from 'next/font/google';
 import './globals.css';
-import { CircularProgress, Typography, Box } from '@mui/material';
 
+import { Box, CircularProgress, Typography } from '@mui/material';
+
+import { Providers } from '@/components/providers';
+import MainNavbar from '@/components/layout/MainNavbar';
+import Footer from '@/components/layout/Footer';
+
+// กำหนด fonts
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
@@ -18,23 +21,20 @@ const prompt = Prompt({
   variable: '--font-prompt',
 });
 
+// กำหนด metadata สำหรับ SEO
 export const metadata = {
   title: 'Taurus: WE RENEW',
   description: 'เปลี่ยนบ้านหลังเก่าให้เป็นไปตามจินตนาการของคุณ',
-  icon: '/logo.ico',
+  icons: { icon: '/logo.ico' },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="th" className={`${poppins.variable} ${prompt.variable}`}>
-      <head>
-        <link rel="icon" href={metadata.icon} />
-        <meta name="description" content={metadata.description} />
-        <title>{metadata.title}</title>
-      </head>
       <body>
-        <MuiThemeProviderWrapper>
-          <Providers>
+        <Providers>
+          <MainNavbar />
+          <main className="min-h-screen">
             <Suspense
               fallback={
                 <Box
@@ -54,10 +54,12 @@ export default function RootLayout({ children }) {
                 </Box>
               }
             >
-              <RootContent>{children}</RootContent>
+              {children}
             </Suspense>
-          </Providers>
-        </MuiThemeProviderWrapper>
+          </main>
+          
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

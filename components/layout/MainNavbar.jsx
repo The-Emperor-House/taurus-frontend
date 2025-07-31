@@ -1,34 +1,27 @@
-"use client";
+'use client';
 
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
+import { motion } from "framer-motion";
+import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "@mui/material/styles";
-import {
-  Avatar,
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  Divider,
-} from "@mui/material";
-import Logout from "@mui/icons-material/Logout";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { AppBar, Toolbar, Box } from "@mui/material";
+
+import NavLink from "@/components/layout/navbar/NavLink";
+import UserAuthSection from "@/components/layout/navbar/UserAuthSection";
+import MobileMenuButton from "@/components/layout/navbar/MobileMenuButton";
+import MobileMenuOverlay from "@/components/layout/navbar/MobileMenuOverlay";
+// =================================================================
+
 
 export default function MainNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [desktopAnchorEl, setDesktopAnchorEl] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [showMobileUserMenu, setShowMobileUserMenu] = useState(false);
 
   const { data: session, status } = useSession();
   const pathname = usePathname();
@@ -38,14 +31,14 @@ export default function MainNavbar() {
   const user = session?.user;
   const firstLetter = user?.name?.charAt(0)?.toUpperCase() || "U";
   const fullAvatarUrl = !imageError ? user?.avatarUrl : undefined;
+  // console.log("User:", user, "Session:", session, "Status:", status);
 
+  // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
       requestAnimationFrame(() => {
         const scrollY = window.scrollY;
-        const docHeight =
-          document.documentElement.scrollHeight -
-          document.documentElement.clientHeight;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         setIsScrolled(scrollY > 0);
         setScrollProgress((scrollY / docHeight) * 100);
       });
@@ -54,16 +47,35 @@ export default function MainNavbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu when screen size changes to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= theme.breakpoints.values.md && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobileMenuOpen, theme.breakpoints.values.md]);
+
+  // Close mobile menu on path change (if not handled by NavLink onClick)
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+
+  // Define nav links (can be moved to a constants file in lib/ if shared widely)
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About Us" },
+    { href: "/about-us", label: "About Us" },
     { href: "/design", label: "Design" },
-    { href: "/#projects", label: "Projects" },
+    { href: "/projects", label: "Projects" },
     { href: "/#showroom", label: "Showroom" },
     { href: "/#news", label: "News & Events" },
     { href: "/contact", label: "Contact" },
   ];
 
+  // Helper to handle smooth scroll for hash links
   const handleSmoothScroll = (e, href) => {
     if (href.startsWith("/#")) {
       e.preventDefault();
@@ -72,18 +84,20 @@ export default function MainNavbar() {
       if (targetEl) {
         targetEl.scrollIntoView({ behavior: "smooth" });
         window.history.pushState(null, "", href);
-        setIsOpen(false);
+        setIsMobileMenuOpen(false);
       }
     }
   };
 
-  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
+  const handleDesktopMenuOpen = (event) => setDesktopAnchorEl(event.currentTarget);
+  const handleDesktopMenuClose = () => setDesktopAnchorEl(null);
   const handleLogout = () => {
     signOut({ callbackUrl: "/" });
-    handleMenuClose();
+    handleDesktopMenuClose();
+    setIsMobileMenuOpen(false);
   };
 
+  // Dynamic logo source based on scroll and theme
   const logoSrc = isScrolled
     ? "/navbar/logo webp/taurusOrange.webp"
     : isDarkMode
@@ -91,221 +105,104 @@ export default function MainNavbar() {
     : "/navbar/logo webp/taurusDark.webp";
 
   return (
-    <motion.nav
+    <AppBar
+      position="fixed"
+      sx={{
+        top: 0,
+        width: "100%",
+        zIndex: theme.zIndex.appBar,
+        transition: theme.transitions.create(['background-color', 'box-shadow'], {
+          duration: theme.transitions.duration.shorter,
+          easing: theme.transitions.easing.easeInOut,
+        }),
+        backgroundColor: isScrolled
+          ? (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
+          : "transparent",
+        boxShadow: isScrolled ? theme.shadows[3] : "none",
+        backdropFilter: isScrolled ? "blur(8px)" : "none",
+      }}
+      component={motion.nav}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
-        isScrolled
-          ? `${isDarkMode ? "bg-black/80" : "bg-white/80"} shadow backdrop-blur`
-          : "bg-transparent"
-      }`}
-      style={{ willChange: "transform, opacity" }}
     >
+      {/* Scroll Progress Bar */}
       <motion.div
         style={{ width: `${scrollProgress}%` }}
         className="h-1 bg-[#cc8f2a]"
       />
 
-      <div className="container mx-auto flex justify-between items-center px-4 py-3">
+      <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center', px: { xs: 2, sm: 3, md: 4 }, py: { xs: 1, sm: 1.5 } }}>
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
           <motion.div
             animate={{ scale: isScrolled ? 0.85 : 1 }}
             transition={{ duration: 0.3 }}
             style={{ width: 120, height: 80, position: "relative" }}
           >
-          <Image
-            src={logoSrc}
-            alt="Logo"
-            fill
-            sizes="(max-width: 768px) 120px, 160px"
-            style={{ objectFit: "contain" }}
-            onError={() => setImageError(true)}
-            className="transition-transform duration-300"
-            priority
-            quality={isScrolled ? 50 : 100}
-          />
+            <Image
+              src={logoSrc}
+              alt="Logo"
+              fill
+              sizes="(max-width: 768px) 120px, 160px"
+              style={{ objectFit: "contain" }}
+              onError={() => setImageError(true)}
+              className="transition-transform duration-300"
+              priority
+              quality={isScrolled ? 50 : 100}
+            />
           </motion.div>
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-6">
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 3 }}>
           {navLinks.map((link) => (
-            <Link
+            <NavLink
               key={link.href}
               href={link.href}
-              onClick={(e) => handleSmoothScroll(e, link.href)}
-              className={`relative text-lg transition-all duration-300 ${
-                pathname === link.href
-                  ? "font-semibold text-[#cc8f2a] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-[#cc8f2a]"
-                  : isDarkMode
-                  ? "text-white"
-                  : "text-gray-800"
-              } hover:text-[#cc8f2a]`}
-            >
-              {link.label}
-            </Link>
+              label={link.label}
+              pathname={pathname}
+              isDarkMode={isDarkMode}
+              handleSmoothScroll={handleSmoothScroll}
+            />
           ))}
-          {status === "authenticated" && (
-            <>
-              <IconButton onClick={handleMenuOpen} size="small" sx={{ ml: 1 }}>
-                <Avatar
-                  src={fullAvatarUrl}
-                  alt={user?.name || "User"}
-                  sx={{ width: 40, height: 40 }}
-                  imgProps={{ onError: () => setImageError(true) }}
-                >
-                  {firstLetter}
-                </Avatar>
-              </IconButton>
-
-              {anchorEl && (
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                  PaperProps={{
-                    elevation: 4,
-                    sx: { mt: 1.5, minWidth: 200 },
-                  }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                >
-                  <MenuItem component={Link} href="/dashboard/design">
-                    <ListItemIcon>
-                      <DashboardIcon fontSize="small" />
-                    </ListItemIcon>
-                    Design
-                  </MenuItem>
-                  <MenuItem component={Link} href="/dashboard/contact">
-                    <ListItemIcon>
-                      <DashboardIcon fontSize="small" />
-                    </ListItemIcon>
-                    Contact
-                  </MenuItem>
-                  <MenuItem component={Link} href="/page/dashboard/profile">
-                    <ListItemIcon>
-                      <AccountCircleIcon fontSize="small" />
-                    </ListItemIcon>
-                    Profile
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem onClick={handleLogout}>
-                    <ListItemIcon>
-                      <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Logout
-                  </MenuItem>
-                </Menu>
-              )}
-            </>
-          )}
-        </div>
-
-        {/* Hamburger */}
-        <button
-          aria-label="Toggle navigation menu"
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8 relative"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span
-            className={`absolute w-6 h-0.5 ${
-              isDarkMode ? "bg-white" : "bg-gray-800"
-            } transform ${isOpen ? "rotate-45" : "-translate-y-2"}`}
+          <UserAuthSection
+            session={session}
+            status={status}
+            user={user}
+            firstLetter={firstLetter}
+            fullAvatarUrl={fullAvatarUrl}
+            handleDesktopMenuOpen={handleDesktopMenuOpen}
+            handleDesktopMenuClose={handleDesktopMenuClose}
+            desktopAnchorEl={desktopAnchorEl}
+            handleLogout={handleLogout}
+            isDarkMode={isDarkMode}
           />
-          <span
-            className={`absolute w-6 h-0.5 ${
-              isDarkMode ? "bg-white" : "bg-gray-800"
-            } ${isOpen ? "opacity-0" : ""}`}
-          />
-          <span
-            className={`absolute w-6 h-0.5 ${
-              isDarkMode ? "bg-white" : "bg-gray-800"
-            } transform ${isOpen ? "-rotate-45" : "translate-y-2"}`}
-          />
-        </button>
-      </div>
+        </Box>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: "auto" }}
-            exit={{ height: 0 }}
-            transition={{ duration: 0.3 }}
-            className={`md:hidden ${
-              isDarkMode ? "bg-black" : "bg-white"
-            } overflow-hidden`}
-          >
-            <div className="flex flex-col p-4 space-y-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleSmoothScroll(e, link.href)}
-                  className={`relative text-lg transition-all duration-300 ${
-                    pathname === link.href
-                      ? "font-semibold text-[#cc8f2a] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-[#cc8f2a]"
-                      : isDarkMode
-                      ? "text-white"
-                      : "text-gray-800"
-                  } hover:text-[#cc8f2a]`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+        {/* Hamburger / Close Icon for Mobile */}
+        <MobileMenuButton
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+          isDarkMode={isDarkMode}
+        />
+      </Toolbar>
 
-              {status === "authenticated" && (
-                <>
-                  <button
-                    onClick={() => setShowMobileUserMenu(!showMobileUserMenu)}
-                    className="flex items-center text-lg hover:text-[#cc8f2a]"
-                  >
-                    Account
-                    {showMobileUserMenu ? (
-                      <ExpandLessIcon />
-                    ) : (
-                      <ExpandMoreIcon />
-                    )}
-                  </button>
-
-                  <AnimatePresence>
-                    {showMobileUserMenu && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="ml-4 flex flex-col space-y-1"
-                      >
-                        <Link
-                          href="/dashboard/contact"
-                          className="text-md hover:text-[#cc8f2a]"
-                        >
-                          Contact
-                        </Link>
-                        <Link
-                          href="/dashboard/profile"
-                          className="text-md hover:text-[#cc8f2a]"
-                        >
-                          Profile
-                        </Link>
-                        <button
-                          onClick={handleLogout}
-                          className="text-left text-md hover:text-[#cc8f2a]"
-                        >
-                          Logout
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+      {/* Mobile Menu Overlay */}
+      <MobileMenuOverlay
+        isMobileMenuOpen={isMobileMenuOpen}
+        navLinks={navLinks}
+        pathname={pathname}
+        isDarkMode={isDarkMode}
+        handleSmoothScroll={handleSmoothScroll}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+        session={session}
+        status={status}
+        user={user}
+        firstLetter={firstLetter}
+        fullAvatarUrl={fullAvatarUrl}
+        handleLogout={handleLogout}
+      />
+    </AppBar>
   );
 }

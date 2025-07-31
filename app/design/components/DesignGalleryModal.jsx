@@ -40,7 +40,7 @@ export default function DesignGalleryModal({ open, onClose, design }) {
             items={images}
             showThumbnails={true}
             showPlayButton={false}
-            showFullscreenButton={true}
+            showFullscreenButton={false}
             showNav={true}
             slideDuration={450}
             thumbnailPosition="bottom"

@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 // ฟังก์ชัน refresh access token
 async function refreshAccessToken(token) {
   // console.log('🔄 Attempting to refresh access token...');
-  console.log('📦 Current refresh token:', token.refreshToken);
+  // console.log('📦 Current refresh token:', token.refreshToken);
 
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh-token`, {
@@ -14,7 +14,7 @@ async function refreshAccessToken(token) {
     });
 
     const data = await res.json();
-    console.log('✅ Refresh token API response:', data);
+    // console.log('✅ Refresh token API response:', data);
 
     if (!res.ok || data.status !== "success" || !data.data?.accessToken) {
       console.error("❌ Refresh failed:", data);
@@ -42,7 +42,7 @@ async function refreshAccessToken(token) {
         accessTokenExpires: Date.now() + expiresInMs,
       };
     } catch (err) {
-    console.error("⚠️ Error while refreshing:", err);
+    // console.error("⚠️ Error while refreshing:", err);
     return { ...token, error: "RefreshAccessTokenError" };
   }
 }
@@ -130,7 +130,7 @@ const handler = NextAuth({
 
       // ⏳ ตรวจว่าหมดอายุหรือยัง
       if (Date.now() >= (token.accessTokenExpires ?? 0)) {
-          console.log("⌛ Access token expired. Refreshing...");
+          // console.log("⌛ Access token expired. Refreshing...");
           return await refreshAccessToken(token);
       }
 

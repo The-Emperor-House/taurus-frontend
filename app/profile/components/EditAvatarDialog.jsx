@@ -44,20 +44,21 @@ export default function EditProfileDialog({
       const formData = new FormData();
       formData.append("avatar", avatarFile);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/avatar`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/avatar/me`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
         },
         body: formData,
       });
+
+      console.log("Response status:", res.status);
 
       if (!res.ok) throw new Error("อัปเดตข้อมูลไม่สำเร็จ");
 
       const data = await res.json();
       onUpdated(data.user);
       onClose();
-      // router.refresh();
     } catch (err) {
       console.error("🔥 Update avatar error:", err);
       alert("เกิดข้อผิดพลาดในการอัปเดตรูป");

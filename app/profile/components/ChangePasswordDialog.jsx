@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useModalContext } from '../modals/useModalContext';
+import { useModalContext } from '../../../components/modals/useModalContext';
 
 export default function ChangePasswordDialog({ open, onClose, user, token }) {
   const { showModal, closeModal } = useModalContext();

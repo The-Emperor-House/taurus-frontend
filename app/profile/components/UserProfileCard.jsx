@@ -34,6 +34,7 @@ export default function UserProfileCard() {
           headers: { Authorization: `Bearer ${session.backendToken}` },
         });
 
+        // console.log("Session Token:", session.backendToken);
         if (res.status === 401) {
           console.warn("⚠️ Token expired or unauthorized, signing out...");
           signOut();

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useSession, signOut } from "next-auth/react";
+import { useLogout } from '@/hooks/useLogout';
+import { useSession } from "next-auth/react";
 import { useTheme } from "@mui/material/styles";
 import { AppBar, Toolbar, Box } from "@mui/material";
 
@@ -24,6 +25,7 @@ export default function MainNavbar() {
   const [imageError, setImageError] = useState(false);
 
   const { data: session, status } = useSession();
+  const { logout, loading, error } = useLogout();
   const pathname = usePathname();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
@@ -94,7 +96,7 @@ export default function MainNavbar() {
   const handleDesktopMenuOpen = (event) => setDesktopAnchorEl(event.currentTarget);
   const handleDesktopMenuClose = () => setDesktopAnchorEl(null);
   const handleLogout = () => {
-    signOut({ callbackUrl: "/" });
+    logout(session?.refreshToken);
     handleDesktopMenuClose();
     setIsMobileMenuOpen(false);
   };

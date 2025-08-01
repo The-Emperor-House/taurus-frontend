@@ -1,5 +1,10 @@
-import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+
+// 🚩 เส้นทางที่ต้อง login
+const protectedRoutes = ["/dashboard", "/profile"];
+// 🚩 เส้นทางที่ไม่ควรเข้าเมื่อ login แล้ว
+const authRoutes = ["/auth/login", "/auth"];
 
 export async function middleware(req) {
   const token = await getToken({
@@ -9,21 +14,24 @@ export async function middleware(req) {
 
   const { pathname } = req.nextUrl;
 
-  // ✅ ถ้า user ไม่ login
-  if (!token) {
-    // ถ้าจะเข้าหน้า dashboard, profile → redirect ไป /auth/login
-    if (pathname.startsWith('/dashboard') || pathname.startsWith('/profile')) {
-      const loginUrl = new URL('/auth/login', req.url);
-      return NextResponse.redirect(loginUrl);
-    }
-    return NextResponse.next();
+  // 🔒 ถ้าไม่ login แล้วจะเข้า route ที่ต้อง login
+  const isProtected = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  // 🔓 ถ้า login อยู่ แล้วจะเข้า route ที่ควรเข้าแค่ตอนยังไม่ login
+  const isAuthRoute = authRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  // ✅ กรณี: ไม่ได้ login แต่พยายามเข้า protected route
+  if (!token && isProtected) {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  // ✅ ถ้า user login อยู่
-  // ถ้าจะเข้าหน้า login → redirect ไป home
-  if (pathname.startsWith('/auth/login') || pathname === '/auth') {
-    const homeUrl = new URL('/', req.url);
-    return NextResponse.redirect(homeUrl);
+  // ✅ กรณี: login แล้วแต่พยายามเข้า auth route
+  if (token && isAuthRoute) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
@@ -31,8 +39,8 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/profile/:path*',
-    '/auth/:path*',
+    "/dashboard/:path*",
+    "/profile/:path*",
+    "/auth/:path*",
   ],
 };

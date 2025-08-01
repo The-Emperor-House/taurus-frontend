@@ -25,7 +25,7 @@ export default function MainNavbar() {
   const [imageError, setImageError] = useState(false);
 
   const { data: session, status } = useSession();
-  const { logout, loading, error } = useLogout();
+  const { logout } = useLogout();
   const pathname = usePathname();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";

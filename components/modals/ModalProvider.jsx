@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import SuccessModal from './SuccessModal';
 import ErrorModal from './ErrorModal';
 import WarningModal from './WarningModal';

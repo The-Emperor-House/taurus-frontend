@@ -45,20 +45,20 @@ export default function LogoutDialog({ isOpen, onClose }) {
         backdropFilter: 'blur(4px)',
       }}
     >
-      <DialogTitle>คุณต้องการออกจากระบบหรือไม่?</DialogTitle>
+      <DialogTitle>Are you sure you want to log out?</DialogTitle>
       <DialogContent>
         <Typography color="text.secondary">
-          หากคุณออกจากระบบ คุณจะต้องเข้าสู่ระบบใหม่อีกครั้ง
+          If you log out, you will need to log in again.
         </Typography>
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
-        <Button onClick={onClose}>ยกเลิก</Button>
+        <Button onClick={onClose}>Cancel</Button>
         <Button
           onClick={handleLogout}
           variant="contained"
           sx={{ bgcolor: '#cc8f2a', '&:hover': { bgcolor: '#e0a040' } }}
         >
-          ออกจากระบบ
+          Log Out
         </Button>
       </DialogActions>
     </Dialog>

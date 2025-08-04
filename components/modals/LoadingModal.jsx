@@ -8,7 +8,7 @@ export default function LoadingModal({ open, message }) {
       <DialogContent sx={{ textAlign: 'center', p: 4, backgroundColor: '#212121' }}>
         <CircularProgress size={80} sx={{ color: '#cc8f2a', mb: 2 }} />
         <Typography sx={{ color: 'white' }}>
-          {typeof message === 'string' ? message : 'กำลังโหลด...'}
+          {typeof message === 'string' ? message : 'Loading...'}
         </Typography>
       </DialogContent>
     </Dialog>

@@ -12,7 +12,7 @@ export default function WarningModal({ open, onClose, message }) {
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'center', backgroundColor: '#212121' }}>
         <Button variant="contained" onClick={onClose} sx={{ backgroundColor: '#ff9800', '&:hover': { backgroundColor: '#fb8c00' } }}>
-          ปิด
+          Close
         </Button>
       </DialogActions>
     </Dialog>

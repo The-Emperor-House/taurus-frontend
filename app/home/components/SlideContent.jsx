@@ -2,7 +2,6 @@
 
 import { Typography, Box } from "@mui/material";
 import { motion } from "framer-motion";
-import ResponsiveDivider from "@/app/home/components/ResponsiveDivider";
 
 const fadeVariant = (delay = 0) => ({
   initial: { opacity: 0 },
@@ -62,10 +61,6 @@ export default function SlideContent() {
         >
           WE RENEW
         </Typography>
-
-        <Box className="col-span-1 md:flex items-center justify-center">
-          <ResponsiveDivider />
-        </Box>
 
         <Typography
           variant="h3"

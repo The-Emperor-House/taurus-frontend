@@ -49,7 +49,7 @@ export default function MuiThemeProvider({ children }) {
       >
         <CircularProgress size={60} />
         <Typography variant="h5" color="text.secondary">
-          กำลังโหลดธีม...
+          Loading...
         </Typography>
       </Box>
     );

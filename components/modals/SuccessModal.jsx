@@ -46,7 +46,7 @@ export default function SuccessModal({ open, onClose, message }) {
           variant="h6"
           sx={{ mt: 1, fontWeight: 700, color: 'white' }}
         >
-          {typeof message === 'string' ? message : 'บันทึกสำเร็จ!'}
+          {typeof message === 'string' ? message : 'Success'}
         </Typography>
       </DialogContent>
 
@@ -63,7 +63,7 @@ export default function SuccessModal({ open, onClose, message }) {
             '&:hover': { backgroundColor: 'success.dark' },
           }}
         >
-          ปิด
+          Close
         </Button>
       </DialogActions>
     </Dialog>

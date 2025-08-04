@@ -12,7 +12,7 @@ export default function ErrorModal({ open, onClose, message }) {
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'center', backgroundColor: '#212121' }}>
         <Button variant="contained" onClick={onClose} sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#e53935' } }}>
-          ปิด
+          Close
         </Button>
       </DialogActions>
     </Dialog>

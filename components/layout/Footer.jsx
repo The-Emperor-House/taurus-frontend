@@ -1,212 +1,224 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { FaMapMarkerAlt, FaMailBulk, FaPhoneAlt, FaTiktok, FaLine, FaFacebookF } from 'react-icons/fa';
-import { useTheme } from '@mui/material/styles';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import {
+  FaMapMarkerAlt,
+  FaMailBulk,
+  FaPhoneAlt,
+  FaTiktok,
+  FaLine,
+  FaFacebookF,
+} from "react-icons/fa";
 
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
-};
-
-const iconHover = {
-  whileHover: { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] },
-  whileTap: { scale: 0.9 },
-};
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  IconButton,
+  useTheme,
+} from "@mui/material";
 
 export default function Footer() {
   const [showTikTokEmbed, setShowTikTokEmbed] = useState(false);
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
+  const isDarkMode = theme.palette.mode === "dark";
+
+  const logoSrc = isDarkMode
+    ? "/navbar/logo webp/taurusOrange.webp"
+    : "/navbar/logo webp/taurusDark.webp";
 
   useEffect(() => {
-    if (showTikTokEmbed && !document.querySelector('script[src*="tiktok.com/embed.js"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://www.tiktok.com/embed.js';
+    if (
+      showTikTokEmbed &&
+      !document.querySelector('script[src*="tiktok.com/embed.js"]')
+    ) {
+      const script = document.createElement("script");
+      script.src = "https://www.tiktok.com/embed.js";
       script.async = true;
       document.body.appendChild(script);
     }
   }, [showTikTokEmbed]);
 
-  const logoSrc = isDarkMode
-    ? '/navbar/logo webp/taurusWhite.webp'
-    : '/navbar/logo webp/taurusDark.webp';
-
-  const textColor = isDarkMode ? 'text-gray-300' : 'text-gray-700';
-  const headingColor = isDarkMode ? 'text-white' : 'text-gray-900';
-
-  const hoverColors = {
-    facebook: isDarkMode ? 'hover:text-blue-400' : 'hover:text-blue-600',
-    tiktok: isDarkMode ? 'hover:text-pink-400' : 'hover:text-pink-500',
-    line: isDarkMode ? 'hover:text-green-400' : 'hover:text-green-500',
-    mail: isDarkMode ? 'hover:text-yellow-400' : 'hover:text-yellow-500',
-  };
-
   return (
-    <motion.footer
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      variants={containerVariants}
-      className={`relative py-12 ${
-        isDarkMode
-          ? 'bg-gradient-to-tr from-black via-gray-900 to-gray-800'
-          : 'bg-gradient-to-tr from-gray-100 via-gray-200 to-gray-300'
-      }`}
+    <Box
+      component="footer"
+      sx={{
+        py: 8,
+        background: isDarkMode
+          ? "linear-gradient(to top right, #000000, #1f2937, #2d3748)"
+          : "linear-gradient(to top right, #f3f4f6, #e5e7eb, #d1d5db)",
+      }}
     >
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Logo + Social */}
-          <motion.div variants={itemVariants} className="flex flex-col items-center md:items-start">
-            <Image
-              src={logoSrc}
-              alt="Logo"
-              width={120}
-              height={0}
-              className="w-40 h-auto mb-4"
-              priority
-            />
-            <div className="flex space-x-4">
-              <motion.a
-                href="https://line.me/ti/p/YOUR_LINE_ID"
-                target="_blank"
-                rel="noopener noreferrer"
-                {...iconHover}
-                className={`${hoverColors.line} transition-colors text-2xl`}
-                title="LINE"
-              >
-                <FaLine />
-              </motion.a>
-              <motion.a
-                href="mailto:contact@taurus.com"
-                {...iconHover}
-                className={`${hoverColors.mail} transition-colors text-2xl`}
-                title="Email"
-              >
-                <FaMailBulk />
-              </motion.a>
-            </div>
-          </motion.div>
+      <Container maxWidth="xl">
+        <Grid container spacing={4}>
+          {/* Logo */}
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Image src={logoSrc} alt="Logo" width={150} height={50} />
+          </Grid>
 
           {/* Head Office */}
-          <motion.address variants={itemVariants} className={`not-italic text-sm ${textColor}`}>
-            <h2 className={`text-lg font-semibold mb-4 ${headingColor}`}>Head Office :</h2>
-            <div className="flex items-start gap-3 mb-3">
-              <FaMapMarkerAlt className="text-[#cc8f2a] mt-1" />
-              <div>
-                <p>288/18 Phaholyothin Rd,</p>
-                <p>Anusawaree, Bangkhen, Bangkok 10220</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <FaPhoneAlt className="text-[#cc8f2a]" />
-              <p>(66) 2 970 3080 - 3 / (66) 61 0596111</p>
-            </div>
-          </motion.address>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Typography variant="h6" gutterBottom fontWeight="bold">
+              Head Office :
+            </Typography>
+            <Box display="flex" alignItems="flex-start" gap={1} mb={1}>
+              <FaMapMarkerAlt color="#cc8f2a" style={{ marginTop: 4 }} />
+              <Typography variant="body2">
+                288/18 Phaholyothin Rd,
+                <br />
+                Anusawaree, Bangkhen, Bangkok 10220
+              </Typography>
+            </Box>
+            <Box display="flex" alignItems="center" gap={1}>
+              <FaPhoneAlt color="#cc8f2a" />
+              <Typography variant="body2">
+                (66) 2 970 3080 - 3 / (66) 61 0596111
+              </Typography>
+            </Box>
+          </Grid>
 
-          {/* Showroom + TikTok + Facebook */}
-          <motion.address variants={itemVariants} className={`not-italic text-sm ${textColor}`}>
-            <h2 className={`text-lg font-semibold mb-4 ${headingColor}`}>Showroom :</h2>
-            <div className="flex items-start gap-3 mb-3">
-              <FaMapMarkerAlt className="text-[#cc8f2a] mt-1" />
-              <div>
-                <p>189/9-10 Ratchada-Ramintra Rd,</p>
-                <p>Nuanchan, Buengkum, Bangkok 10240</p>
-              </div>
-            </div>
+          {/* Showroom + Social */}
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Typography variant="h6" gutterBottom fontWeight="bold">
+              Showroom :
+            </Typography>
+            <Box display="flex" alignItems="flex-start" gap={1} mb={1}>
+              <FaMapMarkerAlt color="#cc8f2a" style={{ marginTop: 4 }} />
+              <Typography variant="body2">
+                189/9-10 Ratchada-Ramintra Rd,
+                <br />
+                Nuanchan, Buengkum, Bangkok 10240
+              </Typography>
+            </Box>
 
-            <div className="mt-6 flex items-center space-x-4">
-              <p className="text-sm">ติดตามเรา</p>
+            <Typography variant="body2" mt={2} mb={1}>
+              ติดตามเรา
+            </Typography>
 
-              <motion.a
+            <Box display="flex" gap={1.5}>
+              <IconButton
+                href="https://line.me/ti/p/~salestaurus"
+                target="_blank"
+                sx={{
+                  color: "#00c300",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "scale(1.2)",
+                  },
+                }}
+              >
+                <FaLine />
+              </IconButton>
+
+              <IconButton
+                href="mailto:taurus@emperorhouse.com"
+                sx={{
+                  color: "#ffc107",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "scale(1.2)",
+                  },
+                }}
+              >
+                <FaMailBulk />
+              </IconButton>
+
+              <IconButton
                 href="https://facebook.com/TaurusByEmperor"
                 target="_blank"
-                rel="noopener noreferrer"
-                {...iconHover}
-                className={`${hoverColors.facebook} transition-colors text-xl`}
-                title="Facebook"
+                sx={{
+                  color: "#1877F2",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "scale(1.2)",
+                  },
+                }}
               >
                 <FaFacebookF />
-              </motion.a>
+              </IconButton>
 
-              <div
-                className="relative"
+              <Box
                 onMouseEnter={() => setShowTikTokEmbed(true)}
                 onMouseLeave={() => setShowTikTokEmbed(false)}
+                position="relative"
               >
-                <motion.a
+                <IconButton
                   href="https://www.tiktok.com/@taurus.by.emperor"
                   target="_blank"
-                  rel="noopener noreferrer"
-                  {...iconHover}
-                  className={`${hoverColors.tiktok} transition-colors text-xl`}
-                  title="TikTok"
+                  sx={{
+                    color: "#fe2c55",
+                    transition: "transform 0.2s",
+                    "&:hover": {
+                      transform: "scale(1.2)",
+                    },
+                  }}
                 >
                   <FaTiktok />
-                </motion.a>
+                </IconButton>
 
-                <AnimatePresence>
-                  {showTikTokEmbed && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 z-50 w-64"
+                {showTikTokEmbed && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      bottom: "100%",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      mb: 2,
+                      zIndex: 10,
+                      width: 250,
+                      p: 2,
+                      bgcolor: isDarkMode ? "grey.900" : "common.white",
+                      borderRadius: 2,
+                      boxShadow: 4,
+                    }}
+                  >
+                    <Box
+                      component="blockquote"
+                      className="tiktok-embed"
+                      data-video-id="7200000000000000000"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        maxWidth: "250px",
+                      }}
                     >
-                      <div
-                        className={`p-2 rounded-lg shadow-lg ${
-                          isDarkMode ? 'bg-gray-800' : 'bg-white'
-                        }`}
+                      <a
+                        href="https://www.tiktok.com/@taurus.by.emperor?refer=creator_embed"
                       >
-                        <blockquote
-                          className="tiktok-embed"
-                          cite="https://www.tiktok.com/@taurus.by.emperor"
-                          data-unique-id="taurus.by.emperor"
-                          data-embed-type="creator"
-                          style={{ width: '100%' }}
-                        >
-                          <section>
-                            <a
-                              target="_blank"
-                              href="https://www.tiktok.com/@taurus.by.emperor?refer=creator_embed"
-                              rel="noopener noreferrer"
-                              className={`text-sm ${
-                                isDarkMode ? 'text-blue-300' : 'text-blue-600'
-                              }`}
-                            >
-                              @taurus.by.emperor
-                            </a>
-                          </section>
-                        </blockquote>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-
-            <p className="mt-2 text-[#cc8f2a] font-medium">Taurus by Emperor</p>
-          </motion.address>
-        </div>
-
-        <motion.div
-          variants={itemVariants}
-          className="border-t border-gray-600 mt-12 pt-6 text-center text-xs"
-        >
-          <p className={textColor}>
-            &copy; {new Date().getFullYear()} Taurus by Emperor. All rights reserved.
-          </p>
-        </motion.div>
-      </div>
-    </motion.footer>
+                        @taurus.by.emperor
+                      </a>
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      color="textSecondary"
+                      sx={{ display: "block", mt: 1 }}
+                    >
+                      Hover to view TikTok video
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+        <Box mt={4} textAlign="center">
+          <Typography variant="body2" color="textSecondary">
+            © {new Date().getFullYear()} Taurus by Emperor. All rights reserved.
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            Developed by{" "}
+            <a
+              href="https://www.emperorhouse.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Emperor House
+            </a>
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 }

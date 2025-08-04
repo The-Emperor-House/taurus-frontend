@@ -47,7 +47,7 @@ export default function ConfirmModal({ open, onClose, message, onConfirm }) {
           variant="h6"
           sx={{ mt: 1, fontWeight: 700, color: 'white' }}
         >
-          {typeof message === 'string' ? message : 'คุณแน่ใจหรือไม่?'}
+          {typeof message === 'string' ? message : 'Confirmation Required'}
         </Typography>
       </DialogContent>
 
@@ -87,7 +87,7 @@ export default function ConfirmModal({ open, onClose, message, onConfirm }) {
             '&:hover': { backgroundColor: '#e0a040' },
           }}
         >
-          ยืนยัน
+          Confirm
         </Button>
       </DialogActions>
     </Dialog>

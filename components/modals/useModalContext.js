@@ -3,6 +3,6 @@ import { ModalContext } from './ModalProvider';
 
 export function useModalContext() {
   const context = useContext(ModalContext);
-  if (!context) throw new Error('useModalContext ต้องใช้ภายใน ModalProvider');
+  if (!context) throw new Error('useModalContext must be used within a ModalProvider');
   return context;
 }

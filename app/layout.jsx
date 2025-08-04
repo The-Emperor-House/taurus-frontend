@@ -1,9 +1,5 @@
-import { Suspense } from 'react';
 import { Poppins, Prompt } from 'next/font/google';
 import './globals.css';
-
-import { Box, CircularProgress, Typography } from '@mui/material';
-
 import { Providers } from '@/components/providers';
 import MainNavbar from '@/components/layout/MainNavbar';
 import Footer from '@/components/layout/Footer';
@@ -34,30 +30,9 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <MainNavbar />
-          <main className="min-h-screen">
-            <Suspense
-              fallback={
-                <Box
-                  sx={{
-                    minHeight: '100vh',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    gap: 2,
-                  }}
-                >
-                  <CircularProgress size={60} />
-                  <Typography variant="h5" color="text.secondary">
-                    กำลังโหลด...
-                  </Typography>
-                </Box>
-              }
-            >
+          <main className="flex flex-col min-h-screen">
               {children}
-            </Suspense>
           </main>
-          
           <Footer />
         </Providers>
       </body>

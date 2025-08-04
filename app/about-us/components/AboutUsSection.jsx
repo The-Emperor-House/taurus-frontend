@@ -42,7 +42,7 @@ export default function AboutUsSection() {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 p-4 md:p-8 rounded-lg">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 px-4 md:px-8 lg:px-16">
       {/* 1. ABOUT BLOCK */}
       {/* md:col-span-auto หรือ md:col-span-1 เพื่อให้ AboutBlock ใช้ 1 คอลัมน์ใน Grid 5 คอลัมน์ */}
       <Box className="col-span-1" sx={{ display: 'flex', flexDirection: 'column' }}>

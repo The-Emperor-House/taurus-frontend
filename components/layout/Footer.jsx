@@ -55,7 +55,16 @@ export default function Footer() {
         <Grid container spacing={4}>
           {/* Logo */}
           <Grid size={{ xs: 12, md: 4 }}>
-            <Image src={logoSrc} alt="Logo" width={150} height={50} />
+            <Box sx={{ position: 'relative', width: 120, height: 80 }}>
+              <Image 
+                src={logoSrc}
+                alt="Taurus Logo"
+                fill
+                sizes="(max-width: 1200px) 100vw, 120px"
+                style={{ objectFit: 'contain' }}
+                priority
+              />
+            </Box>
           </Grid>
 
           {/* Head Office */}

@@ -139,25 +139,23 @@ export default function MainNavbar() {
 
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center', px: { xs: 2, sm: 3, md: 4 }, py: { xs: 1, sm: 1.5 } }}>
         {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
-          <motion.div
-            animate={{ scale: isScrolled ? 0.85 : 1 }}
-            transition={{ duration: 0.3 }}
-            style={{ width: 120, height: 80, position: "relative" }}
-          >
+      <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
+        <motion.div
+          animate={{ scale: isScrolled ? 0.85 : 1 }}
+          transition={{ duration: 0.3 }}
+          style={{ width: 120, height: 80, position: 'relative' }}
+        >
+          <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
             <Image
               src={logoSrc}
-              alt="Logo"
+              alt="Taurus Logo"
               fill
-              sizes="(max-width: 768px) 120px, 160px"
-              style={{ objectFit: "contain" }}
-              onError={() => setImageError(true)}
-              className="transition-transform duration-300"
+              sizes="(max-width: 1200px) 100vw, 120px"
               priority
-              quality={isScrolled ? 50 : 100}
             />
-          </motion.div>
-        </Link>
+          </Box>
+        </motion.div>
+      </Link>
 
         {/* Desktop Menu */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 3 }}>

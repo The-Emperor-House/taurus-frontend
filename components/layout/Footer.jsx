@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { FaMapMarkerAlt, FaMailBulk, FaPhone, FaTiktok, FaLine, FaFacebookF } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaMailBulk, FaPhoneAlt, FaTiktok, FaLine, FaFacebookF } from 'react-icons/fa';
 import { useTheme } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -107,7 +107,7 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <FaPhone className="text-[#cc8f2a]" />
+              <FaPhoneAlt className="text-[#cc8f2a]" />
               <p>(66) 2 970 3080 - 3 / (66) 61 0596111</p>
             </div>
           </motion.address>

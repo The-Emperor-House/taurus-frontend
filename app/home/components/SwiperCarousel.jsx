@@ -2,14 +2,16 @@
 
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 
+// ==========================
+// Swiper Carousel Component
+// ==========================
 export default function SwiperCarousel({ slides = [] }) {
   if (slides.length === 0) {
     return (
@@ -21,13 +23,13 @@ export default function SwiperCarousel({ slides = [] }) {
 
   const contentTransition = {
     duration: 0.8,
-    ease: [0.2, 0.65, 0.3, 0.9], // Consistent with SlideContent animation
+    ease: [0.2, 0.65, 0.3, 0.9],
   };
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
       <Swiper
-        modules={[Autoplay, Pagination]}
+        modules={[Autoplay]}
         slidesPerView={1}
         loop
         speed={800}
@@ -37,10 +39,9 @@ export default function SwiperCarousel({ slides = [] }) {
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
-        pagination={{ clickable: true }}
         className="w-full h-full"
       >
-        {/* Gradient overlay */}
+        {/* Background gradient overlay */}
         <div
           slot="container-start"
           className="absolute inset-0 z-0 bg-gradient-to-tr from-black/60 via-transparent to-black/20"
@@ -50,7 +51,7 @@ export default function SwiperCarousel({ slides = [] }) {
           <SwiperSlide key={slide.id} className="relative w-full h-full">
             <BackgroundImage src={slide.imageSrc} alt={slide.alt || `Slide ${slide.id}`} />
 
-            {/* Content Layer with framer-motion */}
+            {/* Animated content overlay */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -66,7 +67,9 @@ export default function SwiperCarousel({ slides = [] }) {
   );
 }
 
-// BackgroundImage component with loading skeleton
+// ==========================
+// Background Image Component
+// ==========================
 function BackgroundImage({ src, alt }) {
   const [loading, setLoading] = useState(true);
 
@@ -74,20 +77,22 @@ function BackgroundImage({ src, alt }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.5, ease: "easeOut" }}
+      transition={{ duration: 1.5, ease: 'easeOut' }}
       className="absolute inset-0 w-full h-full z-0"
     >
+      {/* Skeleton while image is loading */}
       {loading && (
         <div className="absolute inset-0 bg-gray-800 animate-pulse" />
       )}
+
       <Image
         src={src}
         alt={alt}
         fill
-        className={`object-cover transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
+        priority
         onLoad={() => setLoading(false)}
         sizes="(max-width: 768px) 100vw, 50vw"
-        priority
+        className={`object-cover transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
       />
     </motion.div>
   );

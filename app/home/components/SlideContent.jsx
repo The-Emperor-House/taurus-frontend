@@ -40,10 +40,10 @@ export default function SlideContent() {
           variant="h1"
           sx={{
             fontWeight: 600,
-            fontSize: { xs: "2.4rem", sm: "4rem", md: "5.5rem" },
+            fontSize: { xs: "2rem", sm: "3rem", md: "4rem" },
             color: "#cc8f2a",
-            textShadow: "2px 2px 5px rgba(0, 0, 0, 0.8)",
-            letterSpacing: { xs: "0.3rem", sm: "0.6rem", md: "1rem" },
+            textShadow: "2px 2px 2px rgba(0, 0, 0, 1)",
+            letterSpacing: { xs: "0.1rem", sm: "0.2rem", md: "0.3rem" },
           }}
         >
           TAURUS:
@@ -53,10 +53,10 @@ export default function SlideContent() {
           variant="h2"
           sx={{
             fontWeight: 300,
-            fontSize: { xs: "2rem", sm: "3.2rem", md: "4.5rem" },
+            fontSize: { xs: "1.5rem", sm: "2.5rem", md: "3.5rem" },
             color: "#ffffff",
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)",
-            letterSpacing: { xs: "0.3rem", sm: "0.6rem", md: "1rem" },
+            textShadow: "2px 2px 2px rgba(0, 0, 0, 1)",
+            letterSpacing: { xs: "0.2rem", sm: "0.4rem", md: "0.6rem" },
             mt: 1,
           }}
         >
@@ -70,11 +70,11 @@ export default function SlideContent() {
         <Typography
           variant="h3"
           sx={{
-            fontWeight: 300,
-            fontSize: { xs: "1.2rem", sm: "1.8rem", md: "1.5rem" },
+            fontWeight: 100,
+            fontSize: { xs: "1.2rem", sm: "1.8rem", md: "2.5rem" },
             color: "#fdfdfd",
-            textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
-            letterSpacing: { xs: "0.1rem", sm: "0.3rem", md: "0.5rem" },
+            textShadow: "2px 2px 2px rgba(0, 0, 0, 1)",
+            letterSpacing: { xs: "0.1rem", sm: "0.2rem", md: "0.3rem" },
             mt: { xs: 1.5, sm: 2 },
             whiteSpace: 'nowrap',
           }}
@@ -102,7 +102,7 @@ export default function SlideContent() {
               fontSize: { xs: "1rem", sm: "1.3rem", md: "1.6rem" },
               opacity: 0.9,
               color: "#ffffffff",
-              textShadow: "1px 1px 4px rgba(0,0,0,0.8)",
+              textShadow: "1px 1px 1px rgba(0, 0, 0, 1)",
               letterSpacing: "0.05rem",
             }}
           >

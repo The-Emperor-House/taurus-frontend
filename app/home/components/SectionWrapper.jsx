@@ -6,10 +6,10 @@ export default function SectionWrapper({
   children,
   noPadding = false,
   className = "",
-  variant = "fade-up", // Default variant for animation
-  transition = { // Default transition config
+  variant = "fade-up",
+  transition = {
     duration: 1.0,
-    ease: [0.2, 0.65, 0.3, 0.9], // Custom cubic-bezier for a modern feel
+    ease: [0.2, 0.65, 0.3, 0.9],
   },
   viewport = { once: true, amount: 0.3 },
 }) {
@@ -22,7 +22,6 @@ export default function SectionWrapper({
       initial: { opacity: 0 },
       whileInView: { opacity: 1 },
     },
-    // Add more variants here if needed
   };
 
   const selectedAnimation = animations[variant] || animations["fade-up"];

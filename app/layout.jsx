@@ -1,5 +1,5 @@
-import { Poppins, Prompt } from 'next/font/google';
 import './globals.css';
+import { Poppins, Prompt } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import MainNavbar from '@/components/layout/MainNavbar';
 import Footer from '@/components/layout/Footer';
@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <MainNavbar />
-          <main className="flex flex-col min-h-screen">
+          <main>
               {children}
           </main>
           <Footer />

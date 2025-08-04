@@ -13,7 +13,7 @@ export default function HeroSection() {
   }));
 
   return (
-    <SectionWrapper noPadding={true} className="py-16">
+    <SectionWrapper noPadding={true}>
         <SwiperCarousel slides={carouselSlides} />
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
           <SlideContent />

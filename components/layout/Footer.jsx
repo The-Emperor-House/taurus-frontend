@@ -115,7 +115,7 @@ export default function Footer() {
               <IconButton
                 href="mailto:taurus@emperorhouse.com"
                 sx={{
-                  color: "#ffc107",
+                  color: "#cc8f2a",
                   transition: "transform 0.2s",
                   "&:hover": {
                     transform: "scale(1.2)",

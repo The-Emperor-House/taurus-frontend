@@ -11,10 +11,10 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main>
-      <HeroSection className="mb-16" />
-      <AboutUsHomePageSection className="mb-16" />
-      <ProjectsHomePageSection className="mb-16" />
-      <OurTeamHomePageSection className="mb-16" />
+      <HeroSection />
+      <AboutUsHomePageSection />
+      <ProjectsHomePageSection />
+      <OurTeamHomePageSection />
     </main>
   );
 }

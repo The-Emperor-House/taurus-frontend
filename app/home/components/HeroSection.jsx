@@ -9,12 +9,14 @@ export default function HeroSection() {
     id: num,
     imageSrc: `/home/swiper/${String(num).padStart(2, "0")}.webp`,
     alt: `Slide ${num}`,
-    content: <SlideContent num={num} />,
   }));
 
   return (
     <section className="relative h-screen overflow-hidden">
       <SwiperCarousel slides={carouselSlides} />
+      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+        <SlideContent />
+      </div>
     </section>
   );
 }

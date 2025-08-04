@@ -12,9 +12,9 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <AboutUsHomePageSection />
-      <ProjectsHomePageSection />
-      <OurTeamHomePageSection />
+      {/* <AboutUsHomePageSection /> */}
+      {/* <ProjectsHomePageSection /> */}
+      {/* <OurTeamHomePageSection /> */}
     </main>
   );
 }

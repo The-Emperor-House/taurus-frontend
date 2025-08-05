@@ -7,7 +7,7 @@ import AboutBlock from './AboutBlock';
 import ServiceBlock from './ServiceBlock';
 import IconListBlock from './IconListBlock';
 import CategoryButton from './CategoryButton';
-import ResponsiveDivider from './ResponsiveDivider'; // อย่าลืม import
+import ResponsiveDivider from './ResponsiveDivider';
 
 // กำหนดรายการบริการ
 const servicesList = [

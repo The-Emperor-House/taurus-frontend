@@ -1,16 +1,30 @@
 'use client';
 
-import { Box, Typography, Container, Paper } from '@mui/material';
+import { Box, Stack, Typography, Container } from '@mui/material';
+import CategoryButton from './components/CategoryButton';
+
+const servicesList = [
+  'สร้างใหม่',
+  'ปรับปรุงต่อเติม - ซ่อมแซม',
+  'ออกแบบตกแต่งภายใน',
+];
 
 export default function AboutUsPage() {
+  const categories = [
+    { name: 'HOME', href: '/' },
+    { name: 'CONDOMINIUM', href: '/condominium' },
+    { name: 'HOTEL', href: '/hotel' },
+    { name: 'OFFICE', href: '/office' },
+  ];
+
   return (
-    <Box sx={{ width: '100%', overflowX: 'hidden' }}>
+    <Box component="main" sx={{ width: '100%', overflowX: 'hidden' }}>
       {/* Hero Banner */}
       <Box
         sx={{
           position: 'relative',
           width: '100%',
-          height: '100vh',
+          height: '50vh',
           backgroundImage: "url('/about-us/banner.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -106,6 +120,32 @@ export default function AboutUsPage() {
           </Typography>
         </Box>
       </Container>
+
+      <Box className="col-span-full mt-6" sx={{ textAlign: 'center' }}>
+        <Typography
+          variant="subtitle1"
+          sx={{
+            fontWeight: 500,
+            letterSpacing: '0.05em',
+            mb: 1.5,
+          }}
+        >
+          {servicesList.join(' | ')}
+        </Typography>
+
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="center"
+          flexWrap="wrap"
+          useFlexGap
+          sx={{ mt: 2, mb: 4 }}
+        >
+          {categories.map(({ name, href }) => (
+            <CategoryButton key={name} category={name} href={href} />
+          ))}
+        </Stack>
+      </Box>
     </Box>
   );
 }

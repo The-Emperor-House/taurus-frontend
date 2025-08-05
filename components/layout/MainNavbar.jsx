@@ -22,7 +22,7 @@ export default function MainNavbar() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [desktopAnchorEl, setDesktopAnchorEl] = useState(null);
-  const [imageError, setImageError] = useState(false);
+  const [imageError] = useState(false);
 
   const { data: session, status } = useSession();
   const { logout } = useLogout();
@@ -110,11 +110,8 @@ export default function MainNavbar() {
 
   return (
     <AppBar
-      position="fixed"
+      // position="fixed"
       sx={{
-        top: 0,
-        width: "100%",
-        zIndex: theme.zIndex.appBar,
         transition: theme.transitions.create(['background-color', 'box-shadow'], {
           duration: theme.transitions.duration.shorter,
           easing: theme.transitions.easing.easeInOut,

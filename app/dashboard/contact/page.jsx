@@ -21,6 +21,23 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { DataGrid } from '@mui/x-data-grid';
 import * as XLSX from 'xlsx';
 
+// Transition for Dialog
+const Transition = Slide;
+
+// Format contact data from API
+const formatContacts = (data) =>
+  data.map((c) => ({
+    id: c.id,
+    fullName: c.fullName,
+    email: c.email,
+    phone: c.phone,
+    budget: c.budget,
+    areaSize: c.areaSize,
+    needs: c.needs.join(', '),
+    details: c.details || '-',
+    createdAt: c.createdAt,
+  }));
+
 export default function ContactListWithDetailModal() {
   const { data: session, status } = useSession();
   const [contacts, setContacts] = useState([]);
@@ -33,6 +50,7 @@ export default function ContactListWithDetailModal() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // Fetch contacts
   useEffect(() => {
     if (status !== 'authenticated') return;
 
@@ -42,18 +60,9 @@ export default function ContactListWithDetailModal() {
           headers: { Authorization: `Bearer ${session.backendToken}` },
         });
         if (!res.ok) throw new Error('โหลดข้อมูลไม่สำเร็จ');
+
         const data = await res.json();
-        const formatted = data.map((c) => ({
-          id: c.id,
-          fullName: c.fullName,
-          email: c.email,
-          phone: c.phone,
-          budget: c.budget,
-          areaSize: c.areaSize,
-          needs: c.needs.join(', '),
-          details: c.details || '-',
-          createdAt: c.createdAt, // keep raw, format later in client
-        }));
+        const formatted = formatContacts(data);
         setContacts(formatted);
         setFiltered(formatted);
       } catch (err) {
@@ -66,6 +75,7 @@ export default function ContactListWithDetailModal() {
     fetchContacts();
   }, [session, status]);
 
+  // Filter when searching
   useEffect(() => {
     const term = search.toLowerCase();
     setFiltered(
@@ -79,6 +89,7 @@ export default function ContactListWithDetailModal() {
     );
   }, [search, contacts]);
 
+  // Export filtered data to Excel
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(filtered);
     const workbook = XLSX.utils.book_new();
@@ -86,6 +97,7 @@ export default function ContactListWithDetailModal() {
     XLSX.writeFile(workbook, 'contacts.xlsx');
   };
 
+  // Columns for DataGrid
   const columns = [
     { field: 'fullName', headerName: 'ชื่อ', flex: 1, minWidth: 150 },
     !isMobile && { field: 'email', headerName: 'อีเมล', flex: 1, minWidth: 180 },
@@ -94,13 +106,14 @@ export default function ContactListWithDetailModal() {
   ].filter(Boolean);
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', px: 1 }}>
-      <Card sx={{ p: { xs: 2, sm: 3 }, width: '100%', maxWidth: 1200, mx: 'auto', my: 4 }}>
+    <div className="min-h-screen flex items-center justify-center">
+    <Box component="main" sx={{ width: '100%', overflowX: 'hidden' }}>
+      <Card sx={{ p: 3, mb: 3 }}>
         <Typography variant="h5" fontWeight={700} gutterBottom>
           📋 รายการ Contact ทั้งหมด
         </Typography>
 
-        {/* Search + Export buttons, stacked on mobile */}
+        {/* Search + Export */}
         <Box
           sx={{
             display: 'flex',
@@ -126,6 +139,7 @@ export default function ContactListWithDetailModal() {
           </Button>
         </Box>
 
+        {/* Contact Table */}
         {error ? (
           <Alert severity="error">{error}</Alert>
         ) : (
@@ -151,41 +165,37 @@ export default function ContactListWithDetailModal() {
           </Box>
         )}
 
+        {/* Detail Modal */}
         <Dialog
           open={!!selectedContact}
           onClose={() => setSelectedContact(null)}
           fullWidth
           maxWidth="sm"
           fullScreen={isMobile}
-          TransitionComponent={Slide}
+          TransitionComponent={Transition}
           TransitionProps={{ direction: 'up', onEnter: () => window.scrollTo(0, 0) }}
         >
           <DialogTitle>รายละเอียด Contact</DialogTitle>
           <DialogContent dividers>
             {selectedContact && (
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <Typography>
-                  <strong>ชื่อ:</strong> {selectedContact.fullName}
-                </Typography>
-                <Typography>
-                  <strong>อีเมล:</strong> {selectedContact.email}
-                </Typography>
-                <Typography>
-                  <strong>เบอร์โทร:</strong> {selectedContact.phone}
-                </Typography>
-                <Typography>
-                  <strong>บริการ:</strong> {selectedContact.needs}
-                </Typography>
+                <Typography><strong>ชื่อ:</strong> {selectedContact.fullName}</Typography>
+                <Typography><strong>อีเมล:</strong> {selectedContact.email}</Typography>
+                <Typography><strong>เบอร์โทร:</strong> {selectedContact.phone}</Typography>
+                <Typography><strong>บริการ:</strong> {selectedContact.needs}</Typography>
                 <Typography>
                   <strong>งบประมาณ:</strong>{' '}
-                  {Number(selectedContact.budget).toLocaleString('th-TH')} บาท
+                  {selectedContact.budget
+                    ? Number(selectedContact.budget).toLocaleString('th-TH') + ' บาท'
+                    : '-'}
                 </Typography>
                 <Typography>
-                  <strong>ขนาดพื้นที่:</strong> {selectedContact.areaSize} ตร.ม.
+                  <strong>ขนาดพื้นที่:</strong>{' '}
+                  {selectedContact.areaSize
+                    ? Number(selectedContact.areaSize).toLocaleString('th-TH') + ' ตร.ม.'
+                    : '-'}
                 </Typography>
-                <Typography>
-                  <strong>รายละเอียดเพิ่มเติม:</strong> {selectedContact.details}
-                </Typography>
+                <Typography><strong>รายละเอียดเพิ่มเติม:</strong> {selectedContact.details}</Typography>
                 <Typography>
                   <strong>วันที่ส่ง:</strong>{' '}
                   {new Date(selectedContact.createdAt).toLocaleDateString('th-TH', {
@@ -207,5 +217,6 @@ export default function ContactListWithDetailModal() {
         </Dialog>
       </Card>
     </Box>
+    </div>
   );
 }

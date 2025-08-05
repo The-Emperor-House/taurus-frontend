@@ -109,7 +109,11 @@ export default function AboutUsPage() {
             TAURUS : WE RENEW
           </Typography>
 
-          <Typography variant="body1" color="text.secondary" lineHeight={1.8}>
+          <Typography 
+            variant="body1" 
+            color="#ab9685" 
+            lineHeight={1.8}
+          >
             "ทอรัส" ผู้เชี่ยวชาญด้านการปรับโฉมบ้านพักอาศัย อาคารต่างๆ อย่างมีรสนิยม 
             ด้วยประสบการณ์ที่มีมากกว่า 30 ปี ให้บริการแบบครบวงจร ตั้งแต่การสร้างบ้านใหม่ ปรับปรุง
             ต่อเติมบ้าน งานออกแบบตกแต่งภายใน บ้านพักอาศัย คอนโดมิเนียม โรงแรม สำนักงาน และอาคารต่างๆ

@@ -110,7 +110,7 @@ export default function EditProfileDialog({
 
       <DialogActions>
         <Button onClick={onClose} disabled={loading}>
-          ยกเลิก
+          Cancel
         </Button>
         <Button
           onClick={handleSave}
@@ -118,7 +118,7 @@ export default function EditProfileDialog({
           color="primary"
           disabled={loading}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : "บันทึก"}
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Save"}
         </Button>
       </DialogActions>
     </Dialog>

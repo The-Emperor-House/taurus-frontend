@@ -14,8 +14,6 @@ import NavLink from "@/components/layout/navbar/NavLink";
 import UserAuthSection from "@/components/layout/navbar/UserAuthSection";
 import MobileMenuButton from "@/components/layout/navbar/MobileMenuButton";
 import MobileMenuOverlay from "@/components/layout/navbar/MobileMenuOverlay";
-// =================================================================
-
 
 export default function MainNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);

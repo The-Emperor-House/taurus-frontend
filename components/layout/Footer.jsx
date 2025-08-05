@@ -46,9 +46,7 @@ export default function Footer() {
       component="footer"
       sx={{
         py: 8,
-        background: isDarkMode
-          ? "linear-gradient(to top right, #000000, #1f2937, #2d3748)"
-          : "linear-gradient(to top right, #f3f4f6, #e5e7eb, #d1d5db)",
+        backgroundColor: isDarkMode ? "grey.900" : "common.white"
       }}
     >
       <Container maxWidth="xl">

@@ -1,7 +1,6 @@
 "use client";
 
 import { Box } from "@mui/material";
-
 import DesignCategoryCard from "./components/DesignCategoryCard";
 import AnimatedHeading from "@/app/home/components/AnimatedHeading";
 
@@ -24,39 +23,32 @@ export default function DesignPage() {
   return (
     <Box
       sx={{
-        px: { xs: 2, sm: 3, md: 4 },
-        py: { xs: 6, sm: 8 },
-        pt: { xs: "56px", md: "64px" }, // Padding Top เพื่อหลบ Navbar
-        minHeight: "100vh", // ความสูงขั้นต่ำเท่า Viewport
-        maxWidth: "1200px", // ความกว้างสูงสุดของเนื้อหา
-        mx: "auto", // จัดกึ่งกลางในแนวนอน
+        minHeight: "100vh",
         display: "flex",
+        backgroundColor: "#404040",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        gap: { xs: 4, md: 8 }, // ระยะห่างระหว่าง Heading กับ Cards
+        pt: { xs: '56px', md: '64px' },
       }}
     >
       {/* ส่วนหัว DESIGN */}
-      <Box sx={{ textAlign: "center", mb: 4 }}>
+      <Box sx={{ textAlign: "center", mb: 4, pt: { xs: '56px', md: '64px' }, }}>
         <AnimatedHeading
           title="DESIGN"
-          textColor="text.primary" // สีตัวอักษรของ Header (ใช้จาก Theme)
-          lineColor="primary.main" // สีเส้น (ใช้จาก Theme)
-          fontSize={{ mobile: "text-4xl", desktop: "text-6xl" }} // ขนาดตัวอักษร
-          fontWeight="font-light" // น้ำหนักตัวอักษร
+          color="#FFFFFF"
+          fontWeight="font-light"
           animationDelay={0.1}
         />
       </Box>
 
-      {/* Flex Container สำหรับ Design Category Cards */}
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
           flexWrap: "wrap",
           justifyContent: "center",
-          gap: { xs: 4, md: 6 }, // Spacing ระหว่าง Card
+          gap: { xs: 4, md: 6 },
           width: "100%",
         }}
       >
@@ -70,10 +62,11 @@ export default function DesignPage() {
                 sm: "calc(50% - 24px)",
                 md: "calc(50% - 24px)",
               }, // 2 Cards ต่อแถวบน md:
-              maxWidth: { xs: "none", sm: 500, md: 500 }, // Max width per card (ปรับให้ใหญ่ขึ้น)
+              maxWidth: { xs: "none", sm: 500, md: 500 },
               display: "flex",
               justifyContent: "center",
-              alignItems: "stretch", // ทำให้ Card มีความสูงเท่ากันในแถว
+              alignItems: "stretch",
+              marginBottom: { xs: 4, sm: 0 },
             }}
           >
             <DesignCategoryCard
@@ -81,7 +74,12 @@ export default function DesignPage() {
               title={category.title}
               image={category.image}
               link={category.link}
-              index={index}
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+              }}
             />
           </Box>
         ))}

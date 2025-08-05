@@ -52,15 +52,20 @@ export default function DesignCategoryCard({
     >
       <Card
         sx={{
-          borderRadius: '12px',
+          borderRadius: '24px',
           overflow: 'hidden',
-          width: '100%',
-          height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          bgcolor: 'background.paper',
-          boxShadow: 'none',
-        }}
+          boxShadow: '0 12px 32px rgba(0,0,0,0.2)',
+          maxWidth: 600,
+          minHeight: 400,
+          backgroundColor: '#fdfdfd',
+          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-8px)',
+            boxShadow: '0 16px 48px rgba(0,0,0,0.25)',
+          },
+          }}
       >
         <Link href={link} passHref style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
           <CardActionArea sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
@@ -76,7 +81,7 @@ export default function DesignCategoryCard({
                 src={image}
                 alt={title}
                 fill
-                sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+                sizes="(max-width: 500px) 100vw, 500px"
                 style={{ objectFit: 'cover' }}
                 className={`transition-opacity duration-500 ${loadingImage ? 'opacity-0' : 'opacity-100'}`}
                 onLoad={() => setLoadingImage(false)}
@@ -85,16 +90,16 @@ export default function DesignCategoryCard({
 
               {/* Overlay (เฉพาะ darken เมื่อ Hover) */}
               <motion.div
-                variants={overlayVariants} // ใช้ variants ที่กำหนดไว้ด้านบน
+                variants={overlayVariants}
                 initial="initial"
                 whileHover="hover"
-                whileTap="hover" // ทำให้ Mobile Tap มี Effect เหมือน Hover
+                whileTap="hover"
                 transition={{ duration: 0.3, ease: 'easeOut' }}
                 sx={{
                   position: 'absolute',
                   inset: 0,
                   backgroundColor: 'rgba(0,0,0,0.0)', // เริ่มต้นโปร่งใส
-                  zIndex: 2, // อยู่เหนือรูปภาพ
+                  zIndex: 2,
                 }}
               />
             </Box>
@@ -102,19 +107,16 @@ export default function DesignCategoryCard({
             {/* CardContent: สำหรับข้อความ Title ที่อยู่ด้านล่างรูปภาพ */}
             <CardContent
               sx={{
-                flexGrow: 1, // ทำให้ CardContent ขยายเต็มพื้นที่ที่เหลือใน Card
+                flexGrow: 1,
                 display: 'flex',
-                alignItems: 'center', // จัดกึ่งกลาง Title ในแนวตั้ง
-                justifyContent: 'center', // จัดกึ่งกลาง Title ในแนวนอน
-                minHeight: '80px', // กำหนดความสูงขั้นต่ำเพื่อให้ Title ไม่เล็กเกินไป
-                py: 2, // Padding บน-ล่าง
-                px: 2, // Padding ซ้าย-ขวา
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <Typography
-                variant="h6" // ใช้ h6 สำหรับ Title
+                variant="h4"
                 textAlign="center"
-                sx={{ fontWeight: 'bold', color: 'text.primary' }} // Style ข้อความ Title
+                sx={{ fontWeight: 'light' }}
               >
                 {title}
               </Typography>

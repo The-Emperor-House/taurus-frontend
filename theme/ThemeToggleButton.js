@@ -22,7 +22,7 @@ export default function ThemeToggleButton() {
         bottom: 16,
         right: 16,
         zIndex: 9999,
-        bgcolor: 'background.paper',
+        backgroundColor: isDark ? '#424242' : '#cc8f2a',
         borderRadius: '50%',
         boxShadow: 3,
       }}
@@ -30,7 +30,7 @@ export default function ThemeToggleButton() {
       <Tooltip title={`Switch to ${isDark ? 'light' : 'dark'} mode`}>
         <IconButton
           onClick={toggleMode}
-          color="primary"
+          color="text.primary"
           sx={{ width: 48, height: 48 }}
           aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
         >

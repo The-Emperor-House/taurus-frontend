@@ -1,6 +1,6 @@
 import './globals.css';
 import { Poppins, Prompt } from 'next/font/google';
-import { Providers } from '@/components/providers';
+import { Providers } from '@/components/context/Providers';
 import MainNavbar from '@/components/layout/MainNavbar';
 import Footer from '@/components/layout/Footer';
 

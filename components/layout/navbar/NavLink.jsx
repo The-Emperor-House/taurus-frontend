@@ -12,9 +12,9 @@ const NavLink = ({ href, label, pathname, isDarkMode, handleSmoothScroll, setIsO
   const commonSx = {
     textTransform: "none",
     fontWeight: isActive ? "600" : "normal",
-    color: isActive ? "primary.main" : (isDarkMode ? "white" : "text.primary"),
+    color: isActive ? "primary.hover" : (isDarkMode ? "primary.main" : "primary.main"),
     "&:hover": {
-      color: "primary.main",
+      color: "primary.hover",
       backgroundColor: 'transparent',
     },
     "&::after": {
@@ -24,7 +24,6 @@ const NavLink = ({ href, label, pathname, isDarkMode, handleSmoothScroll, setIsO
       left: 0,
       height: "2px",
       width: "100%",
-      backgroundColor: "primary.main",
       transform: isActive ? "scaleX(1)" : "scaleX(0)",
       transition: theme.transitions.create('transform', { duration: 0.3, easing: theme.transitions.easing.easeOut }),
     },

@@ -36,7 +36,8 @@ export const getTheme = (mode = 'light') =>
             },
           }),
       primary: {
-        main: '#cc8f2a',
+        main: '#ffffffff',
+        hover: '#cc8f2a',
       },
       secondary: {
         main: '#dc004e',

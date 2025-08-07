@@ -52,10 +52,11 @@ const UserAuthSection = ({
   return (
     <Link
       href="/auth/login"
-      className={`text-lg transition-colors duration-300 ${
-        isDarkMode ? "text-white" : "text-gray-800"
-      } hover:text-[#cc8f2a]`}
-      style={{ textDecoration: 'none' }}
+      className="text-primary-main hover:text-primary-hover transition-colors duration-200"
+      style={{ textDecoration: 'none', fontWeight: 600 }}
+      onClick={() => {
+        if (handleDesktopMenuClose) handleDesktopMenuClose();
+      }}
     >
       Login
     </Link>

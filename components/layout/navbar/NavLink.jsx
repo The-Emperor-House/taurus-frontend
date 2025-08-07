@@ -4,19 +4,20 @@ import Link from "next/link";
 import { Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-const NavLink = ({ href, label, pathname, isDarkMode, handleSmoothScroll, setIsOpen, classes = "" }) => {
+const NavLink = ({ href, label, pathname, handleSmoothScroll, setIsOpen, classes = "" }) => {
   const isActive = pathname === href || (href === '/' && pathname === '/');
   const isHashLink = href.startsWith("/#");
   const theme = useTheme();
 
-  const commonSx = {
-    textTransform: "none",
-    fontWeight: isActive ? "600" : "normal",
-    color: isActive ? "primary.hover" : (isDarkMode ? "primary.main" : "primary.main"),
-    "&:hover": {
-      color: "primary.hover",
-      backgroundColor: 'transparent',
-    },
+    const commonSx = {
+      textTransform: "none",
+      fontWeight: isActive ? 600 : 'normal',
+      color: isActive ? "primary.main" : "text.primary", // Use primary color for active link
+      fontSize: "1rem",
+      "&:hover": {
+        color: "primary.main", // Change color on hover
+        backgroundColor: 'transparent',
+      },
     "&::after": {
       content: '""',
       position: "absolute",

@@ -116,7 +116,7 @@ export default function MainNavbar() {
         }),
         backgroundColor: isHomePage && !isScrolled
           // ? "transparent" // Use transparent background for home page
-          ? (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)") // Use a semi-transparent background for home page
+          ? (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
           : (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)"),
         boxShadow: (isHomePage && !isScrolled) ? "none" : theme.shadows[3],
         backdropFilter: (isHomePage && !isScrolled) ? "none" : "blur(8px)",

@@ -22,15 +22,21 @@ export default function ThemeToggleButton() {
         bottom: 16,
         right: 16,
         zIndex: 9999,
-        backgroundColor: isDark ? '#424242' : '#cc8f2a',
+        backgroundColor: theme =>
+          isDark ? theme.palette.primary.main : theme.palette.secondary.main,
+        color: theme =>
+          isDark ? theme.palette.secondary.contrastText : theme.palette.primary.contrastText,
         borderRadius: '50%',
         boxShadow: 3,
+        '&:hover': {
+          backgroundColor: theme =>
+            isDark ? theme.palette.primary.dark : theme.palette.secondary.dark,
+        },
       }}
     >
       <Tooltip title={`Switch to ${isDark ? 'light' : 'dark'} mode`}>
         <IconButton
           onClick={toggleMode}
-          color="text.primary"
           sx={{ width: 48, height: 48 }}
           aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
         >

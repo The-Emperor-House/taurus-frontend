@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, Card, CardActionArea, Skeleton, Typography } from '@mui/material';
+import { Box, Card, CardActionArea, Skeleton } from '@mui/material';
 import Image from 'next/image';
 
 export default function DesignGridCard({ design, onClick }) {
@@ -12,8 +12,8 @@ export default function DesignGridCard({ design, onClick }) {
       elevation={0}
       sx={{
         width: '100%',
-        borderRadius: 0,        // ชิดขอบ
-        boxShadow: 'none',      // minimal
+        borderRadius: 0,
+        boxShadow: 'none',
         overflow: 'hidden',
       }}
       onClick={() => onClick?.(design)}

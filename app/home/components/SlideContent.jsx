@@ -15,13 +15,14 @@ export default function SlideContent() {
       sx={{
         height: "100%",
         width: "100%",
-        maxWidth: { xs: '100%', sm: '90%', md: '80%' },
-        mx: 'auto',
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center',
+        maxWidth: { xs: "100%", sm: "90%", md: "80%" },
+        mx: "auto",
+        overflow: "hidden",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
+      {/* กลุ่มข้อความบน ชิดซ้าย */}
       {/* กลุ่มข้อความบน ชิดซ้าย */}
       <motion.div
         variants={fadeVariant(0)}
@@ -39,10 +40,10 @@ export default function SlideContent() {
           variant="h1"
           sx={{
             fontWeight: 600,
-            fontSize: { xs: "2rem", sm: "3rem", md: "4rem" },
+            fontSize: { xs: "3rem", sm: "4rem", md: "6rem" }, // ใหญ่มาก
             color: "#cc8f2a",
-            textShadow: "2px 2px 2px rgba(0, 0, 0, 1)",
-            letterSpacing: { xs: "0.1rem", sm: "0.2rem", md: "0.3rem" },
+            textShadow: "0px 4px 12px rgba(0, 0, 0, 0.8)",
+            letterSpacing: { xs: "0.1rem", sm: "0.2rem", md: "1rem" },
           }}
         >
           TAURUS:
@@ -51,27 +52,37 @@ export default function SlideContent() {
         <Typography
           variant="h2"
           sx={{
-            fontWeight: 300,
-            fontSize: { xs: "1.5rem", sm: "2.5rem", md: "3.5rem" },
+            fontWeight: 100,
+            fontSize: { xs: "2rem", sm: "3rem", md: "5rem" }, // เท่ากับ TAURUS
             color: "#ffffff",
-            textShadow: "2px 2px 2px rgba(0, 0, 0, 1)",
-            letterSpacing: { xs: "0.2rem", sm: "0.4rem", md: "0.6rem" },
+            textShadow: "0px 4px 12px rgba(0, 0, 0, 0.8)",
+            letterSpacing: { xs: "0.1rem", sm: "0.2rem", md: "0.8rem" },
             mt: 1,
           }}
         >
           WE RENEW
         </Typography>
 
+        {/* เส้นบางสีขาว */}
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "100%", md: "100%" },
+            height: "2px",
+            background: "linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.8), rgba(255,255,255,0))",
+            mt: 1,
+          }}
+        />
+
         <Typography
           variant="h3"
           sx={{
             fontWeight: 100,
-            fontSize: { xs: "1.2rem", sm: "1.8rem", md: "2.5rem" },
+            fontSize: { xs: "0.9rem", sm: "1.1rem", md: "1.2rem" }, // เล็กมาก
             color: "#fdfdfd",
-            textShadow: "2px 2px 2px rgba(0, 0, 0, 1)",
+            textShadow: "0px 4px 12px rgba(0, 0, 0, 0.8)",
             letterSpacing: { xs: "0.1rem", sm: "0.2rem", md: "0.3rem" },
             mt: { xs: 1.5, sm: 2 },
-            whiteSpace: 'nowrap',
+            whiteSpace: "nowrap",
           }}
         >
           "สร้างบ้านหลังใหม่ ในที่อยู่อาศัยเดิมของคุณ"
@@ -95,9 +106,9 @@ export default function SlideContent() {
             sx={{
               fontWeight: 300,
               fontSize: { xs: "1rem", sm: "1.3rem", md: "1.6rem" },
-              opacity: 0.9,
+              opacity: 0.3,
               color: "#ffffffff",
-              textShadow: "1px 1px 1px rgba(0, 0, 0, 1)",
+              textShadow: "0px 4px 12px rgba(0, 0, 0, 0.8)",
               letterSpacing: "0.05rem",
             }}
           >

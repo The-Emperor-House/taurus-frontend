@@ -14,10 +14,17 @@ export default function HeroSection() {
 
   return (
     <SectionWrapper noPadding={true}>
+      <div className="relative">
         <SwiperCarousel slides={carouselSlides} />
-        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+
+        {/* Overlay สีดำโปร่ง */}
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
+
+        {/* เนื้อหาสไลด์ */}
+        <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
           <SlideContent />
         </div>
+      </div>
     </SectionWrapper>
   );
 }

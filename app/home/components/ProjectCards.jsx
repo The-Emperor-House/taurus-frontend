@@ -80,10 +80,10 @@ function ImageCard({ project }) {
     <motion.div
       whileHover={isTouchDevice ? undefined : { scale: 1.05 }}
       transition={{ type: "spring", stiffness: 250, damping: 20 }}
-      className="rounded-xl overflow-hidden relative shadow-lg"
+      className="overflow-hidden relative shadow-lg"
       style={{ height: "550px" }}
     >
-      <Card sx={{ position: "relative", width: "100%", height: "100%", borderRadius: "12px" }}>
+      <Card sx={{ position: "relative", width: "100%", height: "100%", borderRadius: 0 }}>
         <Link href={project.link} style={{ textDecoration: "none" }}>
           <CardActionArea 
             sx={{
@@ -98,7 +98,7 @@ function ImageCard({ project }) {
             {loading && (
               <Skeleton
                 variant="rectangular"
-                sx={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+                sx={{ position: "absolute", inset: 0, width: "100%", height: "100%", borderRadius: 0 }}
               />
             )}
             <Image
@@ -106,7 +106,8 @@ function ImageCard({ project }) {
               alt={project.title}
               fill
               sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
-              className={`object-cover rounded-xl transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
+              className={`object-cover transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}
+              style={{ borderRadius: 0 }}
               onLoad={() => setLoading(false)}
             />
 
@@ -120,36 +121,52 @@ function ImageCard({ project }) {
               }}
             />
 
-            {/* Overlay Layer */}
-            <motion.div
-              variants={overlayMotion}
-              initial="initial"
-              animate={isTouchDevice ? "hover" : undefined}
-              whileHover={isTouchDevice ? undefined : "hover"}
-              transition={{ duration: 0.5 }}
-              className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-4"
-              style={{ background: "rgba(0, 0, 0, 0.5)" }}
-            >
-              <Typography variant="h5" sx={{ color: "white", mb: 1, fontWeight: 'bold' }}>
-                {project.title}
-              </Typography>
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "2px",
-                  bgcolor: "white",
-                  mb: 1,
-                  transform: "scaleX(0)",
-                  transition: "transform 0.5s",
-                  ".MuiCardActionArea-root:hover &": {
-                    transform: "scaleX(1)",
-                  },
-                }}
-              />
-              <Typography variant="body2" sx={{ color: "white" }}>
-                {project.description}
-              </Typography>
-            </motion.div>
+            {/* Overlay Layer - แสดงตลอด */}
+    <div
+  className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-4"
+  style={{ background: "rgba(0, 0, 0, 0.5)" }}
+>
+  {/* ข้อความหลัก: กระจายตัวอักษร */}
+  <Typography
+    variant="h5"
+    sx={{
+      color: "#fff",
+      mb: 1,
+      fontWeight: 700,
+      letterSpacing: { xs: "0.15rem", sm: "0.25rem", md: "0.35rem" }, // กระจายตัว
+      textTransform: "uppercase",
+      textShadow: "0 4px 12px rgba(0,0,0,0.6)",
+    }}
+  >
+    {project.title}
+  </Typography>
+
+  {/* เส้นบาง ไล่สี จางๆ */}
+  <Box
+    sx={{
+      width: { xs: "42%", sm: "38%", md: "34%" },
+      height: "1px",                         // บางลง
+      background:
+        "linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.55), rgba(255,255,255,0))",
+      mb: 1.2,
+    }}
+  />
+
+  {/* ข้อความรอง: เล็กและบาง */}
+  <Typography
+    variant="body2"
+    sx={{
+      color: "rgba(255,255,255,0.9)",
+      fontWeight: 300,                        // บาง
+      fontSize: { xs: "0.85rem", sm: "0.9rem", md: "0.95rem" }, // เล็กลง
+      letterSpacing: "0.04rem",
+      textShadow: "0 3px 8px rgba(0,0,0,0.5)",
+    }}
+  >
+    {project.description}
+  </Typography>
+</div>
+
           </CardActionArea>
         </Link>
       </Card>

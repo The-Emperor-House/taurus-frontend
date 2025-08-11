@@ -12,7 +12,6 @@ export default function DesignGalleryModal({ open, onClose, design }) {
   const images = design.images?.map((img) => ({
     original: img.imageUrl,
     thumbnail: img.thumbnailUrl || img.imageUrl,
-    description: img.caption || design.name,
   })) || [];
 
   return (

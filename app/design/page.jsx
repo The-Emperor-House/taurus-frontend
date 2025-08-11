@@ -55,7 +55,6 @@ function DesignTile({ t }) {
           px: { xs: 2.5, md: 4 },
           py: { xs: 3, md: 4 },
           bgcolor: "#ffffff",
-          borderTop: "1px solid rgba(0,0,0,.06)",
         }}
       >
         <Typography

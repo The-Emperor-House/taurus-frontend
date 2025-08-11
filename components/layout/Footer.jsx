@@ -30,7 +30,7 @@ export default function Footer() {
           container
           spacing={{ xs: 3, md: 4 }}
           alignItems="center"
-          sx={{ flexWrap: { xs: "wrap", md: "nowrap" } }} // xs wrap, md no-wrap
+          sx={{ flexWrap: { xs: "wrap", md: "nowrap" } }}
         >
           {/* Logo */}
           <Grid size={{ xs: 12, md: 2 }} offset={{ xs: 0, md: 0 }}>

@@ -11,19 +11,6 @@ export default function AboutBlock() {
       }}
     >
 
-      <Typography
-        variant="h3"
-        sx={{
-          fontWeight: 100,
-          letterSpacing: "0.4rem",
-          mb: 1,
-          color: "#000",
-        }}
-        gutterBottom
-      >
-        ABOUT US
-      </Typography>
-
       {/* แบรนด์/สโลแกน */}
       <Typography
         variant="subtitle1"

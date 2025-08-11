@@ -50,9 +50,6 @@ export default function AboutUsSection() {
         >
           <AboutBlock />
         </motion.div>
-
-        {/* เส้นคั่นขวา (แสดงเฉพาะ md+) */}
-        <div className="hidden md:block absolute right-[-12px] top-0 h-full w-px bg-white/20" />
       </Box>
 
       {/* 2) SERVICE */}
@@ -67,9 +64,6 @@ export default function AboutUsSection() {
         >
           <ServiceBlock />
         </motion.div>
-
-        {/* เส้นคั่นขวา (แสดงเฉพาะ md+) */}
-        <div className="hidden md:block absolute right-[-12px] top-0 h-full w-px bg-white/20" />
       </Box>
 
       {/* 3) ICON LIST */}

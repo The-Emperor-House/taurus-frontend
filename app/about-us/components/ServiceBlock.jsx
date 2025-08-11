@@ -10,7 +10,13 @@ export default function ServiceBlock() {
 
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h6" color="primary" fontWeight="bold" mb={3}>
+      <Typography
+        variant="h6"
+        color="black"
+        fontWeight="light"
+        mb={3}
+        sx={{ letterSpacing: '0.4rem' }}
+      >
         OUR SERVICE
       </Typography>
 
@@ -35,7 +41,7 @@ export default function ServiceBlock() {
                 fontWeight: "bold",
                 borderRadius: 10,
                 px: 4,
-                letterSpacing: "0.1em",
+                letterSpacing: "0.35em",
                 textAlign: "center",
                 "&:hover": { bgcolor: "#e5dbcf" },
               }}
@@ -46,10 +52,9 @@ export default function ServiceBlock() {
             <Typography
               variant="subtitle2"
               sx={{
-                px: 2,
+                fontWeight: 600,
                 textAlign: "center",
-                maxWidth: 250,
-                wordBreak: "break-word",
+                letterSpacing: "0.2em",
               }}
             >
               {item.subtitle}

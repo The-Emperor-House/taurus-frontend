@@ -16,7 +16,7 @@ export default function IconListBlock() {
   ];
 
   return (
-    <Stack spacing={2} alignItems="center">
+    <Stack spacing={2} alignItems="flex-start">
       {servicesDetail.map((item, idx) => (
         <Stack
           key={idx}
@@ -27,21 +27,36 @@ export default function IconListBlock() {
           whileHover={{ scale: 1.05 }}
           sx={{ width: '100%', maxWidth: '400px' }}
         >
+          {/* Icon */}
           <Box
             sx={{
-              width: 40,
-              height: 40,
-              bgcolor: 'primary.light',
-              color: 'primary.contrastText',
+              width: 48,
+              height: 48,
+              bgcolor: '#ab9685',
+              color: '#fff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '50%',
+              flexShrink: 0,
             }}
           >
             {item.icon}
           </Box>
-          <Typography variant="body2">{item.text}</Typography>
+
+          {/* Text */}
+          <Typography
+            variant="body2"
+            sx={{
+              letterSpacing: '0.05rem', // กระจายตัวอักษร
+              color: '#000',
+              fontWeight: 600,
+              textAlign: 'center',      // จัดกลางแนวนอน
+              width: '100%'              // ให้กินเต็มความกว้าง Stack
+            }}
+          >
+            {item.text}
+          </Typography>
         </Stack>
       ))}
     </Stack>

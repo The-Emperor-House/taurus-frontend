@@ -1,7 +1,6 @@
 "use client";
 
-import { Box, Stack, Typography, Container } from "@mui/material";
-import CategoryButton from "./components/CategoryButton";
+import { Box, Typography, Container } from "@mui/material";
 
 const servicesList = [
   "สร้างใหม่",

@@ -11,70 +11,76 @@ import {
   Snackbar,
   Alert,
   Link,
-} from "@mui/material";
-import { useState } from "react";
+} from '@mui/material';
+import { useState } from 'react';
 
 const initialState = {
-  fullName: "",
-  email: "",
-  phone: "",
-  budget: "",
-  areaSize: "",
-  location: "",
-  details: "",
+  fullName: '',
+  email: '',
+  phone: '',
+  budget: '',
+  areaSize: '',
+  location: '',
+  details: '',
   services: { renovate: false, interior: false, construction: false },
   accept: false,
 };
 
 const services = {
-  renovate: { label: "รีโนเวท ปรับปรุง/ต่อเติม", value: "RENOVATION" },
-  interior: { label: "ออกแบบตกแต่งภายใน", value: "INTERIOR" },
-  construction: { label: "ก่อสร้าง โครงสร้าง", value: "CONSTRUCTION" },
+  renovate: { label: 'รีโนเวท ปรับปรุง/ต่อเติม', value: 'RENOVATION' },
+  interior: { label: 'ออกแบบตกแต่งภายใน', value: 'INTERIOR' },
+  construction: { label: 'ก่อสร้าง โครงสร้าง', value: 'CONSTRUCTION' },
 };
 
-const BAR = "#404040";
-const ACCENT = "#ab9685";
+const PAGE_BG = '#404040';
+const ACCENT = '#ab9685';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState(initialState);
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{9,10}$/;
-    if (!formData.fullName.trim()) return "กรุณากรอกชื่อ-นามสกุล";
-    if (!formData.email.trim()) return "กรุณากรอกอีเมล";
-    if (!formData.phone.trim()) return "กรุณากรอกเบอร์โทร";
-    if (!Object.values(formData.services).some(v => v)) return "กรุณาเลือกบริการที่ต้องการ";
-    if (!formData.budget.trim()) return "กรุณากรอกงบประมาณ";
-    if (!formData.areaSize.trim()) return "กรุณากรอกขนาดพื้นที่";
-    if (!emailRegex.test(formData.email)) return "รูปแบบอีเมลไม่ถูกต้อง";
-    if (!phoneRegex.test(formData.phone)) return "เบอร์โทรควรเป็นตัวเลข 9-10 หลัก";
-    if (isNaN(parseFloat(formData.budget)) || parseFloat(formData.budget) <= 0) return "งบประมาณต้องเป็นตัวเลขมากกว่า 0";
-    if (isNaN(parseFloat(formData.areaSize))) return "ขนาดพื้นที่ต้องเป็นตัวเลข";
-    if (!formData.accept) return "กรุณายอมรับนโยบายความเป็นส่วนตัว";
-    return "";
+
+    if (!formData.fullName.trim()) return 'กรุณากรอกชื่อ-นามสกุล';
+    if (!formData.email.trim()) return 'กรุณากรอกอีเมล';
+    if (!formData.phone.trim()) return 'กรุณากรอกเบอร์โทร';
+    if (!Object.values(formData.services).some(v => v)) return 'กรุณาเลือกบริการที่ต้องการ';
+    if (!formData.budget.trim()) return 'กรุณากรอกงบประมาณ';
+    if (!formData.areaSize.trim()) return 'กรุณากรอกขนาดพื้นที่';
+    if (!emailRegex.test(formData.email)) return 'รูปแบบอีเมลไม่ถูกต้อง';
+    if (!phoneRegex.test(formData.phone)) return 'เบอร์โทรควรเป็นตัวเลข 9-10 หลัก';
+    if (isNaN(parseFloat(formData.budget)) || parseFloat(formData.budget) <= 0)
+      return 'งบประมาณต้องเป็นตัวเลขมากกว่า 0';
+    if (isNaN(parseFloat(formData.areaSize))) return 'ขนาดพื้นที่ต้องเป็นตัวเลข';
+    if (!formData.accept) return 'กรุณายอมรับนโยบายความเป็นส่วนตัว';
+    return '';
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value, checked } = e.target;
     if (name in formData.services) {
       setFormData(prev => ({ ...prev, services: { ...prev.services, [name]: checked } }));
-    } else if (name === "accept") {
+    } else if (name === 'accept') {
       setFormData(prev => ({ ...prev, accept: checked }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const errorMsg = validateForm();
     if (errorMsg) {
-      setSnackbar({ open: true, message: errorMsg, severity: "error" });
+      setSnackbar({ open: true, message: errorMsg, severity: 'error' });
       return;
     }
-    const needs = Object.entries(formData.services).filter(([, v]) => v).map(([k]) => services[k].value);
+
+    const needs = Object.entries(formData.services)
+      .filter(([, v]) => v)
+      .map(([k]) => services[k].value);
+
     const payload = {
       fullName: formData.fullName,
       email: formData.email,
@@ -83,132 +89,173 @@ export default function ContactForm() {
       areaSize: parseFloat(formData.areaSize),
       location: formData.location,
       needs,
-      details: formData.details || "",
+      details: formData.details || '',
     };
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contacts`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("ส่งข้อมูลไม่สำเร็จ");
-      setSnackbar({ open: true, message: "ส่งข้อมูลสำเร็จ", severity: "success" });
+      if (!res.ok) throw new Error('ส่งข้อมูลไม่สำเร็จ');
+      setSnackbar({ open: true, message: 'ส่งข้อมูลสำเร็จ', severity: 'success' });
       setFormData(initialState);
     } catch (err) {
-      setSnackbar({ open: true, message: err.message, severity: "error" });
+      setSnackbar({ open: true, message: err.message || 'เกิดข้อผิดพลาด', severity: 'error' });
     }
   };
 
   return (
-    <Box sx={{ width: "100%", bgcolor: "#fff" }}>
-      {/* Top bar */}
+    <Box
+      sx={{
+        width: '100%',
+        bgcolor: PAGE_BG,
+        minHeight: '100dvh',
+        pt: { xs: '72px', md: '120px' }, // เลื่อนลงจาก navbar
+      }}
+    >
+      {/* Top Bar */}
       <Box
         sx={{
-          bgcolor: BAR,
           color: ACCENT,
           py: { xs: 2.5, md: 3 },
-          textAlign: "center",
-          letterSpacing: ".6rem",
-          fontSize: { xs: "1.4rem", md: "1.8rem" },
+          textAlign: 'center',
+          letterSpacing: '.6rem',
+          fontSize: { xs: '1.6rem', md: '2rem' },
           fontWeight: 600,
         }}
       >
         CONTACT&nbsp;US
       </Box>
 
-      {/* Content */}
+      {/* White full-bleed form area */}
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          maxWidth: 1200,
-          mx: "auto",
-          px: { xs: 2, md: 4 },
+          bgcolor: '#fff',
+          width: '100vw',
+          mx: 'calc(50% - 50vw)', // full-bleed
+          px: { xs: 3, md: 6 },
           py: { xs: 4, md: 6 },
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: { xs: 4, md: 8 } }}>
-          {/* Left */}
-          <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
-            <Field label="ชื่อ-นามสกุล ติดต่อกลับ" name="fullName" value={formData.fullName} onChange={handleChange} />
-            <Field label="อีเมลล์" name="email" value={formData.email} onChange={handleChange} />
-            <Field label="เบอร์โทรติดต่อ" name="phone" value={formData.phone} onChange={handleChange} />
-
-            <Typography sx={{ mt: 1, mb: 1, fontSize: { xs: 18, md: 20 } }}>แจ้งความต้องการ</Typography>
-            <FormGroup sx={{ gap: 1 }}>
-              {Object.keys(formData.services).map((k) => (
-                <FormControlLabel
-                  key={k}
-                  control={
-                    <Checkbox
-                      name={k}
-                      checked={formData.services[k]}
-                      onChange={handleChange}
-                      sx={{
-                        color: "#000",
-                        '&.Mui-checked': { color: ACCENT },
-                        '& .MuiSvgIcon-root': { fontSize: 26, borderRadius: 1 },
-                      }}
-                    />
-                  }
-                  label={services[k].label}
-                  sx={{ m: 0 }}
-                />
-              ))}
-            </FormGroup>
-          </Box>
-
-          {/* Right */}
-          <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
-            <Field label="งบประมาณ" name="budget" value={formData.budget} onChange={handleChange} />
-            <Field label="ขนาดพื้นที่ใช้สอย / ขนาดที่ดิน" name="areaSize" value={formData.areaSize} onChange={handleChange} />
-            <Field label="สถานที่ก่อสร้าง" name="location" value={formData.location} onChange={handleChange} />
-            <Field label="รายละเอียดข้อมูลเพิ่มเติม" name="details" value={formData.details} onChange={handleChange} multiline minRows={4} />
-          </Box>
-        </Box>
-
-        {/* Accept + Submit row */}
-        <Box sx={{ display: "flex", alignItems: "center", mt: { xs: 3, md: 4 }, gap: 2, flexWrap: "wrap" }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="accept"
-                checked={formData.accept}
-                onChange={handleChange}
-                sx={{
-                  color: "#000",
-                  '&.Mui-checked': { color: ACCENT },
-                  '& .MuiSvgIcon-root': { fontSize: 28, borderRadius: 1 },
-                }}
-              />
-            }
-            label={
-              <Typography variant="body1">
-                ยอมรับข้อตกลงในการใช้งานและ{" "}
-                <Link href="/privacy" underline="hover" color="inherit">
-                  นโยบายความเป็นส่วนตัว
-                </Link>
-              </Typography>
-            }
-            sx={{ m: 0, flex: 1 }}
-          />
-
-          <Button
-            type="submit"
+        <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+          {/* 2 columns */}
+          <Box
             sx={{
-              bgcolor: ACCENT,
-              color: "#fff",
-              px: 6,
-              py: 1.4,
-              borderRadius: 9999,
-              fontWeight: 700,
-              letterSpacing: ".05rem",
-              minWidth: 140,
-              '&:hover': { bgcolor: '#9a8574' },
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+              columnGap: { xs: 4, md: 10 },
+              rowGap: 4,
             }}
           >
-            ส่งข้อมูล
-          </Button>
+            {/* Left */}
+            <Box>
+              <Field label="ชื่อ-นามสกุล ติดต่อกลับ" name="fullName" value={formData.fullName} onChange={handleChange} />
+              <Field label="อีเมลล์" name="email" value={formData.email} onChange={handleChange} />
+              <Field label="เบอร์โทรติดต่อ" name="phone" value={formData.phone} onChange={handleChange} />
+
+              <Typography sx={{ mt: 3, mb: 1.5, fontSize: { xs: 20, md: 24 }, fontWeight: 600 }}>
+                แจ้งความต้องการ
+              </Typography>
+
+              <FormGroup sx={{ gap: 1.5 }}>
+                {Object.keys(formData.services).map(k => (
+                  <FormControlLabel
+                    key={k}
+                    control={
+                      <Checkbox
+                        name={k}
+                        checked={formData.services[k]}
+                        onChange={handleChange}
+                        sx={{
+                          color: '#000',
+                          '&.Mui-checked': { color: '#000' },
+                          '& .MuiSvgIcon-root': { fontSize: 30 },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography sx={{ fontSize: { xs: 20, md: 22 } }}>{services[k].label}</Typography>
+                    }
+                    sx={{ m: 0 }}
+                  />
+                ))}
+              </FormGroup>
+            </Box>
+
+            {/* Right */}
+            <Box>
+              <Field label="งบประมาณ" name="budget" value={formData.budget} onChange={handleChange} />
+              <Field
+                label="ขนาดพื้นที่ใช้สอย / ขนาดที่ดิน"
+                name="areaSize"
+                value={formData.areaSize}
+                onChange={handleChange}
+              />
+              <Field label="สถานที่ก่อสร้าง" name="location" value={formData.location} onChange={handleChange} />
+              <Field
+                label="รายละเอียดข้อมูลเพิ่มเติม"
+                name="details"
+                value={formData.details}
+                onChange={handleChange}
+                multiline
+                minRows={5}
+              />
+            </Box>
+          </Box>
+
+          {/* Accept + Submit */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              mt: { xs: 4, md: 6 },
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="accept"
+                  checked={formData.accept}
+                  onChange={handleChange}
+                  sx={{ color: '#000', '&.Mui-checked': { color: '#000' }, '& .MuiSvgIcon-root': { fontSize: 34 } }}
+                />
+              }
+              label={
+                <Typography sx={{ fontSize: { xs: 18, md: 22 } }}>
+                  ยอมรับข้อตกลงในการใช้งานและนโยบายความเป็นส่วนตัว&nbsp;
+                  <Link href="/privacy" underline="hover" color="inherit">
+                    นโยบายความเป็นส่วนตัว
+                  </Link>
+                </Typography>
+              }
+              sx={{ m: 0, flex: 1 }}
+            />
+
+            <Button
+              type="submit"
+              disableElevation
+              sx={{
+                bgcolor: ACCENT,
+                color: '#fff',
+                px: { xs: 4, md: 6 },
+                py: { xs: 1.2, md: 1.4 },
+                borderRadius: 9999,
+                fontWeight: 700,
+                fontSize: { xs: 18, md: 20 },
+                letterSpacing: '.02em',
+                '&:hover': { bgcolor: '#9a8574' },
+              }}
+            >
+              ส่งข้อมูล
+            </Button>
+          </Box>
         </Box>
       </Box>
 
@@ -217,7 +264,11 @@ export default function ContactForm() {
         autoHideDuration={4000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
-        <Alert severity={snackbar.severity} sx={{ width: "100%" }} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>
@@ -225,20 +276,21 @@ export default function ContactForm() {
   );
 }
 
-/* --------- ช่องกรอกแบบเส้นใต้ ---------- */
+/* ------- ช่องกรอกแบบเส้นใต้หนา (สไตล์ภาพตัวอย่าง) ------- */
 function Field(props) {
   const { label, ...rest } = props;
   return (
     <TextField
       variant="standard"
-      label={label}
       fullWidth
-      InputLabelProps={{ shrink: true, sx: { fontSize: { xs: 18, md: 20 } } }}
+      label={label}
+      InputLabelProps={{ shrink: true, sx: { fontSize: { xs: 20, md: 22 } } }}
       sx={{
-        '& .MuiInputBase-root': { fontSize: { xs: 18, md: 20 } },
-        '& .MuiInput-underline:before': { borderColor: '#c7c7c7', borderBottomWidth: 2 },
-        '& .MuiInput-underline:hover:before': { borderColor: '#a9a9a9' },
-        '& .MuiInput-underline:after': { borderColor: '#000', borderBottomWidth: 2 },
+        my: { xs: 2.2, md: 2.6 },
+        '& .MuiInputBase-root': { fontSize: { xs: 20, md: 22 } },
+        '& .MuiInput-underline:before': { borderBottomWidth: 2, borderColor: '#ccc' },
+        '& .MuiInput-underline:hover:before': { borderBottomWidth: 2, borderColor: '#999' },
+        '& .MuiInput-underline:after': { borderBottomWidth: 2, borderColor: '#000' },
       }}
       {...rest}
     />

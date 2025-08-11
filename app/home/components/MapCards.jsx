@@ -9,12 +9,10 @@ export default function MapCards() {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mx-auto max-w-8xl">
-      {/* Left: Team Image */}
-      <div
-        className="relative overflow-hidden rounded-3xl"
-        style={{ height: "70vh" }}
-      >
+    // ไม่มีขอบบน/ล่าง: my-0 และกำหนดความสูงที่ container เลย
+    <div className="grid grid-cols-1 md:grid-cols-[4fr_6fr] gap-0 w-full h-[70vh] my-0">
+      {/* Left: Team Image (40%) */}
+      <div className="relative h-full">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -28,18 +26,15 @@ export default function MapCards() {
               alt="Taurus Team"
               fill
               priority={false}
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-center rounded-3xl"
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="object-cover object-center"
             />
           </Box>
         </motion.div>
       </div>
 
-      {/* Right: Google Map */}
-        <div
-          className="relative overflow-hidden rounded-3xl"
-          style={{ height: "70vh" }}
-        >
+      {/* Right: Google Map (60%) */}
+      <div className="relative h-full">
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -53,13 +48,7 @@ export default function MapCards() {
                 variant="rectangular"
                 width="100%"
                 height="100%"
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  bgcolor: 'grey.300',
-                  zIndex: 1,
-                }}
+                sx={{ position: 'absolute', inset: 0, bgcolor: 'grey.300', zIndex: 1 }}
               />
             )}
             <iframe
@@ -68,7 +57,7 @@ export default function MapCards() {
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              className="border-0 w-full h-full absolute top-0 left-0"
+              className="border-0 w-full h-full absolute inset-0"
               onLoad={() => setMapLoaded(true)}
             />
             <noscript>
@@ -80,7 +69,6 @@ export default function MapCards() {
                   transform: 'translate(-50%, -50%)',
                   bgcolor: 'rgba(0,0,0,0.7)',
                   p: 2,
-                  borderRadius: 1,
                 }}
               >
                 <Typography variant="body2" color="white">
@@ -90,7 +78,7 @@ export default function MapCards() {
             </noscript>
           </Box>
         </motion.div>
-        </div>
       </div>
+    </div>
   );
 }

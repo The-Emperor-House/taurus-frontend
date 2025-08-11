@@ -31,8 +31,8 @@ export default function AboutUsPage() {
       </section>
 
       {/* Divider (ความกว้างเท่าคอนเทนต์) */}
-      <Container maxWidth="lg" sx={{ my: { xs: 4, md: 6 } }}>
-        <Box sx={{ height: 1, bgcolor: "rgba(0,0,0,0.08)" }} />
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 2 }}>
+        <Box sx={{ height: 1, bgcolor: "rgba(0, 0, 0, 1)" }} />
       </Container>
 
       {/* SECTION 3: Showcase */}

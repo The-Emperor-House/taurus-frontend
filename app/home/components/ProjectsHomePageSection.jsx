@@ -7,7 +7,7 @@ import ProjectCards from './ProjectCards';
 
 export default function ProjectsHomePageSection() {
   return (
-    <SectionWrapper noPadding={true} className="py-24 bg-[#404040]">
+    <SectionWrapper noPadding={true} className="py-35 bg-[#404040]">
       <div className="text-center mb-8">
         <AnimatedHeading/>
       </div>

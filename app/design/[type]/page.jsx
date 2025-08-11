@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
+import { useParams } from "next/navigation";
 
 import DesignGridCard from "../components/DesignGridCard";
 import DesignGalleryModal from "../components/DesignGalleryModal";
-import AnimatedHeading from "@/app/home/components/AnimatedHeading"; // นำ AnimatedHeading กลับมาใช้
-
-import { useParams } from "next/navigation";
 
 export default function DesignTypePage() {
   const { type } = useParams();
@@ -16,32 +14,22 @@ export default function DesignTypePage() {
   const [loading, setLoading] = useState(true);
   const [selectedDesign, setSelectedDesign] = useState(null);
 
-  const displayTitle = type
-    ? type.charAt(0).toUpperCase() + type.slice(1).toLowerCase() + " Designs"
-    : "All Designs";
+  const sidebarLabel = type ? `${type.toUpperCase()} DESIGN` : "DESIGN";
 
   useEffect(() => {
     if (!type) {
       setLoading(false);
       return;
     }
-
     const loadDesigns = async () => {
       setLoading(true);
       try {
-        const apiUrl = `${
-          process.env.NEXT_PUBLIC_API_URL
-        }/api/designs?type=${type.toUpperCase()}`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/designs?type=${type.toUpperCase()}`;
         const res = await fetch(apiUrl);
         const data = await res.json();
-
-        if (Array.isArray(data)) {
-          setDesigns(data);
-        } else if (data && Array.isArray(data.data)) {
-          setDesigns(data.data);
-        } else {
-          setDesigns([]);
-        }
+        if (Array.isArray(data)) setDesigns(data);
+        else if (data && Array.isArray(data.data)) setDesigns(data.data);
+        else setDesigns([]);
       } catch (err) {
         console.error("Failed to load designs for type:", type, err);
         setDesigns([]);
@@ -49,115 +37,123 @@ export default function DesignTypePage() {
         setLoading(false);
       }
     };
-
     loadDesigns();
   }, [type]);
 
-  const handleCardClick = (design) => {
-    setSelectedDesign(design);
-  };
+  const handleCardClick = (design) => setSelectedDesign(design);
+  const handleModalClose = () => setSelectedDesign(null);
 
-  const handleModalClose = () => {
-    setSelectedDesign(null);
-  };
+  // 2 ใบแรก = 6 คอลัมน์ (ครึ่งจอ), ที่เหลือ = 4 คอลัมน์ (หนึ่งในสาม)
+  const spanForIndex = (i) => (i < 2 ? 6 : 4);
 
   return (
     <Box
       sx={{
+        position: "relative",
+        minHeight: "100vh",
         px: { xs: 2, sm: 3, md: 4 },
-        py: { xs: 6, sm: 8 },
-        pt: { xs: "56px", md: "64px" }, // Padding Top เพื่อหลบ Navbar
-        minHeight: "100vh", // ความสูงขั้นต่ำเท่า Viewport
-        maxWidth: "1200px", // ความกว้างสูงสุดของเนื้อหา
-        mx: "auto", // จัดกึ่งกลางในแนวนอน
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: { xs: 4, md: 8 }, // ระยะห่างระหว่าง Heading กับ Cards
+        pt: { xs: "120px", md: "160px" },   // ขยับลงจาก navbar
+        pb: { xs: 8, md: 10 },
+        maxWidth: "1400px",
+        mx: "auto",
       }}
     >
-
-      <Box sx={{ textAlign: "center", mb: 4 }}>
-        <AnimatedHeading
-          title={displayTitle}
-          textColor="text.primary" // สีตัวอักษรของ Header (ใช้จาก Theme)
-          lineColor="primary.main" // สีเส้น (ใช้จาก Theme)
-          fontSize={{ mobile: "text-4xl", desktop: "text-6xl" }} // ขนาดตัวอักษร
-          fontWeight="font-light" // น้ำหนักตัวอักษร
-          animationDelay={0.1}
-        />
-      </Box>
-
-      <Box
+      {/* ชั้นวางป้ายด้านขวา: จัดกึ่งกลางแนวตั้งของคอนเทนต์ และดันออกนอกขวาเล็กน้อย */}
+    <Box
+      sx={{
+        position: "absolute",
+        inset: 0,
+        display: { xs: "none", lg: "flex" },
+        justifyContent: "flex-end",
+        alignItems: "center",
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+    >
+      <Typography
         sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: { xs: 4, md: 6 },
-          width: "100%",
+          position: "relative",
+          top: { lg: 24, xl: 350 },
+          transform: "rotate(90deg)",
+          transformOrigin: "right center",
+          whiteSpace: "nowrap",
+          mr: { lg: "-28px", xl: "-40px" },
+          letterSpacing: ".35em",
+          fontSize: { lg: "3.2rem", xl: "3.6rem" },
+          fontWeight: 300,
+          color: "#111",
+          lineHeight: 1,
         }}
       >
-        {loading ? (
-          Array.from({ length: 6 }).map((_, idx) => (
-            <Box
-              key={idx}
-              sx={{
-                width: "100%",
-                flexBasis: {
-                  xs: "100%",
-                  sm: "calc(50% - 24px)",
-                  md: "calc(33.33% - 32px)",
-                },
-                maxWidth: { xs: "none", sm: 350, md: 350 },
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-              }}
-            >
-              <Skeleton
-                variant="rectangular"
-                height={200}
-                sx={{ borderRadius: 2 }}
-              />
-              <Skeleton width="80%" height={24} sx={{ mt: 1, mx: "auto" }} />
-            </Box>
-          ))
-        ) : designs.length > 0 ? (
-          designs.map((design) => (
-            <Box
-              key={design.id}
-              sx={{
-                width: "100%",
-                flexBasis: {
-                  xs: "100%",
-                  sm: "calc(50% - 24px)",
-                  md: "calc(33.33% - 32px)",
-                },
-                maxWidth: { xs: "none", sm: 350, md: 350 },
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <DesignGridCard design={design} onClick={handleCardClick} />
-            </Box>
-          ))
-        ) : (
-          <Box
-            sx={{
-              p: 4,
-              textAlign: "center",
-              color: "text.secondary",
-              width: "100%",
-            }}
-          >
-            <Typography variant="h6">ไม่พบ {displayTitle}</Typography>
-            <Typography variant="body1">
-              โปรดลองอีกครั้งในภายหลัง หรือติดต่อเรา
-            </Typography>
-          </Box>
-        )}
+        {sidebarLabel}
+      </Typography>
+    </Box>
+
+
+      {/* กริดการ์ด */}
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,                                 // ให้อยู่เหนือป้าย
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 1fr)",
+            md: "repeat(12, 1fr)",
+          },
+          gap: { xs: 3, md: 4 },                    // ระยะห่างแต่ละการ์ด
+          alignItems: "stretch",
+        }}
+      >
+        {loading
+          ? Array.from({ length: 5 }).map((_, i) => (
+              <Box
+                key={i}
+                sx={{
+                  gridColumn: {
+                    xs: "span 1",
+                    sm: "span 1",
+                    md: `span ${spanForIndex(i)}`,
+                  },
+                }}
+              >
+                <Skeleton
+                  variant="rectangular"
+                  sx={{
+                    width: "100%",
+                    height: { xs: 220, md: i < 2 ? 340 : 300 }, // บนสูงกว่าเล็กน้อย
+                  }}
+                />
+                <Skeleton width="70%" height={28} sx={{ mt: 1.5, mx: "auto" }} />
+              </Box>
+            ))
+          : designs.map((design, i) => (
+              <Box
+                key={design.id ?? i}
+                sx={{
+                  gridColumn: {
+                    xs: "span 1",
+                    sm: "span 1",
+                    md: `span ${spanForIndex(i)}`,
+                  },
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <DesignGridCard design={design} onClick={handleCardClick} />
+                <Typography
+                  sx={{
+                    mt: 1.5,
+                    textAlign: "center",
+                    fontSize: { xs: "1.1rem", md: "1.6rem" },
+                    letterSpacing: ".18em",
+                    fontWeight: 300,
+                  }}
+                >
+                  {design.title || design.name || "Perspective 3 D"}
+                </Typography>
+              </Box>
+            ))}
       </Box>
 
       {selectedDesign && (

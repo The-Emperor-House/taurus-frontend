@@ -32,12 +32,19 @@ export default function Footer() {
   useEffect(() => {
     if (
       showTikTokEmbed &&
-      !document.querySelector('script[src*="tiktok.com/embed.js"]')
+      !document.querySelector('script[src*="https://www.tiktok.com/embed.js"]')
     ) {
       const script = document.createElement("script");
       script.src = "https://www.tiktok.com/embed.js";
       script.async = true;
+      script.onload = () => {
+        // force TikTok to parse embeds again
+        if (window.tiktokEmbedLoad) window.tiktokEmbedLoad();
+      };
       document.body.appendChild(script);
+    } else if (showTikTokEmbed && window.tiktokEmbedLoad) {
+      // in case script already loaded
+      window.tiktokEmbedLoad();
     }
   }, [showTikTokEmbed]);
 

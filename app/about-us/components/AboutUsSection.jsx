@@ -50,6 +50,8 @@ export default function AboutUsSection() {
         >
           <AboutBlock />
         </motion.div>
+
+        <div className="hidden md:block absolute right-[-12px] top-0 h-full w-px bg-black/20" />
       </Box>
 
       {/* 2) SERVICE */}

@@ -10,24 +10,11 @@ import {
   FaLine,
   FaFacebookF,
 } from "react-icons/fa";
-
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  IconButton,
-  useTheme,
-} from "@mui/material";
+import { Box, Container, Grid, Typography, IconButton } from "@mui/material";
 
 export default function Footer() {
   const [showTikTokEmbed, setShowTikTokEmbed] = useState(false);
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === "dark";
-
-  const logoSrc = isDarkMode
-    ? "/navbar/logo webp/taurusOrange.webp"
-    : "/navbar/logo webp/taurusDark.webp";
+  const logoSrc = "/navbar/logo webp/taurusWhite.webp";
 
   useEffect(() => {
     if (
@@ -38,12 +25,10 @@ export default function Footer() {
       script.src = "https://www.tiktok.com/embed.js";
       script.async = true;
       script.onload = () => {
-        // force TikTok to parse embeds again
         if (window.tiktokEmbedLoad) window.tiktokEmbedLoad();
       };
       document.body.appendChild(script);
     } else if (showTikTokEmbed && window.tiktokEmbedLoad) {
-      // in case script already loaded
       window.tiktokEmbedLoad();
     }
   }, [showTikTokEmbed]);
@@ -53,23 +38,32 @@ export default function Footer() {
       component="footer"
       sx={{
         py: 8,
-        backgroundColor: isDarkMode ? "grey.900" : "common.white"
+        backgroundColor: "#404040", // พื้นหลังคงที่
+        color: "#ffffff",            // ข้อความคงที่ (ขาว)
+        "& a": { color: "#ffffff" }, // ลิงก์คงที่ (ขาว)
       }}
     >
       <Container maxWidth="xl">
         <Grid container spacing={4}>
           {/* Logo */}
           <Grid size={{ xs: 12, md: 4 }}>
-            <Box sx={{ position: 'relative', width: 120, height: 80 }}>
-              <Image 
+            <Box
+              sx={{
+                position: "relative",
+                width:  { xs: 140, sm: 160, md: 200 },  // เดิม 120 → ขยายตาม breakpoint
+                height: { xs: 90,  sm: 100, md: 120 },  // เดิม 80  → ขยายตาม breakpoint
+              }}
+            >
+              <Image
                 src={logoSrc}
                 alt="Taurus Logo"
                 fill
-                sizes="(max-width: 1200px) 100vw, 120px"
-                style={{ objectFit: 'contain' }}
+                sizes="(max-width: 600px) 140px, (max-width: 900px) 160px, 200px"
+                style={{ objectFit: "contain" }}
                 priority
               />
             </Box>
+
           </Grid>
 
           {/* Head Office */}
@@ -78,7 +72,7 @@ export default function Footer() {
               Head Office :
             </Typography>
             <Box display="flex" alignItems="flex-start" gap={1} mb={1}>
-              <FaMapMarkerAlt color="#cc8f2a" style={{ marginTop: 4 }} />
+              <FaMapMarkerAlt style={{ marginTop: 4 }} />
               <Typography variant="body2">
                 288/18 Phaholyothin Rd,
                 <br />
@@ -86,7 +80,7 @@ export default function Footer() {
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" gap={1}>
-              <FaPhoneAlt color="#cc8f2a" />
+              <FaPhoneAlt />
               <Typography variant="body2">
                 (66) 2 970 3080 - 3 / (66) 61 0596111
               </Typography>
@@ -99,7 +93,7 @@ export default function Footer() {
               Showroom :
             </Typography>
             <Box display="flex" alignItems="flex-start" gap={1} mb={1}>
-              <FaMapMarkerAlt color="#cc8f2a" style={{ marginTop: 4 }} />
+              <FaMapMarkerAlt style={{ marginTop: 4 }} />
               <Typography variant="body2">
                 189/9-10 Ratchada-Ramintra Rd,
                 <br />
@@ -115,26 +109,14 @@ export default function Footer() {
               <IconButton
                 href="https://line.me/ti/p/~salestaurus"
                 target="_blank"
-                sx={{
-                  color: "#00c300",
-                  transition: "transform 0.2s",
-                  "&:hover": {
-                    transform: "scale(1.2)",
-                  },
-                }}
+                sx={{ color: "#ffffff", "&:hover": { transform: "scale(1.2)" }, transition: "transform 0.2s" }}
               >
                 <FaLine />
               </IconButton>
 
               <IconButton
                 href="mailto:taurus@emperorhouse.com"
-                sx={{
-                  color: "#cc8f2a",
-                  transition: "transform 0.2s",
-                  "&:hover": {
-                    transform: "scale(1.2)",
-                  },
-                }}
+                sx={{ color: "#ffffff", "&:hover": { transform: "scale(1.2)" }, transition: "transform 0.2s" }}
               >
                 <FaMailBulk />
               </IconButton>
@@ -142,13 +124,7 @@ export default function Footer() {
               <IconButton
                 href="https://facebook.com/TaurusByEmperor"
                 target="_blank"
-                sx={{
-                  color: "#1877F2",
-                  transition: "transform 0.2s",
-                  "&:hover": {
-                    transform: "scale(1.2)",
-                  },
-                }}
+                sx={{ color: "#ffffff", "&:hover": { transform: "scale(1.2)" }, transition: "transform 0.2s" }}
               >
                 <FaFacebookF />
               </IconButton>
@@ -161,13 +137,7 @@ export default function Footer() {
                 <IconButton
                   href="https://www.tiktok.com/@taurus.by.emperor"
                   target="_blank"
-                  sx={{
-                    color: "#fe2c55",
-                    transition: "transform 0.2s",
-                    "&:hover": {
-                      transform: "scale(1.2)",
-                    },
-                  }}
+                  sx={{ color: "#ffffff", "&:hover": { transform: "scale(1.2)" }, transition: "transform 0.2s" }}
                 >
                   <FaTiktok />
                 </IconButton>
@@ -183,8 +153,9 @@ export default function Footer() {
                       zIndex: 10,
                       width: 250,
                       p: 2,
-                      bgcolor: isDarkMode ? "grey.900" : "common.white",
-                      borderRadius: 2,
+                      bgcolor: "#1f1f1f", // คงที่
+                      color: "#ffffff",   // คงที่
+                      borderRadius: 8,
                       boxShadow: 4,
                     }}
                   >
@@ -192,23 +163,13 @@ export default function Footer() {
                       component="blockquote"
                       className="tiktok-embed"
                       data-video-id="7200000000000000000"
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        maxWidth: "250px",
-                      }}
+                      style={{ width: "100%", height: "auto", maxWidth: 250 }}
                     >
-                      <a
-                        href="https://www.tiktok.com/@taurus.by.emperor?refer=creator_embed"
-                      >
+                      <a href="https://www.tiktok.com/@taurus.by.emperor?refer=creator_embed">
                         @taurus.by.emperor
                       </a>
                     </Box>
-                    <Typography
-                      variant="caption"
-                      color="textSecondary"
-                      sx={{ display: "block", mt: 1 }}
-                    >
+                    <Typography variant="caption" sx={{ display: "block", mt: 1 }}>
                       Hover to view TikTok video
                     </Typography>
                   </Box>
@@ -217,17 +178,14 @@ export default function Footer() {
             </Box>
           </Grid>
         </Grid>
+
         <Box mt={4} textAlign="center">
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" sx={{ color: "#ffffff" }}>
             © {new Date().getFullYear()} Taurus by Emperor. All rights reserved.
           </Typography>
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" sx={{ color: "#ffffff" }}>
             Developed by{" "}
-            <a
-              href="https://www.emperorhouse.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="https://www.emperorhouse.com" target="_blank" rel="noopener noreferrer">
               Emperor House
             </a>
           </Typography>

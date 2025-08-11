@@ -85,7 +85,7 @@ export default function AboutUsSection() {
 
       {/* Responsive Divider 2 (คอลัมน์ 4 ใน Grid 5 คอลัมน์) */}
       <Box className="col-span-1 md:flex items-center justify-center">
-        <ResponsiveDivider />
+        {/* <ResponsiveDivider /> */}
       </Box>
 
       {/* 3. ICON LIST BLOCK */}

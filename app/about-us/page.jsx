@@ -1,47 +1,47 @@
-'use client';
+"use client";
 
-import { Box, Stack, Typography, Container } from '@mui/material';
-import CategoryButton from './components/CategoryButton';
+import { Box, Stack, Typography, Container } from "@mui/material";
+import CategoryButton from "./components/CategoryButton";
 
 const servicesList = [
-  'สร้างใหม่',
-  'ปรับปรุงต่อเติม - ซ่อมแซม',
-  'ออกแบบตกแต่งภายใน',
+  "สร้างใหม่",
+  "ปรับปรุงต่อเติม - ซ่อมแซม",
+  "ออกแบบตกแต่งภายใน",
 ];
 
 export default function AboutUsPage() {
   const categories = [
-    { name: 'HOME', href: '/' },
-    { name: 'CONDOMINIUM', href: '/condominium' },
-    { name: 'HOTEL', href: '/hotel' },
-    { name: 'OFFICE', href: '/office' },
+    { name: "HOME" },
+    { name: "CONDOMINIUM" },
+    { name: "HOTEL" },
+    { name: "OFFICE" },
   ];
 
   return (
-    <Box component="main" sx={{ width: '100%', overflowX: 'hidden' }}>
+    <Box component="main" sx={{ width: "100%", overflowX: "hidden" }}>
       {/* Hero Banner */}
       <Box
         sx={{
-          position: 'relative',
-          width: '100%',
-          height: '50vh',
+          position: "relative",
+          width: "100%",
+          height: "50vh",
           backgroundImage: "url('/about-us/banner.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          textAlign: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          textAlign: "center",
         }}
       >
         {/* Black overlay */}
         <Box
           sx={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            bgcolor: 'rgba(0, 0, 0, 0.5)',
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            bgcolor: "rgba(0, 0, 0, 0.5)",
             zIndex: 1,
           }}
         />
@@ -49,12 +49,12 @@ export default function AboutUsPage() {
         {/* Hero Texts */}
         <Box
           sx={{
-            position: 'relative',
+            position: "relative",
             zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
             px: 2,
           }}
         >
@@ -62,7 +62,7 @@ export default function AboutUsPage() {
             variant="h3"
             component="h1"
             fontWeight="bold"
-            sx={{ letterSpacing: '0.05em' }}
+            sx={{ letterSpacing: "0.05em" }}
           >
             ABOUT US
           </Typography>
@@ -72,8 +72,8 @@ export default function AboutUsPage() {
             color="primary"
             fontWeight="bold"
             sx={{
-              textTransform: 'uppercase',
-              letterSpacing: '0.2em',
+              textTransform: "uppercase",
+              letterSpacing: "0.2em",
               mt: 1,
             }}
           >
@@ -87,8 +87,8 @@ export default function AboutUsPage() {
             fontWeight="light"
             color="white"
             sx={{
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
               mt: 2,
               maxWidth: 600,
             }}
@@ -99,56 +99,46 @@ export default function AboutUsPage() {
       </Box>
 
       <Container maxWidth="md" sx={{ py: { xs: 6, md: 10 } }}>
-        <Box sx={{ textAlign: 'center', maxWidth: 800, mx: 'auto' }}>
+        <Box sx={{ textAlign: "center", maxWidth: 800, mx: "auto" }}>
           <Typography
             variant="h5"
             color="primary"
             fontWeight="bold"
-            sx={{ mb: 2, letterSpacing: '0.1em' }}
+            sx={{ mb: 2, letterSpacing: "0.1em" }}
           >
             TAURUS : WE RENEW
           </Typography>
 
-          <Typography 
-            variant="body1" 
-            color="#ab9685" 
-            lineHeight={1.8}
-          >
-            "ทอรัส" ผู้เชี่ยวชาญด้านการปรับโฉมบ้านพักอาศัย อาคารต่างๆ อย่างมีรสนิยม 
-            ด้วยประสบการณ์ที่มีมากกว่า 30 ปี ให้บริการแบบครบวงจร ตั้งแต่การสร้างบ้านใหม่ ปรับปรุง
-            ต่อเติมบ้าน งานออกแบบตกแต่งภายใน บ้านพักอาศัย คอนโดมิเนียม โรงแรม สำนักงาน และอาคารต่างๆ
-            รวมไปถึงงานเฟอร์นิเจอร์ลอยตัว ดำเนินงานโดยมีทีมผู้เชี่ยวชาญในทุกสาขา ทั้งด้านงานออกแบบสถาปัตยกรรม
-            งานตกแต่งภายใน และงานโครงสร้างวิศวกรรม ภายใต้กระบวนการทำงานอย่างมืออาชีพ
+          <Typography variant="body1" color="#ab9685" lineHeight={1.8}>
+            "ทอรัส" ผู้เชี่ยวชาญด้านการปรับโฉมบ้านพักอาศัย อาคารต่างๆ
+            อย่างมีรสนิยม ด้วยประสบการณ์ที่มีมากกว่า 30 ปี ให้บริการแบบครบวงจร
+            ตั้งแต่การสร้างบ้านใหม่ ปรับปรุง ต่อเติมบ้าน งานออกแบบตกแต่งภายใน
+            บ้านพักอาศัย คอนโดมิเนียม โรงแรม สำนักงาน และอาคารต่างๆ
+            รวมไปถึงงานเฟอร์นิเจอร์ลอยตัว ดำเนินงานโดยมีทีมผู้เชี่ยวชาญในทุกสาขา
+            ทั้งด้านงานออกแบบสถาปัตยกรรม งานตกแต่งภายใน และงานโครงสร้างวิศวกรรม
+            ภายใต้กระบวนการทำงานอย่างมืออาชีพ
             ที่พร้อมดูแลตั้งแต่แนวคิดไปจนถึงงานก่อสร้างจริง
             และควบคุมงบประมาณไม่ให้บานปลาย
           </Typography>
         </Box>
       </Container>
 
-      <Box className="col-span-full mt-6" sx={{ textAlign: 'center' }}>
-        <Typography
-          variant="subtitle1"
-          sx={{
-            fontWeight: 500,
-            letterSpacing: '0.05em',
-            mb: 1.5,
-          }}
-        >
-          {servicesList.join(' | ')}
+      <Box className="col-span-full mt-6" sx={{ textAlign: "center" }}>
+        <Typography variant="body1" sx={{ fontWeight: "medium", mb: 1.5 }}>
+          {servicesList.join(" | ")}
         </Typography>
 
-        <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-          flexWrap="wrap"
-          useFlexGap
-          sx={{ mt: 2, mb: 4 }}
+        {/* แสดง category เป็นข้อความคั่นด้วย | */}
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 300,
+            color: "#000000ff",
+            letterSpacing: "0.05rem",
+          }}
         >
-          {categories.map(({ name, href }) => (
-            <CategoryButton key={name} category={name} href={href} />
-          ))}
-        </Stack>
+          {categories.map((c) => c.name).join(" | ")}
+        </Typography>
       </Box>
     </Box>
   );

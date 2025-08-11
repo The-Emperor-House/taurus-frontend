@@ -40,8 +40,9 @@ export default function AboutUsHomePageSection() {
             color: '#cc8f2a',
             letterSpacing: '0.25rem',
             textAlign: 'right',
-            fontSize: { xs: '0.9rem', sm: '1rem', md: '1.2rem' },
-            pr: { xs: 2, md: 14 }
+            fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem', lg: '1.6rem' },
+            lineHeight: 1.2,
+            pr: { xs: 2, md: 14 },
           }}
         >
           RECRAFTING SPACES. REVIVING LIVING.

@@ -14,36 +14,38 @@ export default function ServiceBlock() {
         variant="h6"
         color="black"
         fontWeight="light"
-        mb={3}
-        sx={{ letterSpacing: '0.4rem' }}
+        mb={4}
+        sx={{ letterSpacing: "0.4rem" }}
       >
         OUR SERVICE
       </Typography>
 
-      <Stack spacing={3} alignItems="center" width="100%">
+      <Stack spacing={{ xs: 3, md: 4 }} alignItems="center" width="100%">
         {servicesMain.map((item, idx) => (
           <Stack
             key={idx}
-            spacing={1}
+            spacing={{ xs: 6, md: 8 }}
             alignItems="center"
-            sx={{ width: "100%", maxWidth: 300 }}
+            sx={{ width: "100%", maxWidth: { xs: 360, sm: 420, md: 520 } }}
           >
             <Button
               variant="contained"
               disableElevation
               component={motion.button}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.03 }}
               sx={{
                 width: "100%",
-                minHeight: 48,
+                minHeight: { xs: 56, md: 64 },
                 bgcolor: "#f5ede5",
                 color: "black",
-                fontWeight: "bold",
-                borderRadius: 10,
-                px: 4,
+                fontWeight: 700,
+                px: { xs: 5, md: 7 },           // padding มากขึ้นให้ทรงแคปซูลสมส่วน
                 letterSpacing: "0.35em",
                 textAlign: "center",
-                "&:hover": { bgcolor: "#e5dbcf" },
+                fontSize: { xs: "0.95rem", md: "1.05rem" },
+                borderRadius: "9999px",         // << แคปซูล
+                border: "1px solid #e5dbcf",    // เส้นขอบจางๆ
+                "&:hover": { bgcolor: "#e5dbcf" }
               }}
             >
               {item.title}
@@ -55,6 +57,8 @@ export default function ServiceBlock() {
                 fontWeight: 600,
                 textAlign: "center",
                 letterSpacing: "0.2em",
+                fontSize: { xs: "0.9rem", md: "1rem" },
+                opacity: 0.9,
               }}
             >
               {item.subtitle}

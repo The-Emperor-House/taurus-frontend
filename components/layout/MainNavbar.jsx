@@ -57,7 +57,7 @@ export default function MainNavbar() {
 
   return (
     <AppBar
-      position="fixed"
+      position="absolute"
       sx={{ backgroundColor: "transparent", boxShadow: "none", top: "50px" }}
     >
       <Toolbar

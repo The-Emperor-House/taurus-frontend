@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useSession } from "next-auth/react";
 import { useLogout } from "@/hooks/useLogout";
 
@@ -118,8 +119,12 @@ export default function MainNavbar() {
           {/* User Section */}
           {status === "authenticated" && (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Button color="inherit" onClick={handleLogout}>
-                Logout
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={handleLogout}
+              >
+                <LogoutIcon />
               </Button>
             </Box>
           )}

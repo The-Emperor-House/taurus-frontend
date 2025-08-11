@@ -2,71 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { useLogout } from '@/hooks/useLogout';
+import { useState } from "react";
+import { AppBar, Toolbar, Box, Button, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import { useSession } from "next-auth/react";
-import { useTheme } from "@mui/material/styles";
-import { AppBar, Toolbar, Box } from "@mui/material";
-
-import NavLink from "@/components/layout/navbar/NavLink";
-import UserAuthSection from "@/components/layout/navbar/UserAuthSection";
-import MobileMenuButton from "@/components/layout/navbar/MobileMenuButton";
-import MobileMenuOverlay from "@/components/layout/navbar/MobileMenuOverlay";
+import { useLogout } from "@/hooks/useLogout";
 
 export default function MainNavbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [desktopAnchorEl, setDesktopAnchorEl] = useState(null);
-  const [imageError] = useState(false);
-
   const { data: session, status } = useSession();
   const { logout } = useLogout();
-  const pathname = usePathname();
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === "dark";
 
-  const isHomePage = pathname === "/";
-
-  const user = session?.user;
-  const firstLetter = user?.name?.charAt(0)?.toUpperCase() || "U";
-  const fullAvatarUrl = !imageError ? user?.avatarUrl : undefined;
-  // console.log("User:", user, "Session:", session, "Status:", status);
-
-  // Scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        setIsScrolled(scrollY > 0);
-        setScrollProgress((scrollY / docHeight) * 100);
-      });
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close mobile menu when screen size changes to desktop
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= theme.breakpoints.values.md && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isMobileMenuOpen, theme.breakpoints.values.md]);
-
-  // Close mobile menu on path change (if not handled by NavLink onClick)
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
-
-
-  // Define nav links (can be moved to a constants file in lib/ if shared widely)
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about-us", label: "About Us" },
@@ -77,7 +24,6 @@ export default function MainNavbar() {
     { href: "/contact", label: "Contact" },
   ];
 
-  // Helper to handle smooth scroll for hash links
   const handleSmoothScroll = (e, href) => {
     if (href.startsWith("/#")) {
       e.preventDefault();
@@ -91,56 +37,20 @@ export default function MainNavbar() {
     }
   };
 
-  const handleDesktopMenuOpen = (event) => setDesktopAnchorEl(event.currentTarget);
-  const handleDesktopMenuClose = () => setDesktopAnchorEl(null);
   const handleLogout = () => {
     logout(session?.refreshToken);
-    handleDesktopMenuClose();
     setIsMobileMenuOpen(false);
   };
 
-  // Dynamic logo source based on scroll and theme
-  const logoSrc = isScrolled
-    ? "/navbar/logo webp/taurusOrange.webp"
-    : isDarkMode
-    ? "/navbar/logo webp/taurusWhite.webp"
-    : "/navbar/logo webp/taurusDark.webp";
+  const logoSrc = "/navbar/logo webp/taurusWhite.webp";
 
   return (
-    <AppBar
-      // position="fixed"
-      sx={{
-        transition: theme.transitions.create(['background-color', 'box-shadow'], {
-          duration: theme.transitions.duration.shorter,
-          easing: theme.transitions.easing.easeInOut,
-        }),
-        backgroundColor: isHomePage && !isScrolled
-          ? "transparent" // Use transparent background for home page
-          // ? (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
-          : (isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)"),
-        boxShadow: (isHomePage && !isScrolled) ? "none" : theme.shadows[3],
-        backdropFilter: (isHomePage && !isScrolled) ? "none" : "blur(8px)",
-      }}
-      component={motion.nav}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-    >
-      {/* Scroll Progress Bar */}
-      <motion.div
-        style={{ width: `${scrollProgress}%` }}
-        className="h-1 bg-[#cc8f2a]"
-      />
-
-      <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center', px: { xs: 2, sm: 3, md: 4 }, py: { xs: 1, sm: 1.5 } }}>
+    <AppBar position="fixed" sx={{ backgroundColor: "transparent", boxShadow: "none", top: "50px" }}>
+      <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center', px: 3, py: 1 }}>
+        
         {/* Logo */}
-      <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
-        <motion.div
-          animate={{ scale: isScrolled ? 0.85 : 1 }}
-          transition={{ duration: 0.3 }}
-          style={{ width: 120, height: 80, position: 'relative' }}
-        >
-          <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ width: 120, height: 80, position: 'relative' }}>
             <Image
               src={logoSrc}
               alt="Taurus Logo"
@@ -149,58 +59,90 @@ export default function MainNavbar() {
               priority
             />
           </Box>
-        </motion.div>
-      </Link>
+        </Link>
 
         {/* Desktop Menu */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 3 }}>
           {navLinks.map((link) => (
-            <NavLink
+            <Link
               key={link.href}
               href={link.href}
-              label={link.label}
-              pathname={pathname}
-              isDarkMode={isDarkMode}
-              handleSmoothScroll={handleSmoothScroll}
-            />
+              onClick={(e) => handleSmoothScroll(e, link.href)}
+              style={{
+                textDecoration: 'none',
+                color: '#fff',
+                transition: 'color 0.2s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#cc8f2a'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
+            >
+              {link.label}
+            </Link>
           ))}
-          <UserAuthSection
-            session={session}
-            status={status}
-            user={user}
-            firstLetter={firstLetter}
-            fullAvatarUrl={fullAvatarUrl}
-            handleDesktopMenuOpen={handleDesktopMenuOpen}
-            handleDesktopMenuClose={handleDesktopMenuClose}
-            desktopAnchorEl={desktopAnchorEl}
-            handleLogout={handleLogout}
-            isDarkMode={isDarkMode}
-          />
+
+          {/* User Section */}
+          {status === "authenticated" && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Button color="inherit" onClick={handleLogout}>Logout</Button>
+            </Box>
+          )}
         </Box>
 
-        {/* Hamburger / Close Icon for Mobile */}
-        <MobileMenuButton
-          isMobileMenuOpen={isMobileMenuOpen}
-          setIsMobileMenuOpen={setIsMobileMenuOpen}
-          isDarkMode={isDarkMode}
-        />
+        {/* Mobile Menu Button */}
+        <IconButton
+          sx={{ display: { xs: 'flex', md: 'none' }, color: '#fff' }}
+          onClick={() => setIsMobileMenuOpen(true)}
+        >
+          <MenuIcon />
+        </IconButton>
       </Toolbar>
 
-      {/* Mobile Menu Overlay */}
-      <MobileMenuOverlay
-        isMobileMenuOpen={isMobileMenuOpen}
-        navLinks={navLinks}
-        pathname={pathname}
-        isDarkMode={isDarkMode}
-        handleSmoothScroll={handleSmoothScroll}
-        setIsMobileMenuOpen={setIsMobileMenuOpen}
-        session={session}
-        status={status}
-        user={user}
-        firstLetter={firstLetter}
-        fullAvatarUrl={fullAvatarUrl}
-        handleLogout={handleLogout}
-      />
+      {/* Mobile Menu Drawer */}
+      <Drawer
+        anchor="right"
+        open={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        PaperProps={{
+          sx: { backgroundColor: '#111', color: '#fff', width: 250 }
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+          <IconButton onClick={() => setIsMobileMenuOpen(false)} sx={{ color: '#fff' }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <List>
+          {navLinks.map((link) => (
+            <ListItem key={link.href} disablePadding>
+              <ListItemButton
+                component={Link}
+                href={link.href}
+                onClick={(e) => handleSmoothScroll(e, link.href)}
+                sx={{
+                  color: '#fff',
+                  transition: 'color 0.2s ease',
+                  '&:hover': { color: '#cc8f2a' }
+                }}
+              >
+                <ListItemText primary={link.label} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+
+          <ListItem>
+            {status === "authenticated" ? (
+              <Button fullWidth variant="outlined" onClick={handleLogout} sx={{ color: '#fff', borderColor: '#fff' }}>
+                Logout
+              </Button>
+            ) : (
+              <Button fullWidth variant="outlined" component={Link} href="/login" sx={{ color: '#fff', borderColor: '#fff' }}>
+                Login
+              </Button>
+            )}
+          </ListItem>
+        </List>
+      </Drawer>
     </AppBar>
   );
 }

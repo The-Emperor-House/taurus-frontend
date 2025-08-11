@@ -9,7 +9,8 @@ import {
   FaFacebookF,
   FaTiktok,
 } from "react-icons/fa";
-import { Box, Container, Grid, Typography, IconButton } from "@mui/material";
+import { Box, Container, Typography, IconButton } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 export default function Footer() {
   const logoSrc = "/navbar/logo webp/taurusWhite.webp";
@@ -17,10 +18,9 @@ export default function Footer() {
   return (
     <Box
       component="footer"
-      alignItems="center"
       sx={{
         py: { xs: 4, md: 5 },
-        backgroundColor: "#404040",
+        bgcolor: "#404040",
         color: "#fff",
         "& a": { color: "#fff", textDecoration: "none" },
       }}
@@ -28,25 +28,25 @@ export default function Footer() {
       <Container maxWidth="xl">
         <Grid
           container
-          alignItems="center"
           spacing={{ xs: 3, md: 4 }}
-          wrap="nowrap"
-          sx={{ overflowX: "auto" }}
+          alignItems="center"
+          sx={{ flexWrap: { xs: "wrap", md: "nowrap" } }} // xs wrap, md no-wrap
         >
           {/* Logo */}
-          <Grid size={{ xs: 6, md: 2 }} offset={{ xs: 3, md: 0 }}>
+          <Grid size={{ xs: 12, md: 2 }} offset={{ xs: 0, md: 0 }}>
             <Box
               sx={{
                 position: "relative",
-                width: { xs: 140, sm: 160, md: 200 },
-                height: { xs: 90, sm: 100, md: 120 },
+                width: { xs: 120, sm: 140, md: 200 },
+                height: { xs: 80, sm: 90, md: 120 },
+                mx: { xs: "auto", md: 0 }, // center on mobile
               }}
             >
               <Image
                 src={logoSrc}
                 alt="Taurus Logo"
                 fill
-                sizes="(max-width: 600px) 140px, (max-width: 900px) 160px, 200px"
+                sizes="(max-width: 600px) 120px, (max-width: 900px) 140px, 200px"
                 style={{ objectFit: "contain" }}
                 priority
               />
@@ -54,16 +54,18 @@ export default function Footer() {
           </Grid>
 
           {/* Head Office */}
-          <Grid size="auto" sx={{ pl: { md: 2 } /* ดันห่างจากโลโก้เล็กน้อย */ }}>
+          <Grid size={{ xs: 12, md: "auto" }} sx={{ pl: { md: 2 } }}>
             <Typography
               variant="h6"
               sx={{
                 display: "flex",
                 alignItems: "center",
+                justifyContent: { xs: "center", md: "flex-start" },
                 gap: 1,
                 fontWeight: 700,
                 letterSpacing: "0.03rem",
                 mb: 0.75,
+                textAlign: { xs: "center", md: "left" },
               }}
             >
               <FaMapMarkerAlt size={18} />
@@ -74,8 +76,9 @@ export default function Footer() {
               variant="body1"
               sx={{
                 color: "rgba(255,255,255,0.9)",
-                fontSize: { xs: "1rem", md: "1.05rem" },
+                fontSize: { xs: "0.98rem", md: "1.05rem" },
                 lineHeight: 1.7,
+                textAlign: { xs: "center", md: "left" },
               }}
             >
               288/18 Phaholyothin Rd.
@@ -83,14 +86,22 @@ export default function Footer() {
               Anusawaree , Bangkhen , Bangkok 10220
             </Typography>
 
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: { xs: "center", md: "flex-start" },
+                gap: 1,
+                mt: 1,
+              }}
+            >
               <FaPhoneAlt />
               <Typography
                 variant="body1"
                 sx={{
                   color: "rgba(255,255,255,0.9)",
-                  letterSpacing: "0.18rem", // แผ่ตัวเลขให้คล้ายในภาพ
-                  fontSize: { xs: "1rem", md: "1.05rem" },
+                  letterSpacing: { xs: "0.08rem", md: "0.18rem" },
+                  fontSize: { xs: "0.98rem", md: "1.05rem" },
                 }}
               >
                 (66) 2 970 3080 - 3  /  (66) 61 0596111
@@ -98,28 +109,33 @@ export default function Footer() {
             </Box>
           </Grid>
 
-          {/* Vertical Divider */}
+          {/* Divider: vertical on desktop, horizontal on mobile */}
           <Grid
             sx={{
               display: { xs: "none", md: "block" },
               width: "1px",
               alignSelf: "stretch",
               mx: { md: 3 },
-              backgroundColor: "rgba(255,255,255,0.45)",
+              bgcolor: "rgba(255,255,255,0.45)",
             }}
           />
+          <Grid size={12} sx={{ display: { xs: "block", md: "none" } }}>
+            <Box sx={{ borderBottom: "1px solid rgba(255,255,255,0.35)" }} />
+          </Grid>
 
           {/* Showroom + Social */}
-          <Grid size="auto" sx={{ pr: { md: 1 } }}>
+          <Grid size={{ xs: 12, md: "auto" }} sx={{ pr: { md: 1 } }}>
             <Typography
               variant="h6"
               sx={{
                 display: "flex",
                 alignItems: "center",
+                justifyContent: { xs: "center", md: "flex-start" },
                 gap: 1,
                 fontWeight: 700,
                 letterSpacing: "0.03rem",
                 mb: 0.75,
+                textAlign: { xs: "center", md: "left" },
               }}
             >
               <FaMapMarkerAlt size={18} />
@@ -130,8 +146,9 @@ export default function Footer() {
               variant="body1"
               sx={{
                 color: "rgba(255,255,255,0.9)",
-                fontSize: { xs: "1rem", md: "1.05rem" },
+                fontSize: { xs: "0.98rem", md: "1.05rem" },
                 lineHeight: 1.7,
+                textAlign: { xs: "center", md: "left" },
               }}
             >
               189/9-10 Ratchada-Ramintra Rd.
@@ -139,11 +156,11 @@ export default function Footer() {
               Nuanchan , Buengkum , Bangkok 10240
             </Typography>
 
-            {/* Social row */}
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
+                justifyContent: { xs: "center", md: "flex-start" },
                 gap: 1,
                 mt: 1.5,
                 flexWrap: "wrap",
@@ -176,6 +193,7 @@ export default function Footer() {
                   mx: 1,
                   color: "rgba(255,255,255,0.9)",
                   letterSpacing: "0.02rem",
+                  textAlign: { xs: "center", md: "left" },
                 }}
               >
                 ติดตามผลงานเพิ่มเติมของเราได้ที่
@@ -209,6 +227,7 @@ export default function Footer() {
                   ml: 1,
                   color: "rgba(255,255,255,0.9)",
                   whiteSpace: "nowrap",
+                  textAlign: { xs: "center", md: "left" },
                 }}
               >
                 Taurus by Emperor

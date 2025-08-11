@@ -9,9 +9,9 @@ export default function ServiceBlock() {
   ];
 
   return (
-    <Box sx={{ textAlign: "center" }}>
+    <Box sx={{ textAlign: "center", mt: { xs: 4, md: 8 }, }}>
       <Typography
-        variant="h6"
+        variant="h4"
         color="black"
         fontWeight="light"
         mb={4}
@@ -24,9 +24,9 @@ export default function ServiceBlock() {
         {servicesMain.map((item, idx) => (
           <Stack
             key={idx}
-            spacing={{ xs: 6, md: 8 }}
+            spacing={{ xs: 1, md: 1.25 }}          // ← ให้ subtitle ชิดกับปุ่มมากขึ้น
             alignItems="center"
-            sx={{ width: "100%", maxWidth: { xs: 360, sm: 420, md: 520 } }}
+            sx={{ width: "auto" }}                  // ← ไม่บังคับความกว้าง
           >
             <Button
               variant="contained"
@@ -34,18 +34,19 @@ export default function ServiceBlock() {
               component={motion.button}
               whileHover={{ scale: 1.03 }}
               sx={{
-                width: "100%",
-                minHeight: { xs: 56, md: 64 },
+                display: "inline-flex",            // ← แคปซูลยาวเท่าข้อความ
+                width: "auto",
+                minWidth: 0,
+                minHeight: { xs: 60, md: 80 },
+                px: { xs: 5, md: 7 },              // padding คุมความหนาแคปซูล
                 bgcolor: "#f5ede5",
                 color: "black",
                 fontWeight: 700,
-                px: { xs: 5, md: 7 },           // padding มากขึ้นให้ทรงแคปซูลสมส่วน
                 letterSpacing: "0.35em",
                 textAlign: "center",
                 fontSize: { xs: "0.95rem", md: "1.05rem" },
-                borderRadius: "9999px",         // << แคปซูล
-                border: "1px solid #e5dbcf",    // เส้นขอบจางๆ
-                "&:hover": { bgcolor: "#e5dbcf" }
+                borderRadius: "9999px",
+                "&:hover": { bgcolor: "#e5dbcf" },
               }}
             >
               {item.title}

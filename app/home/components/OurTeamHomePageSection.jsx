@@ -6,7 +6,7 @@ import MapCards from './MapCards';
 
 export default function OurTeamHomePageSection() {
   return (
-    <SectionWrapper noPadding={true} className="py-24">
+    <SectionWrapper noPadding={true}>
       <MapCards />
     </SectionWrapper>
   );

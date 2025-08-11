@@ -9,8 +9,7 @@ export default function MapCards() {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   return (
-    // ไม่มีขอบบน/ล่าง: my-0 และกำหนดความสูงที่ container เลย
-    <div className="grid grid-cols-1 md:grid-cols-[4fr_6fr] gap-0 w-full h-[70vh] my-0">
+    <div className="grid grid-cols-1 md:grid-cols-[4fr_6fr] gap-0 w-full h-[100vh] my-0">
       {/* Left: Team Image (40%) */}
       <div className="relative h-full">
         <motion.div
@@ -25,9 +24,8 @@ export default function MapCards() {
               src="/home/team/104096.webp"
               alt="Taurus Team"
               fill
-              priority={false}
-              sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover object-center"
+              priority
             />
           </Box>
         </motion.div>

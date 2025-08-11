@@ -17,6 +17,7 @@ export default function Footer() {
   return (
     <Box
       component="footer"
+      alignItems="center"
       sx={{
         py: { xs: 4, md: 5 },
         backgroundColor: "#404040",
@@ -37,8 +38,8 @@ export default function Footer() {
             <Box
               sx={{
                 position: "relative",
-                width: { xs: 140, sm: 160, md: 200 }, // เดิม 120 → ขยายตาม breakpoint
-                height: { xs: 90, sm: 100, md: 120 }, // เดิม 80  → ขยายตาม breakpoint
+                width: { xs: 140, sm: 160, md: 200 },
+                height: { xs: 90, sm: 100, md: 120 },
               }}
             >
               <Image
@@ -53,7 +54,7 @@ export default function Footer() {
           </Grid>
 
           {/* Head Office */}
-          <Grid size="auto">
+          <Grid size="auto" sx={{ pl: { md: 2 } /* ดันห่างจากโลโก้เล็กน้อย */ }}>
             <Typography
               variant="h6"
               sx={{
@@ -61,26 +62,38 @@ export default function Footer() {
                 alignItems: "center",
                 gap: 1,
                 fontWeight: 700,
-                mb: 0.5,
+                letterSpacing: "0.03rem",
+                mb: 0.75,
               }}
             >
               <FaMapMarkerAlt size={18} />
               Head Office :
             </Typography>
 
-            <Typography variant="body1" sx={{ opacity: 0.9, lineHeight: 1.6 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "rgba(255,255,255,0.9)",
+                fontSize: { xs: "1rem", md: "1.05rem" },
+                lineHeight: 1.7,
+              }}
+            >
               288/18 Phaholyothin Rd.
               <br />
-              Anusawaree, Bangkhen, Bangkok 10220
+              Anusawaree , Bangkhen , Bangkok 10220
             </Typography>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
               <FaPhoneAlt />
               <Typography
                 variant="body1"
-                sx={{ opacity: 0.9, letterSpacing: "0.05rem" }}
+                sx={{
+                  color: "rgba(255,255,255,0.9)",
+                  letterSpacing: "0.18rem", // แผ่ตัวเลขให้คล้ายในภาพ
+                  fontSize: { xs: "1rem", md: "1.05rem" },
+                }}
               >
-                (66) 2 970 3080 - 3&nbsp;/&nbsp;(66) 61 0596111
+                (66) 2 970 3080 - 3  /  (66) 61 0596111
               </Typography>
             </Box>
           </Grid>
@@ -91,13 +104,13 @@ export default function Footer() {
               display: { xs: "none", md: "block" },
               width: "1px",
               alignSelf: "stretch",
-              mx: 2,
+              mx: { md: 3 },
               backgroundColor: "rgba(255,255,255,0.45)",
             }}
           />
 
           {/* Showroom + Social */}
-          <Grid size="auto">
+          <Grid size="auto" sx={{ pr: { md: 1 } }}>
             <Typography
               variant="h6"
               sx={{
@@ -105,17 +118,25 @@ export default function Footer() {
                 alignItems: "center",
                 gap: 1,
                 fontWeight: 700,
-                mb: 0.5,
+                letterSpacing: "0.03rem",
+                mb: 0.75,
               }}
             >
               <FaMapMarkerAlt size={18} />
               Showroom :
             </Typography>
 
-            <Typography variant="body1" sx={{ opacity: 0.9, lineHeight: 1.6 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "rgba(255,255,255,0.9)",
+                fontSize: { xs: "1rem", md: "1.05rem" },
+                lineHeight: 1.7,
+              }}
+            >
               189/9-10 Ratchada-Ramintra Rd.
               <br />
-              Nuanchan, Buengkum, Bangkok 10240
+              Nuanchan , Buengkum , Bangkok 10240
             </Typography>
 
             {/* Social row */}
@@ -128,7 +149,6 @@ export default function Footer() {
                 flexWrap: "wrap",
               }}
             >
-              {/* ไอคอน (ไม่มี hover/ไม่มี embed) */}
               <IconButton
                 aria-label="Line"
                 href="https://line.me/ti/p/~salestaurus"
@@ -150,7 +170,14 @@ export default function Footer() {
                 <FaMailBulk />
               </IconButton>
 
-              <Typography variant="body1" sx={{ mx: 1, opacity: 0.9 }}>
+              <Typography
+                variant="body1"
+                sx={{
+                  mx: 1,
+                  color: "rgba(255,255,255,0.9)",
+                  letterSpacing: "0.02rem",
+                }}
+              >
                 ติดตามผลงานเพิ่มเติมของเราได้ที่
               </Typography>
 
@@ -165,7 +192,6 @@ export default function Footer() {
                 <FaFacebookF />
               </IconButton>
 
-              {/* TikTok ลิงก์ธรรมดา ไม่มี hover/embed */}
               <IconButton
                 aria-label="TikTok"
                 href="https://www.tiktok.com/@taurus.by.emperor"
@@ -179,7 +205,11 @@ export default function Footer() {
 
               <Typography
                 variant="body1"
-                sx={{ ml: 1, opacity: 0.9, whiteSpace: "nowrap" }}
+                sx={{
+                  ml: 1,
+                  color: "rgba(255,255,255,0.9)",
+                  whiteSpace: "nowrap",
+                }}
               >
                 Taurus by Emperor
               </Typography>

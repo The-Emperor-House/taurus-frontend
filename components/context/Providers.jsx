@@ -4,7 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { ThemeProviderWrapper } from '@/theme/ThemeContext';
 import { ThemeProvider } from '@/theme';
 import { ModalProvider } from '@/components/modals/ModalProvider';
-import ThemeToggleButton from '@/theme/ThemeToggleButton';
+// import ThemeToggleButton from '@/theme/ThemeToggleButton';
 
 export function Providers({ children }) {
   return (
@@ -14,7 +14,7 @@ export function Providers({ children }) {
           <ModalProvider>
             {children}
           </ModalProvider>
-          <ThemeToggleButton />
+          {/* <ThemeToggleButton /> */}
         </ThemeProvider>
       </ThemeProviderWrapper>
     </SessionProvider>

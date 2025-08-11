@@ -108,7 +108,14 @@ export default function ServiceShowcase() {
   const s3 = serviceItems[2];
 
   return (
-    <Box sx={{ bgcolor: BG, py: { xs: 6, md: 10 } }}>
+    <Box
+        sx={{
+          bgcolor: BG,
+          minHeight: { xs: '100dvh', md: '100vh' },
+          width: '100%',
+          py: { xs: 6, md: 10 },
+        }}
+      >
       <Container maxWidth="lg">
         {/* หัวเรื่องส่วนนี้ (ตามเดิม) */}
         <Box sx={{ mb: { xs: 5, md: 7 } }}>
@@ -144,7 +151,6 @@ export default function ServiceShowcase() {
                 sx={{
                   height: "100%",
                   pr: { md: 3 },
-                  borderRight: { md: `1px solid ${DIV}` },
                   pb: { xs: 3, md: 0 },
                 }}
               >
@@ -166,7 +172,6 @@ export default function ServiceShowcase() {
                 sx={{
                   height: "100%",
                   px: { md: 3 },
-                  borderRight: { md: `1px solid ${DIV}` },
                   py: { xs: 3, md: 0 },
                 }}
               >

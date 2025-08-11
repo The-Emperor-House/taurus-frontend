@@ -37,9 +37,7 @@ export default function AboutUsPage() {
 
       {/* SECTION 3: Showcase */}
       <section>
-        <Box sx={{ py: { xs: 6, md: 10 } }}>
-          <ServiceShowcase />
-        </Box>
+        <ServiceShowcase />
       </section>
     </main>
   );

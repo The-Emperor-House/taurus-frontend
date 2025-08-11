@@ -1,6 +1,5 @@
 "use client";
 
-import HeroSection from "@/app/home/components/HeroSection";
 import { Box, Container } from "@mui/material";
 
 import AboutHeroBanner from "./components/AboutHeroBanner";
@@ -16,7 +15,6 @@ export default function AboutUsPage() {
     <main style={{ width: "100%", overflowX: "hidden" }}>
       {/* Top Hero(s) */}
       <section>
-        <HeroSection />
         <AboutHeroBanner />
       </section>
 

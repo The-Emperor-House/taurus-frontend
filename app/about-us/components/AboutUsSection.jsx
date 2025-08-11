@@ -1,6 +1,7 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
+import Link from "next/link";
+import { Box, Typography, Button } from "@mui/material";
 import { motion } from "framer-motion";
 import AboutBlock from "./AboutBlock";
 import ServiceBlock from "./ServiceBlock";
@@ -82,34 +83,73 @@ export default function AboutUsSection() {
         </motion.div>
       </Box>
 
-      {/* BOTTOM TEXT */}
-      <Box className="md:col-span-3 mt-26" sx={{ textAlign: "left" }}>
-        <Typography
-          variant="body1"
+      {/* BOTTOM TEXT + READ MORE (ขวาสุด) */}
+      <Box className="md:col-span-3 mt-26">
+        <Box
           sx={{
-            fontWeight: 500,
-            mb: 1.5,
-            letterSpacing: "0.05rem",
-            fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
-            ml: 6,
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "flex-start", md: "center" },
+            justifyContent: "space-between",
+            gap: 2,
           }}
         >
-          {servicesList.join(" | ")}
-        </Typography>
+          {/* ฝั่งซ้าย: 2 บรรทัดข้อความเดิม */}
+          <Box sx={{ textAlign: "left" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontWeight: 500,
+                mb: 1.0,
+                letterSpacing: "0.05rem",
+                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+                ml: 6,
+              }}
+            >
+              {servicesList.join(" | ")}
+            </Typography>
 
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 300,
-            color: "#000000ff",
-            letterSpacing: "0.05rem",
-            fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
-            opacity: 0.8,
-            ml: 13,
-          }}
-        >
-          {categories.map((c) => c.name).join(" | ")}
-        </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 300,
+                color: "#000000ff",
+                letterSpacing: "0.05rem",
+                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+                opacity: 0.8,
+                ml: 13,
+              }}
+            >
+              {categories.map((c) => c.name).join(" | ")}
+            </Typography>
+          </Box>
+
+          {/* ฝั่งขวา: ปุ่ม READ MORE */}
+          <Button
+            component={Link}
+            href="/about-us"
+            variant="contained"
+            disableElevation
+            sx={{
+              bgcolor: "#ab9685",
+              color: "#ffffff",
+              borderRadius: "9999px",
+              letterSpacing: "0.25rem",
+              fontWeight: 800,
+              px: 3.5,
+              py: 1.1,
+              textTransform: "uppercase",
+              "&:hover": { bgcolor: "#9b8575" },
+              "&:active": { bgcolor: "#8f7a69" },
+              "&:focus-visible": {
+                outline: "2px solid rgba(171,150,133,.5)",
+                outlineOffset: 2,
+              },
+            }}
+          >
+            READ&nbsp;MORE
+          </Button>
+        </Box>
       </Box>
     </div>
   );

@@ -1,66 +1,221 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Box, Typography, Grid, Chip } from "@mui/material";
 
-export default function NewsDetail({ params }) {
-  const { id } = params;
+import { useEffect, useMemo, useState } from "react";
+import { useParams } from "next/navigation";
+import { Box, Typography, Grid, Skeleton, Alert, Divider } from "@mui/material";
+import MediaEmbed from "@/components/common/MediaEmbed";
+
+const FALLBACK_COVER = "/images/default-news.jpg";
+const ACCENT = "#cc8f2a";
+
+/* ทำ URL ให้ใช้ได้ทุกกรณี */
+function resolveUrl(u) {
+  if (!u) return null;
+  if (u.startsWith("https://")) return u;
+  if (u.startsWith("//")) return "https:" + u;
+  if (u.startsWith("http://")) return u.replace(/^http:\/\//i, "https://");
+  if (u.startsWith("/")) {
+    const base = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/+$/, "");
+    return base ? `${base}${u}` : u;
+  }
+  return u;
+}
+
+/* label ซ้าย เช่น "TAURUS :" จาก heading1 */
+function extractLabel(h1 = "") {
+  const s = String(h1).trim();
+  if (!s) return "NEWS :";
+  if (s.includes(":")) return `${s.split(":")[0].trim().toUpperCase()} :`;
+  return `${s.split(/\s+/)[0].toUpperCase()} :`;
+}
+
+/* วันที่หัวใหญ่กลางหน้า (ใช้ createdAt เดี่ยว ๆ) */
+function formatDateLine(d) {
+  const dt = new Date(d);
+  const day = dt.getDate();
+  const month = dt.toLocaleString("en-US", { month: "long" }).toUpperCase();
+  const year = dt.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
+export default function NewsDetail() {
+  const params = useParams();
+  const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
+
   const [item, setItem] = useState(null);
+  const [imgSrc, setImgSrc] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
 
   useEffect(() => {
+    if (!id) return;
+    const ctrl = new AbortController();
     (async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news/${id}`);
-      if (res.ok) setItem(await res.json());
+      try {
+        setLoading(true);
+        setErr("");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news/${id}`, {
+          signal: ctrl.signal,
+        });
+        if (!res.ok) throw new Error("ไม่พบข่าวหรือเกิดข้อผิดพลาด");
+        const data = await res.json();
+        setItem(data);
+        setImgSrc(resolveUrl(data?.coverUrl) || FALLBACK_COVER);
+      } catch (e) {
+        if (e.name !== "AbortError") setErr(e.message || "เกิดข้อผิดพลาด");
+      } finally {
+        setLoading(false);
+      }
     })();
+    return () => ctrl.abort();
   }, [id]);
 
-  if (!item) {
-    return (
-      <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", pt: { xs: "140px", md: "170px" } }} />
-    );
-  }
+  const dateLine = useMemo(
+    () => (item?.createdAt ? formatDateLine(item.createdAt) : ""),
+    [item?.createdAt]
+  );
 
   return (
-    <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", width: "100%", pt: { xs: "140px", md: "170px" } }}>
-      <Box sx={{ maxWidth: 1000, mx: "auto", px: 2, pb: 8 }}>
-        {/* Cover */}
-        <Box sx={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: 2, mb: 3 }}>
-          <Box sx={{ pt: "56.25%" }} />
-          <img src={item.coverUrl} alt={item.heading1}
-               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-        </Box>
+    <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", width: "100%", pt: { xs: "120px", md: "160px" } }}>
+      <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, md: 3 }, pb: 8 }}>
+        {err && <Alert severity="error" sx={{ mb: 2 }}>{err}</Alert>}
 
-        <Typography variant="h4" fontWeight={800} sx={{ mb: .5 }}>{item.heading1}</Typography>
-        {item.heading2 && <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>{item.heading2}</Typography>}
-
-        <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 3 }}>
-          {new Date(item.createdAt).toLocaleString("th-TH", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+        {/* เส้นคั่น + วันที่ตัวใหญ่กลางหน้า */}
+        <Divider sx={{ borderColor: "rgba(255,255,255,0.12)", mb: 1.5 }} />
+        <Typography
+          sx={{
+            textAlign: "center",
+            fontWeight: 800,
+            letterSpacing: ".08em",
+            fontSize: { xs: "1.2rem", md: "1.8rem" },
+            textTransform: "uppercase",
+            mb: { xs: 2, md: 3 },
+          }}
+        >
+          {loading ? <Skeleton width={260} sx={{ mx: "auto" }} /> : dateLine}
         </Typography>
 
-        {item.videoUrl && (
-          <Box sx={{ mb: 3, aspectRatio: "16/9" }}>
-            {/* รองรับลิงก์ YouTube/Vimeo แบบ embed หรือ mp4 ตรง ๆ */}
-            <iframe src={item.videoUrl} width="100%" height="100%" style={{ border: 0 }} allowFullScreen />
-          </Box>
-        )}
+        {/* ===== 2 คอลัมน์: ซ้ายสื่อหลัก / ขวาข้อความ ===== */}
+        <Grid container spacing={{ xs: 2, md: 4 }}>
+          {/* ซ้าย: วิดีโอถ้ามี ไม่งั้นรูปปก */}
+          <Grid size={{ xs: 12, md: 8 }} item>
+            <Box
+              sx={{
+                position: "relative",
+                width: "100%",
+                aspectRatio: "16 / 9",
+                overflow: "hidden",
+                borderRadius: 2,
+                bgcolor: "#111",
+              }}
+            >
+              {loading ? (
+                <Skeleton variant="rectangular" sx={{ position: "absolute", inset: 0 }} />
+              ) : item?.videoUrl ? (
+                <Box sx={{ position: "absolute", inset: 0 }}>
+                  <MediaEmbed url={item.videoUrl} />
+                </Box>
+              ) : (
+                <img
+                  src={imgSrc || FALLBACK_COVER}
+                  alt={item?.heading1 || "news cover"}
+                  onError={() => setImgSrc(FALLBACK_COVER)}
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  loading="eager"
+                />
+              )}
+            </Box>
+          </Grid>
 
-        {item.body && (
-          <Typography sx={{ whiteSpace: "pre-wrap", lineHeight: 1.8, mb: 3 }}>{item.body}</Typography>
-        )}
+          {/* ขวา: label + title + body (ย่อหน้า) */}
+          <Grid size={{ xs: 12, md: 4 }} item>
+            {loading ? (
+              <>
+                <Skeleton width="35%" height={28} sx={{ mb: 1 }} />
+                <Skeleton width="80%" height={42} sx={{ mb: 2 }} />
+                <Skeleton width="100%" height={18} />
+                <Skeleton width="95%" height={18} />
+                <Skeleton width="90%" height={18} />
+              </>
+            ) : (
+              <>
+                <Typography
+                  sx={{
+                    color: ACCENT,
+                    fontWeight: 800,
+                    letterSpacing: ".06em",
+                    textTransform: "uppercase",
+                    fontSize: { xs: "1rem", md: "1.15rem" },
+                    mb: 1,
+                  }}
+                >
+                  {extractLabel(item?.heading1)}
+                </Typography>
 
-        {!!item.images?.length && (
-          <>
-            <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>Gallery</Typography>
+                <Typography
+                  sx={{
+                    fontWeight: 900,
+                    fontSize: { xs: "1.6rem", md: "2rem" },
+                    lineHeight: 1.15,
+                    mb: 2,
+                  }}
+                >
+                  {item?.heading2 || item?.heading1 || "-"}
+                </Typography>
+
+                {item?.body && (
+                  <Typography sx={{ whiteSpace: "pre-wrap", lineHeight: 1.9 }}>
+                    {item.body}
+                  </Typography>
+                )}
+              </>
+            )}
+          </Grid>
+        </Grid>
+
+        {/* ===== Gallery ด้านล่าง ===== */}
+        {!loading && (item?.images?.length ?? 0) > 0 && (
+          <Box sx={{ position: "relative", zIndex: 0, mt: 4 }}>
+            <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
+              Gallery ({item.images.length})
+            </Typography>
             <Grid container spacing={2}>
-              {item.images.map((img) => (
-                <Grid item xs={6} sm={4} md={3} key={img.id}>
-                  <Box sx={{ position: "relative", borderRadius: 1, overflow: "hidden" }}>
-                    <Box sx={{ pt: "100%" }} />
-                    <img src={img.imageUrl} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-                  </Box>
-                </Grid>
-              ))}
+              {item.images.map((img, i) => {
+                const src = resolveUrl(img?.imageUrl);
+                return (
+                  <Grid size={{ xs: 6, sm: 4, md: 3 }} item key={img?.id ?? i}>
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        aspectRatio: "1 / 1",
+                        overflow: "hidden",
+                        borderRadius: 1,
+                        bgcolor: "#111",
+                      }}
+                    >
+                      <img
+                        src={src || FALLBACK_COVER}
+                        alt=""
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.src = FALLBACK_COVER;
+                        }}
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                );
+              })}
             </Grid>
-          </>
+          </Box>
         )}
       </Box>
     </Box>

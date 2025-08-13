@@ -12,19 +12,36 @@ export default function NewsListPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const ctrl = new AbortController();
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news${q ? `?q=${encodeURIComponent(q)}` : ""}`, { signal: ctrl.signal });
-        const data = await res.json();
-        setItems(Array.isArray(data) ? data : []);
-      } finally {
-        setLoading(false);
-      }
-    })();
-    return () => ctrl.abort();
-  }, [q]);
+  const controller = new AbortController();
+  let mounted = true; // กัน setState หลัง unmount
+
+  (async () => {
+    try {
+      setLoading(true);
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/news${
+        q ? `?q=${encodeURIComponent(q)}` : ""
+      }`;
+      const res = await fetch(url, { signal: controller.signal });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      if (mounted) setItems(Array.isArray(data) ? data : []);
+    } catch (err) {
+      // ❗ สำคัญ: มองข้าม AbortError
+      if (err?.name === "AbortError") return;
+      console.error("news fetch error:", err);
+      if (mounted) setItems([]); // หรือ setError(...) ถ้าคุณมี state error
+    } finally {
+      if (mounted) setLoading(false);
+    }
+  })();
+
+  return () => {
+    mounted = false;
+    controller.abort(); // ยกเลิกคำขอเก่า
+  };
+}, [q]);
 
   return (
     <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", width: "100%", pt: { xs: "140px", md: "170px" } }}>

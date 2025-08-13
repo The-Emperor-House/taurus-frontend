@@ -28,6 +28,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 
 import { useSession, signIn } from "next-auth/react";
 import { useLogout } from "@/hooks/useLogout";
@@ -45,7 +46,7 @@ export default function MainNavbar() {
     { href: "/design", label: "Design" },
     { href: "/projects", label: "Projects" },
     { href: "/#showroom", label: "Showroom" },
-    { href: "/#news", label: "News & Events" },
+    { href: "/news", label: "News & Events" },
     { href: "/contact", label: "Contact" },
   ];
 
@@ -244,6 +245,15 @@ export default function MainNavbar() {
           </ListItem>
 
           <ListItem disablePadding>
+            <ListItemButton component={Link} href="/dashboard/news" onClick={() => setIsMobileMenuOpen(false)}>
+              <ListItemIcon sx={{ color: "#cc8f2a" }}>
+                <NewspaperIcon />
+              </ListItemIcon>
+              <ListItemText primary="News" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
             <ListItemButton component={Link} href="/dashboard/contact" onClick={() => setIsMobileMenuOpen(false)}>
               <ListItemIcon sx={{ color: "#cc8f2a" }}>
                 <ContactMailIcon />
@@ -326,6 +336,15 @@ export default function MainNavbar() {
                 <WorkspacesIcon />
               </ListItemIcon>
               <ListItemText primary="Project" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component={Link} href="/dashboard/news" onClick={() => setIsAccountOpen(false)}>
+              <ListItemIcon sx={{ color: "#cc8f2a" }}>
+                <NewspaperIcon />
+              </ListItemIcon>
+              <ListItemText primary="News" />
             </ListItemButton>
           </ListItem>
 

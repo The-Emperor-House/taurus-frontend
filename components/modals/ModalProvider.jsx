@@ -1,56 +1,56 @@
-'use client';
+"use client";
 
-import React, { createContext, useState, useEffect } from 'react';
-import SuccessModal from './SuccessModal';
-import ErrorModal from './ErrorModal';
-import WarningModal from './WarningModal';
-import ConfirmModal from './ConfirmModal';
-import LoadingModal from './LoadingModal';
+import { createContext, useMemo, useState } from "react";
+import LoadingDialog from "./LoadingDialog";
+import ConfirmDialog from "./ConfirmDialog";
 
-export const ModalContext = createContext();
+export const ModalContext = createContext(null);
 
-export function ModalProvider({ children }) {
-  const [ready, setReady] = useState(false);
-  const [modalState, setModalState] = useState({
-    type: '',
-    message: '',
-    isOpen: false,
-    onConfirm: null,
+export default function ModalProvider({ children }) {
+  const [loading, setLoading] = useState({ open: false, text: "" });
+  const [confirm, setConfirm] = useState({
+    open: false,
+    title: "Confirm",
+    message: "Are you sure?",
+    confirmText: "Confirm",
+    cancelText: "Cancel",
+    _resolver: null,
   });
 
-  useEffect(() => {
-    setReady(true);
-  }, []);
+  const value = useMemo(
+    () => ({
+      showLoading: (text = "Loading...") => setLoading({ open: true, text }),
+      hideLoading: () => setLoading({ open: false, text: "" }),
+      confirm: (opts = {}) =>
+        new Promise((resolve) =>
+          setConfirm((prev) => ({
+            ...prev,
+            ...opts,
+            open: true,
+            _resolver: resolve,
+          }))
+        ),
+    }),
+    []
+  );
 
-  const showModal = (type, { message = '', onConfirm = null } = {}) => {
-    setModalState({ type, message, isOpen: true, onConfirm });
+  const handleConfirmClose = (ok) => {
+    if (confirm._resolver) confirm._resolver(!!ok);
+    setConfirm((prev) => ({ ...prev, open: false, _resolver: null }));
   };
-
-  const closeModal = () => {
-    setModalState((prev) => ({ ...prev, isOpen: false, onConfirm: null }));
-  };
-
-  if (!ready) return null;
 
   return (
-    <ModalContext.Provider value={{ showModal, closeModal }}>
+    <ModalContext.Provider value={value}>
       {children}
-
-      {modalState.isOpen && modalState.type === 'success' && (
-        <SuccessModal open={modalState.isOpen} onClose={closeModal} message={modalState.message} />
-      )}
-      {modalState.isOpen && modalState.type === 'error' && (
-        <ErrorModal open={modalState.isOpen} onClose={closeModal} message={modalState.message} />
-      )}
-      {modalState.isOpen && modalState.type === 'warning' && (
-        <WarningModal open={modalState.isOpen} onClose={closeModal} message={modalState.message} />
-      )}
-      {modalState.isOpen && modalState.type === 'confirm' && (
-        <ConfirmModal open={modalState.isOpen} onClose={closeModal} message={modalState.message} onConfirm={modalState.onConfirm} />
-      )}
-      {modalState.isOpen && modalState.type === 'loading' && (
-        <LoadingModal open={modalState.isOpen} message={modalState.message} />
-      )}
+      <LoadingDialog open={loading.open} text={loading.text} />
+      <ConfirmDialog
+        open={confirm.open}
+        title={confirm.title}
+        message={confirm.message}
+        confirmText={confirm.confirmText}
+        cancelText={confirm.cancelText}
+        onClose={handleConfirmClose}
+      />
     </ModalContext.Provider>
   );
 }

@@ -1,8 +1,11 @@
-import { useContext } from 'react';
-import { ModalContext } from './ModalProvider';
+"use client";
+
+import { useContext } from "react";
+import { ModalContext } from "@/components/modals/ModalProvider";
 
 export function useModalContext() {
-  const context = useContext(ModalContext);
-  if (!context) throw new Error('useModalContext must be used within a ModalProvider');
-  return context;
+  const ctx = useContext(ModalContext);
+  if (!ctx) throw new Error("useModalContext must be used within a ModalProvider");
+  return ctx;
 }
+export default useModalContext;

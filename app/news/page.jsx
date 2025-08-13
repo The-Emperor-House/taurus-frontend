@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Box, Typography, Button, Skeleton, Alert, Divider } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -11,7 +11,7 @@ const FRAME = "#333";
 const FALLBACK_COVER = "/images/default-news.jpg";
 const PAGE_SIZE = 5;
 
-function resolveUrl(u) {
+const resolveUrl = (u) => {
   if (!u) return null;
   if (u.startsWith("https://")) return u;
   if (u.startsWith("//")) return "https:" + u;
@@ -21,47 +21,37 @@ function resolveUrl(u) {
     return base ? `${base}${u}` : u;
   }
   return u;
-}
-function dateLine(d) {
-  if (!d) return "";
-  const dt = new Date(d);
-  const opts = { day: "numeric", month: "long", year: "numeric" };
-  return dt.toLocaleDateString("en-GB", opts).toUpperCase();
-}
-function extractLabel(h1 = "") {
+};
+const dateLine = (d) =>
+  d ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }).toUpperCase() : "";
+
+const extractLabel = (h1 = "") => {
   const s = String(h1).trim();
   if (!s) return "NEWS :";
   if (s.includes(":")) return `${s.split(":")[0].trim().toUpperCase()} :`;
   return `${s.split(/\s+/)[0].toUpperCase()} :`;
-}
+};
 
 export default function NewsListPage() {
-  const [items, setItems] = useState([]);
+  const [allItems, setAllItems] = useState([]); // เก็บทั้งหมด
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
-  // ดึงข้อมูล (รองรับทั้งกรณี API มี/ไม่มี limit & offset)
+  // โหลดทั้งหมดครั้งเดียว แล้วค่อยตัดหน้า
   useEffect(() => {
     const ctrl = new AbortController();
     (async () => {
       try {
         setLoading(true);
         setErr("");
-        // ลองเรียกแบบมี query ก่อน
-        const url = `${process.env.NEXT_PUBLIC_API_URL}/api/news?limit=${PAGE_SIZE}&offset=${(page - 1) * PAGE_SIZE}`;
-        let res = await fetch(url, { signal: ctrl.signal });
-        let data = [];
-        if (res.ok) {
-          data = await res.json();
-          if (!Array.isArray(data)) data = [];
-        } else {
-          // ถ้าแบ็กเอนด์ยังไม่รองรับ ให้โหลดทั้งหมดแล้ว slice หน้าเอง
-          const resAll = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news`, { signal: ctrl.signal });
-          const all = resAll.ok ? await resAll.json() : [];
-          data = (Array.isArray(all) ? all : []).slice(0, page * PAGE_SIZE);
-        }
-        setItems(data);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news`, { signal: ctrl.signal });
+        const data = res.ok ? await res.json() : [];
+        // ถ้า backend ไม่ sort ให้ sort client-side ล่าสุดอยู่บน
+        const sorted = Array.isArray(data)
+          ? [...data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          : [];
+        setAllItems(sorted);
       } catch (e) {
         if (e.name !== "AbortError") setErr(e.message || "โหลดข้อมูลไม่สำเร็จ");
       } finally {
@@ -69,14 +59,22 @@ export default function NewsListPage() {
       }
     })();
     return () => ctrl.abort();
-  }, [page]);
+  }, []);
 
-  const canNext = items.length === page * PAGE_SIZE; // ถ้ายังเท่าจำนวนต่อหน้า แสดงว่าอาจมีหน้าถัดไป
+  // คำนวณรายการของ "หน้าปัจจุบัน" เท่านั้น
+  const pageItems = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+    return allItems.slice(start, end);
+  }, [allItems, page]);
+
+  const totalPages = Math.max(1, Math.ceil(allItems.length / PAGE_SIZE));
+  const canNext = page < totalPages;
 
   return (
     <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", pt: { xs: "120px", md: "160px" } }}>
       <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, md: 3 }, pb: 8 }}>
-        {/* หัวข้อใหญ่ */}
+        {/* Header */}
         <Box sx={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 2, mb: 4 }}>
           <Box sx={{ height: 1, bgcolor: "rgba(255,255,255,.2)" }} />
           <Typography
@@ -95,8 +93,8 @@ export default function NewsListPage() {
 
         {err && <Alert severity="error" sx={{ mb: 2 }}>{err}</Alert>}
 
-        {/* รายการข่าว (แนวตั้ง) */}
-        {loading && items.length === 0
+        {/* รายการข่าว: แสดงเฉพาะ pageItems (5 รายการ/หน้า) */}
+        {loading && allItems.length === 0
           ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
               <Box key={i} sx={{ mb: 5 }}>
                 <Grid container spacing={{ xs: 2, md: 4 }}>
@@ -118,12 +116,12 @@ export default function NewsListPage() {
                 </Grid>
               </Box>
             ))
-          : items.map((it) => {
+          : pageItems.map((it) => {
               const cover = resolveUrl(it.coverUrl) || FALLBACK_COVER;
               return (
                 <Box key={it.id} sx={{ mb: 6 }}>
                   <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
-                    {/* ซ้าย: สื่อหลักในกรอบเข้ม */}
+                    {/* ซ้าย: media */}
                     <Grid size={{ xs: 12, md: 7 }}>
                       <Box sx={{ border: `10px solid ${FRAME}`, borderRadius: 1 }}>
                         <Box sx={{ position: "relative", aspectRatio: "16 / 9", overflow: "hidden", bgcolor: "#111" }}>
@@ -141,7 +139,7 @@ export default function NewsListPage() {
                       </Box>
                     </Grid>
 
-                    {/* ขวา: ข้อความ */}
+                    {/* ขวา: texts */}
                     <Grid size={{ xs: 12, md: 5 }}>
                       <Typography sx={{ fontWeight: 800, fontSize: { xs: "1rem", md: "1.1rem" }, mb: 1 }}>
                         {dateLine(it.createdAt)}
@@ -184,10 +182,12 @@ export default function NewsListPage() {
               );
             })}
 
-        {/* ปุ่ม Next */}
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 4 }}>
+        {/* ปุ่ม Next (เปลี่ยนหน้า ไม่ใช่โหลดเพิ่ม) */}
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 4, gap: 2 }}>
+          {/* ถ้าอยากมี Prev ให้ปลดคอมเมนต์ */}
+          {/* <Button disabled={page<=1} onClick={()=>setPage(p=>Math.max(1,p-1))}>Prev</Button> */}
           <Button
-            onClick={() => setPage((p) => p + 1)}
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={!canNext || loading}
             endIcon={<span style={{ fontSize: 18 }}>→</span>}
             sx={{

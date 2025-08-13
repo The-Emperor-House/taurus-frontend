@@ -98,7 +98,7 @@ export default function NewsDetail() {
         {/* ===== 2 คอลัมน์: ซ้ายสื่อหลัก / ขวาข้อความ ===== */}
         <Grid container spacing={{ xs: 2, md: 4 }}>
           {/* ซ้าย: วิดีโอถ้ามี ไม่งั้นรูปปก */}
-          <Grid size={{ xs: 12, md: 8 }} item>
+          <Grid size={{ xs: 12, md: 8 }}>
             <Box
               sx={{
                 position: "relative",
@@ -128,7 +128,7 @@ export default function NewsDetail() {
           </Grid>
 
           {/* ขวา: label + title + body (ย่อหน้า) */}
-          <Grid size={{ xs: 12, md: 4 }} item>
+          <Grid size={{ xs: 12, md: 4 }}>
             {loading ? (
               <>
                 <Skeleton width="35%" height={28} sx={{ mb: 1 }} />
@@ -183,7 +183,7 @@ export default function NewsDetail() {
               {item.images.map((img, i) => {
                 const src = resolveUrl(img?.imageUrl);
                 return (
-                  <Grid size={{ xs: 6, sm: 4, md: 3 }} item key={img?.id ?? i}>
+                  <Grid size={{ xs: 6, sm: 4, md: 3 }} key={img?.id ?? i}>
                     <Box
                       sx={{
                         position: "relative",

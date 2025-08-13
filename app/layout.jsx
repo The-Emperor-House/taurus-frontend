@@ -3,6 +3,8 @@ import { Poppins, Prompt } from 'next/font/google';
 import { Providers } from '@/components/context/Providers';
 import MainNavbar from '@/components/layout/MainNavbar';
 import Footer from '@/components/layout/Footer';
+import { Suspense } from 'react';
+import RouteLoader from '@/components/common/RouteLoader';
 
 // กำหนด fonts
 const poppins = Poppins({
@@ -31,7 +33,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <MainNavbar />
           <main>
-              {children}
+            <Suspense fallback={<RouteLoader />}>{children}</Suspense>
           </main>
           <Footer />
         </Providers>

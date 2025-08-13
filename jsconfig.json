@@ -6,28 +6,8 @@
       "@/lib/*": ["./lib/*"],
       "@/components/*": ["./components/*"],
       "@/app/*": ["./app/*"]
-    },
-    "jsx": "preserve",
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-
-    "module": "esnext",
-    "moduleResolution": "bundler",
-
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "incremental": true
+    }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.mjs",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": ["node_modules"]
+  "include": ["app/**/*", "pages/**/*", "components/**/*", "lib/**/*", "**/*.jsx", "**/*.js"],
+  "exclude": ["node_modules", ".next", "public"]
 }

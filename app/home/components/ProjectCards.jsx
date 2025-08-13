@@ -15,16 +15,11 @@ import { useState, useEffect } from "react";
 const fetchProjectsData = async () => {
   return new Promise(resolve => setTimeout(() => {
     resolve([
-      { id: 1, title: "TRANSFORM", description: "ปรับปรุง ต่อเติม", image: "/home/projects/transform.webp", link: "/projects/transform" },
-      { id: 2, title: "DECORATE", description: "ตกแต่งภายใน", image: "/home/projects/decorate.webp", link: "/projects/decorate" },
-      { id: 3, title: "CONSTRUCTION", description: "การก่อสร้าง", image: "/home/projects/construction.webp", link: "/projects/construction" },
+      { id: 1, title: "REBUILD", description: "สร้างใหม่", image: "/home/projects/transform.webp", link: "/projects/REBUILD" },
+      { id: 2, title: "RENOVATE", description: "ปรับปรุงต่อเติม - ซ่อมแซม", image: "/home/projects/decorate.webp", link: "/projects/RENOVATE" },
+      { id: 3, title: "REDESIGN & DECORATE", description: "ออกแบบตกแต่งภายใน", image: "/home/projects/construction.webp", link: "/projects/REDESIGN" },
     ]);
   }, 500));
-};
-
-const overlayMotion = {
-  initial: { opacity: 0 },
-  hover: { opacity: 1 },
 };
 
 const glowMotion = {

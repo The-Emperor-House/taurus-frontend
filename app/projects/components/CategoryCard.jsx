@@ -18,7 +18,7 @@ const cardRevealVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function DesignCategoryCard({
+export default function CategoryCard({
   title,
   image,
   link,
@@ -78,7 +78,7 @@ export default function DesignCategoryCard({
                 />
               )}
               <Image
-                src={image}
+                src={image || '/images/default-category.jpg'}
                 alt={title}
                 fill
                 sizes="(max-width: 500px) 100vw, 500px"

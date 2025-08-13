@@ -4,165 +4,148 @@ import { useEffect, useState } from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
 import { useParams } from "next/navigation";
 
-import DesignGridCard from "../components/DesignGridCard";
-import DesignGalleryModal from "../components/DesignGalleryModal";
+import GridCard from "../components/GridCard";
+import GalleryModal from "../components/GalleryModal";
 
-export default function DesignTypePage() {
+export default function TypePage() {
   const { type } = useParams();
 
-  const [designs, setDesigns] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDesign, setSelectedDesign] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
-  const sidebarLabel = type ? `${type.toUpperCase()} DESIGN` : "DESIGN";
+  const palette = {
+    bg: "#404040",
+    text: "#E7D6C6",
+    accent: "#ab9685",
+    faint: "rgba(255,255,255,0.08)",
+    accent2: "#BFA68A",
+    white: "#FFFFFF",
+  };
 
   useEffect(() => {
     if (!type) {
       setLoading(false);
+      setProjects([]);
       return;
     }
-    const loadDesigns = async () => {
+    const load = async () => {
       setLoading(true);
       try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/projects?type=${type.toUpperCase()}`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/projects?type=${String(type).toUpperCase()}`;
         const res = await fetch(apiUrl);
-        const data = await res.json();
-        if (Array.isArray(data)) setDesigns(data);
-        else if (data && Array.isArray(data.data)) setDesigns(data.data);
-        else setDesigns([]);
-      } catch (err) {
-        console.error("Failed to load designs for type:", type, err);
-        setDesigns([]);
+        const json = await res.json();
+        if (Array.isArray(json)) setProjects(json);
+        else if (json && Array.isArray(json.data)) setProjects(json.data);
+        else setProjects([]);
+      } catch {
+        setProjects([]);
       } finally {
         setLoading(false);
       }
     };
-    loadDesigns();
+    load();
   }, [type]);
 
-  const handleCardClick = (design) => setSelectedDesign(design);
-  const handleModalClose = () => setSelectedDesign(null);
+  const onProjectClick = (project) => setSelectedProject(project);
+  const onModalClose = () => setSelectedProject(null);
 
-  // 2 ใบแรก = 6 คอลัมน์ (ครึ่งจอ), ที่เหลือ = 4 คอลัมน์ (หนึ่งในสาม)
-  const spanForIndex = (i) => (i < 2 ? 6 : 4);
+  const colSpanAt = (i) => (i < 2 ? 6 : 4);
 
   return (
-    <Box
-      sx={{
-        position: "relative",
-        minHeight: "100vh",
-        px: { xs: 2, sm: 3, md: 4 },
-        pt: { xs: "120px", md: "160px" },   // ขยับลงจาก navbar
-        pb: { xs: 8, md: 10 },
-        maxWidth: "1400px",
-        mx: "auto",
-      }}
-    >
-      {/* ชั้นวางป้ายด้านขวา: จัดกึ่งกลางแนวตั้งของคอนเทนต์ และดันออกนอกขวาเล็กน้อย */}
-    <Box
-      sx={{
-        position: "absolute",
-        inset: 0,
-        display: { xs: "none", lg: "flex" },
-        justifyContent: "flex-end",
-        alignItems: "center",
-        pointerEvents: "none",
-        zIndex: 0,
-      }}
-    >
-      <Typography
-        sx={{
-          position: "relative",
-          top: { lg: 24, xl: 350 },
-          transform: "rotate(90deg)",
-          transformOrigin: "right center",
-          whiteSpace: "nowrap",
-          mr: { lg: "-28px", xl: "-40px" },
-          letterSpacing: ".35em",
-          fontSize: { lg: "3.2rem", xl: "3.6rem" },
-          fontWeight: 300,
-          color: "#111",
-          lineHeight: 1,
-        }}
-      >
-        {sidebarLabel}
-      </Typography>
-    </Box>
-
-
-      {/* กริดการ์ด */}
+    <Box sx={{ position: "relative", minHeight: "100vh", bgcolor: palette.bg, color: palette.text }}>
       <Box
         sx={{
-          position: "relative",
-          zIndex: 1,                                 // ให้อยู่เหนือป้าย
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "1fr",
-            sm: "repeat(2, 1fr)",
-            md: "repeat(12, 1fr)",
-          },
-          gap: { xs: 3, md: 4 },                    // ระยะห่างแต่ละการ์ด
-          alignItems: "stretch",
+          maxWidth: { xs: "100%", md: "1400px" },
+          mx: "auto",
+          px: { xs: 2, sm: 3, md: 4, lg: 6 },
+          pt: { xs: "88px", sm: "96px", md: "128px" },
+          pb: { xs: 6, md: 10 },
         }}
       >
-        {loading
-          ? Array.from({ length: 5 }).map((_, i) => (
-              <Box
-                key={i}
+        <Box sx={{ display: "flex", justifyContent: "center", mb: { xs: 3, md: 6 }, px: { xs: 0, md: 2 } }}>
+          <Box sx={{ display: "grid", gridTemplateColumns: "auto auto", alignItems: "end", columnGap: { xs: 2, sm: 2.5, md: 3, lg: 4 } }}>
+            <Typography
+              component="div"
+              sx={{
+                fontWeight: 700,
+                color: palette.accent2,
+                letterSpacing: { xs: ".20em", md: ".24em", lg: ".26em" },
+                fontSize: { xs: "2.6rem", sm: "3.4rem", md: "6rem", lg: "7rem", xl: "7.6rem" },
+                lineHeight: 1,
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+              }}
+            >
+              PROJECT
+            </Typography>
+
+            <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: { xs: "flex-start", md: "flex-start" }, gap: { xs: 0.5, md: 1 }, pb: { xs: 0.4, md: 0.8 } }}>
+              <Typography
+                component="div"
                 sx={{
-                  gridColumn: {
-                    xs: "span 1",
-                    sm: "span 1",
-                    md: `span ${spanForIndex(i)}`,
-                  },
+                  color: palette.white,
+                  fontWeight: 300,
+                  letterSpacing: { xs: ".42em", md: ".50em", lg: ".56em" },
+                  fontSize: { xs: "1.25rem", sm: "1.4rem", md: "2.1rem", lg: "2.35rem" },
+                  lineHeight: 1,
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap",
                 }}
               >
-                <Skeleton
-                  variant="rectangular"
-                  sx={{
-                    width: "100%",
-                    height: { xs: 220, md: i < 2 ? 340 : 300 }, // บนสูงกว่าเล็กน้อย
-                  }}
-                />
-                <Skeleton width="70%" height={28} sx={{ mt: 1.5, mx: "auto" }} />
-              </Box>
-            ))
-          : designs.map((design, i) => (
-              <Box
-                key={design.id ?? i}
+                {(typeof type === "string" ? type : "").toUpperCase()}
+              </Typography>
+
+              <Typography
+                component="div"
                 sx={{
-                  gridColumn: {
-                    xs: "span 1",
-                    sm: "span 1",
-                    md: `span ${spanForIndex(i)}`,
-                  },
-                  display: "flex",
-                  flexDirection: "column",
+                  color: palette.accent2,
+                  fontWeight: 300,
+                  letterSpacing: { xs: ".36em", md: ".40em", lg: ".44em" },
+                  fontSize: { xs: "0.95rem", sm: "1rem", md: "1.15rem", lg: "1.3rem" },
+                  lineHeight: 1.15,
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap",
+                  opacity: 0.95,
                 }}
               >
-                <DesignGridCard design={design} onClick={handleCardClick} />
-                <Typography
-                  sx={{
-                    mt: 1.5,
-                    textAlign: "center",
-                    fontSize: { xs: "1.1rem", md: "1.6rem" },
-                    letterSpacing: ".18em",
-                    fontWeight: 300,
-                  }}
+                PORTFOLIO
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            position: "relative",
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(12, 1fr)" },
+            gap: { xs: 2.5, sm: 3, md: 4, lg: 5 },
+            alignItems: "stretch",
+          }}
+        >
+          {loading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <Box key={i} sx={{ gridColumn: { xs: "span 1", sm: "span 1", md: `span ${colSpanAt(i)}` } }}>
+                  <Skeleton
+                    variant="rectangular"
+                    sx={{ width: "100%", height: { xs: 210, sm: 240, md: i < 2 ? 360 : 300, lg: i < 2 ? 380 : 320 }, bgcolor: palette.faint }}
+                  />
+                  <Skeleton width="70%" height={28} sx={{ mt: 1.5, mx: "auto", bgcolor: palette.faint }} />
+                </Box>
+              ))
+            : projects.map((project, i) => (
+                <Box
+                  key={project.id ?? i}
+                  sx={{ gridColumn: { xs: "span 1", sm: "span 1", md: `span ${colSpanAt(i)}` }, display: "flex", flexDirection: "column" }}
                 >
-                  {design.title || design.name || "Perspective 3 D"}
-                </Typography>
-              </Box>
-            ))}
+                  <GridCard data={project} onClick={onProjectClick} />
+                </Box>
+              ))}
+        </Box>
       </Box>
 
-      {selectedDesign && (
-        <DesignGalleryModal
-          open={Boolean(selectedDesign)}
-          onClose={handleModalClose}
-          design={selectedDesign}
-        />
-      )}
+      {selectedProject && <GalleryModal open onClose={onModalClose} data={selectedProject} />}
     </Box>
   );
 }

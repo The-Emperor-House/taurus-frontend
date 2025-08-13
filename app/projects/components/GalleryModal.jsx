@@ -6,10 +6,10 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import 'react-image-gallery/styles/css/image-gallery.css';
 
-export default function DesignGalleryModal({ open, onClose, design }) {
-  if (!design) return null;
+export default function GalleryModal({ open, onClose, data }) {
+  if (!data) return null;
 
-  const images = design.images?.map((img) => ({
+  const images = data.images?.map((img) => ({
     original: img.imageUrl,
     thumbnail: img.thumbnailUrl || img.imageUrl,
   })) || [];
@@ -31,7 +31,7 @@ export default function DesignGalleryModal({ open, onClose, design }) {
         </IconButton>
 
         <Typography variant="h6" textAlign="center" mb={2}>
-          {design.name}
+          {data.name}
         </Typography>
 
         {images.length > 0 ? (
@@ -46,7 +46,7 @@ export default function DesignGalleryModal({ open, onClose, design }) {
           />
         ) : (
           <Typography textAlign="center" color="text.secondary" sx={{ p: 4 }}>
-            ไม่มีภาพเพิ่มเติมสำหรับ Design นี้
+            ไม่มีภาพเพิ่มเติมสำหรับโครงการนี้
           </Typography>
         )}
       </Box>

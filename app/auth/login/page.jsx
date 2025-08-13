@@ -84,7 +84,7 @@ export default function LoginPage() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          bgcolor: 'background.default',
+          bgcolor: '#0a0a0a'
         }}
       >
         <Box

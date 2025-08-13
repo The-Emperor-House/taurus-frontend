@@ -15,7 +15,7 @@ export default function SectionBlock({ title, items, loading, onEdit, onDelete, 
 
       <Grid container spacing={3}>
         {(loading ? Array.from({ length: 6 }) : items).map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} key={item?.id || index}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item?.id || index}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

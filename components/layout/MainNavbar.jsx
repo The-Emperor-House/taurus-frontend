@@ -29,6 +29,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import NewspaperIcon from '@mui/icons-material/Newspaper';
+import ChairIcon from '@mui/icons-material/Chair';
 
 import { useSession, signIn } from "next-auth/react";
 import { useLogout } from "@/hooks/useLogout";
@@ -45,7 +46,7 @@ export default function MainNavbar() {
     { href: "/about-us", label: "About Us" },
     { href: "/design", label: "Design" },
     { href: "/projects", label: "Projects" },
-    { href: "/#showroom", label: "Showroom" },
+    { href: "/furniture", label: "Showroom" },
     { href: "/news", label: "News & Events" },
     { href: "/contact", label: "Contact" },
   ];
@@ -245,6 +246,15 @@ export default function MainNavbar() {
           </ListItem>
 
           <ListItem disablePadding>
+            <ListItemButton component={Link} href="/dashboard/furniture" onClick={() => setIsMobileMenuOpen(false)}>
+              <ListItemIcon sx={{ color: "#cc8f2a" }}>
+                <ChairIcon />
+              </ListItemIcon>
+              <ListItemText primary="Showroom" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
             <ListItemButton component={Link} href="/dashboard/news" onClick={() => setIsMobileMenuOpen(false)}>
               <ListItemIcon sx={{ color: "#cc8f2a" }}>
                 <NewspaperIcon />
@@ -336,6 +346,15 @@ export default function MainNavbar() {
                 <WorkspacesIcon />
               </ListItemIcon>
               <ListItemText primary="Project" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component={Link} href="/dashboard/furniture" onClick={() => setIsAccountOpen(false)}>
+              <ListItemIcon sx={{ color: "#cc8f2a" }}>
+                <ChairIcon />
+              </ListItemIcon>
+              <ListItemText primary="Showroom" />
             </ListItemButton>
           </ListItem>
 

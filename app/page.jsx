@@ -1,6 +1,7 @@
 import HeroSection from '@/app/home/components/HeroSection';
 import AboutUsHomePageSection from '@/app/home/components/AboutUsHomePageSection';
 import ProjectsHomePageSection from '@/app/home/components/ProjectsHomePageSection';
+import LatestNews from '@/app/home/components/LatestNews';
 import OurTeamHomePageSection from '@/app/home/components/OurTeamHomePageSection';
 
 export const metadata = {
@@ -14,6 +15,7 @@ export default function HomePage() {
       <HeroSection />
       <AboutUsHomePageSection />
       <ProjectsHomePageSection />
+      <LatestNews />
       <OurTeamHomePageSection />
     </main>
   );

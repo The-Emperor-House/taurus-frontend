@@ -10,8 +10,13 @@ import {
   FormGroup,
   Snackbar,
   Alert,
-  Link,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 
 const initialState = {
@@ -38,6 +43,7 @@ const ACCENT = '#ab9685';
 export default function ContactForm() {
   const [formData, setFormData] = useState(initialState);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -112,7 +118,7 @@ export default function ContactForm() {
         width: '100%',
         bgcolor: PAGE_BG,
         minHeight: '100dvh',
-        pt: { xs: '72px', md: '120px' }, // เลื่อนลงจาก navbar
+        pt: { xs: '72px', md: '120px' },
       }}
     >
       {/* Top Bar */}
@@ -230,9 +236,21 @@ export default function ContactForm() {
               label={
                 <Typography sx={{ fontSize: { xs: 18, md: 22 } }}>
                   ยอมรับข้อตกลงในการใช้งานและนโยบายความเป็นส่วนตัว&nbsp;
-                  <Link href="/privacy" underline="hover" color="inherit">
+                  {/* ปุ่มเปิด popup */}
+                  <Button
+                    type="button"
+                    onClick={() => setPrivacyOpen(true)}
+                    sx={{
+                      p: 0,
+                      minWidth: 0,
+                      color: 'inherit',
+                      textDecoration: 'underline',
+                      fontSize: { xs: 18, md: 22 },
+                      '&:hover': { backgroundColor: 'transparent' },
+                    }}
+                  >
                     นโยบายความเป็นส่วนตัว
-                  </Link>
+                  </Button>
                 </Typography>
               }
               sx={{ m: 0, flex: 1 }}
@@ -259,6 +277,7 @@ export default function ContactForm() {
         </Box>
       </Box>
 
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}
@@ -272,6 +291,16 @@ export default function ContactForm() {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      {/* Privacy Policy Dialog */}
+      <PrivacyDialog
+        open={privacyOpen}
+        onClose={() => setPrivacyOpen(false)}
+        onAccept={() => {
+          setFormData(prev => ({ ...prev, accept: true }));
+          setPrivacyOpen(false);
+        }}
+      />
     </Box>
   );
 }
@@ -294,5 +323,52 @@ function Field(props) {
       }}
       {...rest}
     />
+  );
+}
+
+/* ------- Dialog นโยบายความเป็นส่วนตัว ------- */
+function PrivacyDialog({ open, onClose, onAccept }) {
+  return (
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+      <DialogTitle sx={{ pr: 6 }}>
+        นโยบายความเป็นส่วนตัว
+        <IconButton
+          onClick={onClose}
+          aria-label="close"
+          sx={{ position: 'absolute', right: 12, top: 12 }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent dividers sx={{ maxHeight: '70vh' }}>
+        {/* --- เนื้อหาตัวอย่าง ปรับแก้ได้ตามจริง --- */}
+        <Typography paragraph>
+          เราให้ความสำคัญกับข้อมูลส่วนบุคคลของคุณ ข้อมูลที่คุณให้ผ่านฟอร์มการติดต่อจะถูกใช้เพื่อ
+          ติดต่อกลับ จัดทำใบเสนอราคา จัดนัดหมาย และนำไปปรับปรุงคุณภาพงานบริการของเรา
+          โดยจะไม่เปิดเผยต่อบุคคลที่สาม เว้นแต่จำเป็นต่อการให้บริการหรือเป็นไปตามกฎหมาย
+        </Typography>
+        <Typography paragraph>
+          ประเภทข้อมูลที่เก็บ ได้แก่ ชื่อ–นามสกุล อีเมล เบอร์โทร ข้อมูลโครงการ (งบประมาณ พื้นที่
+          สถานที่ก่อสร้าง) และรายละเอียดเพิ่มเติม
+        </Typography>
+        <Typography paragraph>
+          คุณสามารถขอเข้าถึง/แก้ไข/ลบข้อมูล หรือเพิกถอนความยินยอมได้
+          โดยติดต่อช่องทางที่ระบุไว้ในเว็บไซต์ของเรา
+        </Typography>
+        <Typography paragraph>
+          การกดยอมรับนโยบายนี้ถือเป็นการอนุญาตให้เราเก็บและใช้ข้อมูลตามวัตถุประสงค์ที่ระบุ
+        </Typography>
+      </DialogContent>
+      <DialogActions sx={{ p: 2 }}>
+        <Button onClick={onClose}>ปิด</Button>
+        <Button
+          variant="contained"
+          onClick={onAccept}
+          sx={{ bgcolor: '#ab9685', '&:hover': { bgcolor: '#9a8574' } }}
+        >
+          ยอมรับและปิด
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

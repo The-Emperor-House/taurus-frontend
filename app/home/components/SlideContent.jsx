@@ -53,7 +53,7 @@ export default function SlideContent() {
           variant="h2"
           sx={{
             fontWeight: 100,
-            fontSize: { xs: "2rem", sm: "3rem", md: "5rem" }, // เท่ากับ TAURUS
+            fontSize: { xs: "1.9rem", sm: "3rem", md: "5rem" }, // เท่ากับ TAURUS
             color: "#ffffff",
             textShadow: "0px 4px 12px rgba(0, 0, 0, 0.8)",
             letterSpacing: { xs: "0.1rem", sm: "0.2rem", md: "0.8rem" },

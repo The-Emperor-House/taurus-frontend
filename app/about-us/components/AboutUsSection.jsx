@@ -7,11 +7,7 @@ import AboutBlock from "./AboutBlock";
 import ServiceBlock from "./ServiceBlock";
 import IconListBlock from "./IconListBlock";
 
-const servicesList = [
-  "สร้างใหม่",
-  "ปรับปรุงต่อเติม - ซ่อมแซม",
-  "ออกแบบตกแต่งภายใน",
-];
+const servicesList = ["สร้างใหม่", "ปรับปรุงต่อเติม - ซ่อมแซม", "ออกแบบตกแต่งภายใน"];
 
 const fadeInUpVariant = {
   hidden: { opacity: 0, y: 50 },
@@ -83,27 +79,28 @@ export default function AboutUsSection() {
         </motion.div>
       </Box>
 
-      {/* BOTTOM TEXT + READ MORE (ขวาสุด) */}
+      {/* BOTTOM TEXT + READ MORE */}
       <Box className="md:col-span-3 mt-26">
         <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
-            alignItems: { xs: "flex-start", md: "center" },
-            justifyContent: "space-between",
+            alignItems: { xs: "center", md: "center" },
+            justifyContent: { xs: "center", md: "space-between" },
             gap: 2,
+            textAlign: { xs: "center", md: "left" },
           }}
         >
-          {/* ฝั่งซ้าย: 2 บรรทัดข้อความเดิม */}
-          <Box sx={{ textAlign: "left" }}>
+          {/* ซ้าย: ข้อความ 2 บรรทัด */}
+          <Box sx={{ width: "100%" }}>
             <Typography
               variant="body1"
               sx={{
                 fontWeight: 500,
-                mb: 1.0,
+                mb: 1,
                 letterSpacing: "0.05rem",
-                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
-                ml: 6,
+                fontSize: { xs: "0.8rem", sm: "1rem", md: "1.2rem" },
+                ml: { xs: 0, md: 6 },
               }}
             >
               {servicesList.join(" | ")}
@@ -113,18 +110,18 @@ export default function AboutUsSection() {
               variant="body2"
               sx={{
                 fontWeight: 300,
-                color: "#000000ff",
+                color: "#000",
                 letterSpacing: "0.05rem",
-                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+                fontSize: { xs: "0.95rem", sm: "1rem", md: "1.2rem" },
                 opacity: 0.8,
-                ml: 13,
+                ml: { xs: 0, md: 13 },
               }}
             >
               {categories.map((c) => c.name).join(" | ")}
             </Typography>
           </Box>
 
-          {/* ฝั่งขวา: ปุ่ม READ MORE */}
+          {/* ขวา: ปุ่ม */}
           <Button
             component={Link}
             href="/about-us"
@@ -145,6 +142,8 @@ export default function AboutUsSection() {
                 outline: "2px solid rgba(171,150,133,.5)",
                 outlineOffset: 2,
               },
+              alignSelf: { xs: "center", md: "unset" },
+              mt: { xs: 1.5, md: 0 },
             }}
           >
             READ&nbsp;MORE

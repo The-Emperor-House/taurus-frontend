@@ -49,7 +49,12 @@ export default function AboutHeroBanner() {
           variant="h3"
           color="primary"
           fontWeight="bold"
-          sx={{ textTransform: "uppercase", letterSpacing: "0.2em", mt: 1 }}
+          sx={{ 
+            textTransform: "uppercase", 
+            letterSpacing: "0.2em", 
+            mt: 1,
+            fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" }
+          }}
         >
           RECRAFTING SPACE.
           <br />
@@ -59,7 +64,12 @@ export default function AboutHeroBanner() {
           variant="h6"
           fontWeight="light"
           color="#fff"
-          sx={{ letterSpacing: "0.1em", mt: 2, maxWidth: 600 }}
+          sx={{ 
+            letterSpacing: "0.1em", 
+            mt: 2, 
+            maxWidth: 600,
+            fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" }
+          }}
         >
           “สร้างบ้านหลังใหม่ ในที่อยู่อาศัยเดิมของคุณ”
         </Typography>

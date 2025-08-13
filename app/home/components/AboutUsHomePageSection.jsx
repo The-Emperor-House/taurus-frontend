@@ -8,14 +8,14 @@ import AboutUsSection from '@/app/about-us/components/AboutUsSection';
 export default function AboutUsHomePageSection() {
   return (
     <SectionWrapper noPadding={true} className="py-24">
-
-      {/* แถวเดียว ซ้าย-ขวา */}
+      {/* แถวเดียว ซ้าย-ขวา (mobile = กลาง/เรียงลง) */}
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap', // กันข้อความล้นจอเล็ก
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: { xs: 'center', md: 'space-between' },
+          alignItems: { xs: 'center', md: 'center' },
+          gap: { xs: 1.5, md: 0 },
           mb: 4,
           px: { xs: 2, md: 14 },
         }}
@@ -27,6 +27,7 @@ export default function AboutUsHomePageSection() {
             fontWeight: 100,
             letterSpacing: '0.4rem',
             color: '#000',
+            textAlign: { xs: 'center', md: 'left' },
           }}
         >
           ABOUT US
@@ -39,10 +40,10 @@ export default function AboutUsHomePageSection() {
             fontWeight: 800,
             color: '#cc8f2a',
             letterSpacing: '0.25rem',
-            textAlign: 'right',
-            fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem', lg: '1.6rem' },
+            textAlign: { xs: 'center', md: 'right' },
+            fontSize: { xs: '1.5rem', sm: '1.1rem', md: '1.2rem', lg: '1.6rem' },
             lineHeight: 1.2,
-            pr: { xs: 2, md: 14 },
+            pr: { xs: 0, md: 14 },
           }}
         >
           RECRAFTING SPACES. REVIVING LIVING.

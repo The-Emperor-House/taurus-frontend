@@ -46,7 +46,7 @@ export default function AboutBlock() {
           mt: 2,
           color: "#000000ff",
           letterSpacing: "0.3rem",
-          fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+          fontSize: { xs: "0.8rem", sm: "1rem", md: "1.2rem" },
         }}
       >
         “สร้างบ้านหลังใหม่ ในที่อยู่อาศัยเดิมของคุณ”
@@ -92,8 +92,6 @@ export default function AboutBlock() {
         ตั้งแต่แนวคิดไปจนถึงก่อสร้างจริง และควบคุมไม่ให้งบ
         บานปลาย`}
       </Typography>
-
-      
     </Box>
   );
 }

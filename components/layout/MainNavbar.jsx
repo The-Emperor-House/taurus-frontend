@@ -7,7 +7,6 @@ import {
   AppBar,
   Toolbar,
   Box,
-  Button,
   IconButton,
   Drawer,
   List,
@@ -28,6 +27,7 @@ import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import PersonIcon from "@mui/icons-material/Person";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
 
 import { useSession, signIn } from "next-auth/react";
 import { useLogout } from "@/hooks/useLogout";
@@ -224,8 +224,18 @@ export default function MainNavbar() {
             </ListSubheader>
           }
         >
+
           <ListItem disablePadding>
-            <ListItemButton component={Link} href="/dashboard/projects" onClick={() => setIsMobileMenuOpen(false)}>
+            <ListItemButton component={Link} href="/dashboard/design" onClick={() => setIsMobileMenuOpen(false)}>
+              <ListItemIcon sx={{ color: "#cc8f2a" }}>
+                <DesignServicesIcon />
+              </ListItemIcon>
+              <ListItemText primary="Design" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component={Link} href="/dashboard/project" onClick={() => setIsMobileMenuOpen(false)}>
               <ListItemIcon sx={{ color: "#cc8f2a" }}>
                 <WorkspacesIcon />
               </ListItemIcon>
@@ -234,11 +244,11 @@ export default function MainNavbar() {
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton component={Link} href="/dashboard/design" onClick={() => setIsMobileMenuOpen(false)}>
+            <ListItemButton component={Link} href="/dashboard/contact" onClick={() => setIsMobileMenuOpen(false)}>
               <ListItemIcon sx={{ color: "#cc8f2a" }}>
-                <DesignServicesIcon />
+                <ContactMailIcon />
               </ListItemIcon>
-              <ListItemText primary="Design" />
+              <ListItemText primary="Contact" />
             </ListItemButton>
           </ListItem>
 
@@ -300,9 +310,18 @@ export default function MainNavbar() {
               Dashboard
             </ListSubheader>
           }
-        >
+        >          
+        <ListItem disablePadding>
+            <ListItemButton component={Link} href="/dashboard/design" onClick={() => setIsAccountOpen(false)}>
+              <ListItemIcon sx={{ color: "#cc8f2a" }}>
+                <DesignServicesIcon />
+              </ListItemIcon>
+              <ListItemText primary="Design" />
+            </ListItemButton>
+          </ListItem>
+
           <ListItem disablePadding>
-            <ListItemButton component={Link} href="/dashboard/projects" onClick={() => setIsAccountOpen(false)}>
+            <ListItemButton component={Link} href="/dashboard/project" onClick={() => setIsAccountOpen(false)}>
               <ListItemIcon sx={{ color: "#cc8f2a" }}>
                 <WorkspacesIcon />
               </ListItemIcon>
@@ -311,11 +330,11 @@ export default function MainNavbar() {
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton component={Link} href="/dashboard/design" onClick={() => setIsAccountOpen(false)}>
+            <ListItemButton component={Link} href="/dashboard/contact" onClick={() => setIsAccountOpen(false)}>
               <ListItemIcon sx={{ color: "#cc8f2a" }}>
-                <DesignServicesIcon />
+                <ContactMailIcon />
               </ListItemIcon>
-              <ListItemText primary="Design" />
+              <ListItemText primary="Contact" />
             </ListItemButton>
           </ListItem>
 

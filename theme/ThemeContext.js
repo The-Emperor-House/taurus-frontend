@@ -6,7 +6,7 @@ export const ThemeContext = createContext();
 
 export function ThemeProviderWrapper({ children }) {
   const [mode, setMode] = useState('light');
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');

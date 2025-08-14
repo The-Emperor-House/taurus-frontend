@@ -5,8 +5,6 @@ import { ThemeProviderWrapper } from '@/theme/ThemeContext';
 import { ThemeProvider } from '@/theme';
 import ModalProvider from "@/components/modals/ModalProvider";
 
-import ThemeToggleButton from '@/theme/ThemeToggleButton';
-
 export function Providers({ children }) {
   return (
     <SessionProvider refetchInterval={0}>
@@ -15,7 +13,6 @@ export function Providers({ children }) {
           <ModalProvider>
             {children}
           </ModalProvider>
-          <ThemeToggleButton />
         </ThemeProvider>
       </ThemeProviderWrapper>
     </SessionProvider>

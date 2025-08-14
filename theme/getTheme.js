@@ -30,7 +30,7 @@ export const getTheme = (mode = 'light') =>
       MuiDivider: {
         styleOverrides: {
           root: {
-            backgroundColor: mode === 'light' ? '#000000' : '#666666',
+            backgroundColor: mode === 'light' ? '#000000ff' : '#ffffffff',
           },
         },
       },

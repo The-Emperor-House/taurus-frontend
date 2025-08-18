@@ -5,7 +5,7 @@ import { Box, Typography, Button, Stack, Snackbar, Alert, Divider } from "@mui/m
 import { Add as AddIcon } from "@mui/icons-material";
 import SectionBlock from "./components/SectionBlock";
 import DesignFormDialog from "./components/DesignFormDialog";
-import useModalContext from "@/components/modals/useModalContext";
+import useModalContext from "@/hooks/useModalContext";
 
 export default function DashboardDesign() {
   const [architectural, setArchitectural] = useState([]);

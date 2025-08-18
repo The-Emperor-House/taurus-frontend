@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Typography, Button, Stack, Divider, Snackbar, Alert, Grid, Card, CardContent } from "@mui/material";
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import useModalContext from "@/components/modals/useModalContext";
+import useModalContext from "@/hooks/useModalContext";
 import NewsFormDialog from "./components/NewsFormDialog";
 
 const COLORS = { accent: "#cc8f2a" };

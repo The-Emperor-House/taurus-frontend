@@ -14,7 +14,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useState, useEffect } from "react";
-import { useModalContext } from "../../../components/modals/useModalContext";
+import { useModalContext } from "../../../hooks/useModalContext";
 
 export default function EditProfileDialog({
   open,

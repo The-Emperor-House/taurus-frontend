@@ -5,6 +5,7 @@ import MainNavbar from '@/components/layout/MainNavbar';
 import Footer from '@/components/layout/Footer';
 import { Suspense } from 'react';
 import RouteLoader from '@/components/common/RouteLoader';
+import ClientGuards from "@/components/common/ClientGuards";
 
 // กำหนด fonts
 const poppins = Poppins({
@@ -27,10 +28,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const enableGuards = process.env.NODE_ENV === "production";
+
   return (
     <html lang="th" className={`${poppins.variable} ${prompt.variable}`}>
-      <body>
+      <body data-protect={enableGuards ? "on" : "off"}>
         <Providers>
+          <ClientGuards enabled={enableGuards} />
           <MainNavbar />
           <main>
             <Suspense fallback={<RouteLoader />}>{children}</Suspense>

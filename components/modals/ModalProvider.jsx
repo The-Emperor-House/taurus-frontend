@@ -31,18 +31,21 @@ export default function ModalProvider({ children }) {
     message: "Something went wrong",
     closeText: "Close",
   });
+
   const [warning, setWarning] = useState({
     open: false,
     title: "Warning",
     message: "Please confirm",
     closeText: "OK",
   });
+
   const [success, setSuccess] = useState({
     open: false,
     title: "Success",
     message: "Operation completed",
     closeText: "Great!",
   });
+
   const [logout, setLogout] = useState({
     open: false,
     title: "Sign out?",
@@ -56,6 +59,7 @@ export default function ModalProvider({ children }) {
   const showLoading = useCallback((message = "Loading...") => {
     setLoading({ open: true, message });
   }, []);
+  
   const hideLoading = useCallback(
     () => setLoading({ open: false, message: "" }),
     []

@@ -60,26 +60,15 @@ export default function ModalTestPage() {
   const openTest = () => showModal(MODAL_IDS.test, { title: "ทดสอบโมดัล", message: "สวัสดีจากหน้า ModalTestPage!", closeText: "ปิด" });
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        minHeight: `calc(100vh - ${navbarHeight}px)`,
-        pt: `${navbarHeight + 16}px`, // เว้นระยะเท่าความสูง navbar + padding เพิ่มอีกนิด
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-      }}
-    >
       <Box p={4}         
             sx={{
             minHeight: '100vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            bgcolor: '#0a0a0a'
+            bgcolor: '#404040'
             }}
         >
-        <Typography variant="h5" mb={2}>Modal Test Page</Typography>
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
           <Button variant="contained" onClick={openConfirm}>Open Confirm</Button>
           <Button variant="contained" color="error" onClick={openError}>Open Error</Button>
@@ -90,6 +79,5 @@ export default function ModalTestPage() {
           <Button variant="text" onClick={openTest}>Open Custom (test-modal)</Button>
         </Stack>
       </Box>
-    </Box>
   );
 }

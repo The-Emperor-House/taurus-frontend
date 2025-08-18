@@ -6,12 +6,42 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 export default function WarningModal({ open, onClose, message }) {
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogContent sx={{ textAlign: 'center', p: 4, backgroundColor: '#212121' }}>
-        <WarningAmberIcon sx={{ fontSize: 80, color: '#ff9800', mb: 2, animation: 'scaleUp 0.6s ease' }} />
-        <Typography sx={{ color: 'white' }}>{message}</Typography>
+      <DialogContent
+        sx={{
+          textAlign: 'center',
+          p: 4,
+          bgcolor: 'background.paper',
+        }}
+      >
+        <WarningAmberIcon
+          sx={{
+            fontSize: 80,
+            color: 'warning.main',
+            mb: 2,
+            // เอฟเฟกต์โผล่นิดๆ
+            animation: 'pop 240ms ease',
+            '@keyframes pop': {
+              from: { transform: 'scale(0.9)', opacity: 0 },
+              to: { transform: 'scale(1)', opacity: 1 },
+            },
+          }}
+        />
+        <Typography sx={{ color: 'text.primary' }}>{message}</Typography>
       </DialogContent>
-      <DialogActions sx={{ justifyContent: 'center', backgroundColor: '#212121' }}>
-        <Button variant="contained" onClick={onClose} sx={{ backgroundColor: '#ff9800', '&:hover': { backgroundColor: '#fb8c00' } }}>
+
+      <DialogActions
+        sx={{
+          justifyContent: 'center',
+          bgcolor: 'background.paper',
+          pb: 3,
+        }}
+      >
+        <Button
+          variant="contained"
+          color="warning"
+          onClick={onClose}
+          sx={{ minWidth: 120 }}
+        >
           Close
         </Button>
       </DialogActions>

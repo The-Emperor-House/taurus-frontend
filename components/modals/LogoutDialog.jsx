@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -9,56 +8,61 @@ import {
   Button,
   Typography,
   Slide,
-} from '@mui/material';
-import { signOut } from 'next-auth/react';
+} from "@mui/material";
+import { forwardRef, useEffect } from "react";
 
-const Transition = Slide;
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
-export default function LogoutDialog({ isOpen, onClose }) {
+export default function LogoutDialog({
+  open,
+  onClose,
+  title = "Are you sure you want to log out?",
+  message = "If you log out, you will need to log in again.",
+  confirmText = "Log Out",
+  cancelText = "Cancel",
+}) {
+  // ปิดด้วย ESC → ส่ง false (ยกเลิก)
   useEffect(() => {
     const handleEsc = (event) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === "Escape") onClose?.(false);
     };
-    if (isOpen) {
-      document.addEventListener('keydown', handleEsc);
-    }
-    return () => document.removeEventListener('keydown', handleEsc);
-  }, [isOpen, onClose]);
+    if (open) document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [open, onClose]);
 
-  const handleLogout = () => {
-    onClose();
-    signOut({ callbackUrl: '/auth/login' });
-  };
+  const handleCancel = () => onClose?.(false);
+  const handleConfirm = () => onClose?.(true);
 
   return (
     <Dialog
-      open={isOpen}
-      onClose={onClose}
+      open={open}
+      onClose={handleCancel}
       TransitionComponent={Transition}
       keepMounted
       fullWidth
       maxWidth="xs"
       sx={{
-        '& .MuiPaper-root': {
-          borderRadius: 3,
-        },
-        backdropFilter: 'blur(4px)',
+        "& .MuiPaper-root": { borderRadius: 3 },
+        backdropFilter: "blur(4px)",
       }}
     >
-      <DialogTitle>Are you sure you want to log out?</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <Typography color="text.secondary">
-          If you log out, you will need to log in again.
-        </Typography>
+        <Typography color="text.secondary">{message}</Typography>
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={handleCancel}>{cancelText}</Button>
         <Button
-          onClick={handleLogout}
+          onClick={handleConfirm}
           variant="contained"
-          sx={{ bgcolor: '#cc8f2a', '&:hover': { bgcolor: '#e0a040' } }}
+          sx={{
+            bgcolor: "primary.main",
+            "&:hover": { bgcolor: "primary.dark" },
+          }}
         >
-          Log Out
+          {confirmText}
         </Button>
       </DialogActions>
     </Dialog>

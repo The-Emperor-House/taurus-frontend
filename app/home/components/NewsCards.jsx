@@ -93,7 +93,7 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
           mb: 3,
         }}
       >
-        <Box sx={{ height: 1, bgcolor: "#e5e5e5" }} />
+        <Box sx={{ height: 1, bgcolor: "#000000ff" }} />
         <Typography
           sx={{
             fontWeight: 900,
@@ -105,7 +105,7 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
         >
           {title}
         </Typography>
-        <Box sx={{ height: 1, bgcolor: "#e5e5e5" }} />
+        <Box sx={{ height: 1, bgcolor: "#000000ff" }} />
       </Box>
 
       {/* บล็อกข่าวล่าสุด */}

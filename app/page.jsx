@@ -1,8 +1,8 @@
-import HeroSection from '@/app/home/components/HeroSection';
-import AboutUsHomePageSection from '@/app/home/components/AboutUsHomePageSection';
-import ProjectsHomePageSection from '@/app/home/components/ProjectsHomePageSection';
-import LatestNews from '@/app/home/components/LatestNews';
-import OurTeamHomePageSection from '@/app/home/components/OurTeamHomePageSection';
+import HomeCard from '@/app/home/components/HomeCards';
+import AboutUsCards from '@/app/home/components/AboutUsCards';
+import ProjectCards from '@/app/home/components/ProjectCards';
+import NewsCards from '@/app/home/components/NewsCards';
+import MapCards from '@/app/home/components/MapCards';
 
 export const metadata = {
   title: 'Home - TAURUS : WE RENEW',
@@ -12,11 +12,11 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main>
-      <HeroSection />
-      <AboutUsHomePageSection />
-      <ProjectsHomePageSection />
-      <LatestNews />
-      <OurTeamHomePageSection />
+      <HomeCard />
+      <AboutUsCards />
+      <ProjectCards />
+      <NewsCards />
+      <MapCards />
     </main>
   );
 }

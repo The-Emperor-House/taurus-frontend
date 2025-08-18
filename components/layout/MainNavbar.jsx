@@ -77,12 +77,12 @@ export default function MainNavbar() {
         }}
       >
         {/* Logo: md+ — ขยับไปทางขวาเล็กน้อยด้วย ml */}
-        <Box sx={{ display: { xs: "none", md: "block" }, ml: 4 }}>
+        <Box id="brand-md" sx={{ display: { xs: "none", md: "block" }, ml: 4 }}>
           <LogoSwap width={200} height={120} showOnXs={false} />
         </Box>
 
         {/* Logo: xs (มือถือ) — ขยับขวานิดหน่อยเช่นกัน */}
-        <Box sx={{ display: { xs: "block", md: "none" }, ml: 1 }}>
+        <Box id="brand-xs" sx={{ display: { xs: "block", md: "none" }, ml: 1 }}>
           <LogoSwap width={110} height={70} showOnXs />
         </Box>
 

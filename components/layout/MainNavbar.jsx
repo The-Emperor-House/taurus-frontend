@@ -8,7 +8,9 @@ import {
   IconButton,
   Avatar,
   Button,
-  Tooltip
+  Tooltip,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -30,6 +32,10 @@ export default function MainNavbar() {
   const { data: session, status } = useSession();
   const isAuthed = status === "authenticated";
   const { logout } = useLogout();
+
+  const theme = useTheme();
+  const isLgUp = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const navLinks = useMemo(
     () => [
@@ -63,39 +69,58 @@ export default function MainNavbar() {
     setIsAccountOpen(false);
   };
 
+  const logoW = isLgUp ? 200 : isMdUp ? 160 : 110;
+  const logoH = isLgUp ? 120 : isMdUp ? 96 : 70;
+
   return (
     <AppBar
       id="main-navbar"
       position="absolute"
-      sx={{ backgroundColor: "transparent", boxShadow: "none", top: "50px" }}
+      sx={{
+        backgroundColor: "transparent",
+        boxShadow: "none",
+        top: "50px",
+        zIndex: (t) => t.zIndex.appBar + 1,
+      }}
     >
       <Toolbar
         sx={{
           justifyContent: "space-between",
           alignItems: "center",
-          px: 3,
+          px: { xs: 2, md: 3 },
           py: 1,
+          gap: { md: 1, lg: 0 },
+          maxWidth: 1400,
+          mx: "auto",
+          width: "100%",
         }}
       >
-        {/* Logo: md+ — ขยับไปทางขวาเล็กน้อยด้วย ml */}
-        <Box id="brand-md" sx={{ display: { xs: "none", md: "block" }, ml: 4 }}>
-          <LogoSwap width={200} height={120} showOnXs={false} />
-        </Box>
-
-        {/* Logo: xs (มือถือ) — ขยับขวานิดหน่อยเช่นกัน */}
-        <Box id="brand-xs" sx={{ display: { xs: "block", md: "none" }, ml: 1 }}>
-          <LogoSwap width={110} height={70} showOnXs />
+        <Box sx={{ ml: { xs: 1, md: 2, lg: 4 } }}>
+          <LogoSwap width={logoW} height={logoH} showOnXs />
         </Box>
 
         {/* กลุ่มขวา: รวม "ลิงก์เดสก์ท็อป" + "ปุ่ม auth" ไว้ในกล่องเดียวกัน → nav ติดกับ auth */}
         <Box
           sx={{
-            display: { xs: "none", md: "flex" },
+            display: { xs: "none", md: "flex" }, // แสดงตั้งแต่ tablet ขึ้นไป
             alignItems: "center",
-            gap: 1.5,
+            // ลดช่องว่าง/ฟอนต์บน tablet ให้ไม่ล้น
+            gap: { md: 1, lg: 1.5 },
+            "& a, & .MuiButtonBase-root": {
+              fontSize: { md: "0.95rem", lg: "1.05rem" },
+              letterSpacing: { md: ".02rem", lg: ".03rem" },
+              px: { md: 0.5, lg: 1 },
+              whiteSpace: "nowrap",
+            },
           }}
         >
-          <NavLinks links={navLinks} onSmoothScroll={handleSmoothScroll} />
+          <NavLinks
+            links={navLinks}
+            onSmoothScroll={handleSmoothScroll}
+            // ถ้า NavLinks รองรับ prop ปรับขนาด ให้ส่ง dense เมื่ออยู่ tablet
+            dense={!isLgUp}
+          />
+
           {isAuthed ? (
             <IconButton
               onClick={() => setIsAccountOpen(true)}
@@ -120,7 +145,7 @@ export default function MainNavbar() {
                 sx={{
                   color: "common.white",
                   "&:hover": {
-                    bgcolor: (theme) => theme.palette.primary.main,
+                    bgcolor: (t) => t.palette.action.hover,
                   },
                 }}
               >
@@ -130,7 +155,7 @@ export default function MainNavbar() {
           )}
         </Box>
 
-        {/* ปุ่มเมนูมือถือ */}
+        {/* ปุ่มเมนูมือถือ (แสดงเฉพาะ < md) */}
         <IconButton
           sx={{ display: { xs: "flex", md: "none" }, color: "common.white" }}
           onClick={() => setIsMobileMenuOpen(true)}

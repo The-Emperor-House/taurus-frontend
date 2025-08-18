@@ -14,35 +14,35 @@ export default function Footer() {
   return (
     <Box
       component="footer"
-      sx={{
-        py: { xs: 4, md: 5 },
-        bgcolor: "#404040",
-        color: "#fff",
-        "& a": { color: "#fff", textDecoration: "none" },
-      }}
+      sx={{ py: { xs: 4, md: 5 }, bgcolor: "#404040", color: "#fff" }}
     >
       <Container maxWidth="xl">
         <Grid
           container
           spacing={{ xs: 3, md: 4 }}
           alignItems="center"
-          sx={{ flexWrap: { xs: "wrap", md: "nowrap" } }}
+          sx={{ flexWrap: { xs: "wrap", md: "wrap", lg: "nowrap" } }}
         >
-          {/* Logo */}
-          <Grid size={{ xs: 12, md: 2 }} offset={{ xs: 0, md: 0 }}>
+          {/* 1) FooterLogo */}
+          <Grid
+            size={{ xs: 12, md: 12, lg: 2 }}
+            sx={{ flexShrink: 0, minWidth: { md: 180, lg: 200 } }}
+          >
             <FooterLogo src={logoSrc} />
           </Grid>
 
-          {/* Head Office */}
-          <Grid size={{ xs: 12, md: "auto" }} sx={{ pl: { md: 2 } }}>
+          {/* 2) HeadOffice */}
+          <Grid size={{ xs: 12, md: 12 }} sx={{ pl: { lg: 1 } }}>
             <HeadOffice />
           </Grid>
 
-          {/* Divider (vertical on desktop / horizontal on mobile) */}
-          <ResponsiveDivider />
+          {/* 3) ResponsiveDivider (แนวนอนบน mobile / แนวตั้งบน desktop) */}
+          <Grid size={{ xs: 12, md: 12 }} sx={{ display: { xs: "block", md: "none" } }}>
+            <ResponsiveDivider />
+          </Grid>
 
-          {/* Showroom + Social */}
-          <Grid size={{ xs: 12, md: "auto" }} sx={{ pr: { md: 1 } }}>
+          {/* 4) Showroom + Social */}
+          <Grid size={{ xs: 12, md: 12 }} sx={{ pr: { lg: 1 } }}>
             <ShowroomAndSocial />
           </Grid>
         </Grid>

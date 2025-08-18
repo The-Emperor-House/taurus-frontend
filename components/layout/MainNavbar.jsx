@@ -115,11 +115,10 @@ export default function MainNavbar() {
             <Button
               onClick={() => signIn()}
               startIcon={<LoginIcon />}
-              color="primary"
-              variant="contained"
+              variant="icon"
               sx={{ ml: 0.5 }}
+              hover={{ bgcolor: "primary.main", opacity: 0.08 }}
             >
-              Login
             </Button>
           )}
         </Box>

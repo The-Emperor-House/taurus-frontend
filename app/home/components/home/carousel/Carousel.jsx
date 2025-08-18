@@ -7,12 +7,9 @@ import BackgroundImage from "../hero/BackgroundImage";
 import "swiper/css";
 import "swiper/css/autoplay";
 
-const toPad = (v) =>
-  typeof v === "number" ? `${v}px` : `clamp(${v.base}px, 4vw, ${v.md}px)`;
-
 export default function Carousel({
   slides = [],
-  overlayPaddingLeft = { base: 24, md: 56 },
+  overlayPaddingLeft = { xs: 24, md: 56 }, // ✅ รองรับ object per breakpoint
   height = "100vh",
   delay = 5000,
 }) {
@@ -23,8 +20,6 @@ export default function Carousel({
       </Box>
     );
   }
-
-  const padLeft = toPad(overlayPaddingLeft);
 
   return (
     <Box sx={{ position: "relative", width: "100%", height, bgcolor: "black", overflow: "hidden" }}>
@@ -38,9 +33,9 @@ export default function Carousel({
       >
         {slides.map((s) => (
           <SwiperSlide key={s.id} style={{ position: "relative" }}>
-            <BackgroundImage 
-              src={s.imageSrc} 
-              alt={s.alt || `slide-${s.id}`} 
+            <BackgroundImage
+              src={s.imageSrc}
+              alt={s.alt || `slide-${s.id}`}
               dim={s.dim}
               gradient={s.gradient}
               priority={s.priority}
@@ -55,7 +50,7 @@ export default function Carousel({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "flex-start",
-                pl: padLeft,
+                pl: overlayPaddingLeft, // ✅ ส่ง object/vars ได้เลย
               }}
             >
               {s.content}

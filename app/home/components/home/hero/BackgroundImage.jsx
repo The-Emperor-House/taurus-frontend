@@ -14,8 +14,9 @@ const dimToBg = (dim) =>
 export default function BackgroundImage({
   src,
   alt,
-  dim = 0,
-  priority = false,
+  dim = 0,              // 0..1 หรือ { xs, sm, md, lg, xl }
+  gradient = false,     // ไล่เฉดทับภาพ
+  priority = false,     // true เฉพาะรูปแรกจริง ๆ
   objectPosition = "center",
 }) {
   const [loaded, setLoaded] = useState(false);
@@ -39,6 +40,19 @@ export default function BackgroundImage({
           willChange: "opacity",
         }}
       />
+
+      {gradient && (
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: "none",
+            background:
+              "linear-gradient(135deg, rgba(0,0,0,.45), transparent 50%, rgba(0,0,0,.2))",
+          }}
+        />
+      )}
 
       {((typeof dim === "number" && dim > 0) || typeof dim === "object") && (
         <Box

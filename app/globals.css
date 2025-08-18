@@ -1,1 +1,4 @@
 @import "tailwindcss";
+
+:root { --nav-h: 180px; }
+@media (max-width: 900px) { :root { --nav-h: 64px; } }

@@ -4,7 +4,13 @@ import Link from "next/link";
 import { Box } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 
-export default function NavLinkItem({ href, label, active, onClick }) {
+export default function NavLinkItem({
+  href,
+  label,
+  active,
+  onClick,
+  dense = false, // เพิ่มโหมดแน่น
+}) {
   return (
     <Box
       component={Link}
@@ -12,12 +18,20 @@ export default function NavLinkItem({ href, label, active, onClick }) {
       onClick={onClick}
       sx={(t) => ({
         position: "relative",
+        display: "inline-flex",
+        alignItems: "center",
         textDecoration: "none",
-        fontSize: "1.05rem",
+        // ย่อ-ขยายอัตโนมัติ: max ~1.3rem, min ~0.95/0.9 ตามโหมด
+        fontSize: dense
+          ? "clamp(0.9rem, 0.9vw + 0.55rem, 1.15rem)"
+          : "clamp(0.95rem, 1.0vw + 0.65rem, 1.3rem)",
         lineHeight: 1.6,
+        whiteSpace: "nowrap",         // กันตัดบรรทัดเมื่อมีหลายเมนู
+        wordBreak: "keep-all",
         color: "common.white",
+        textShadow: `0 2px 4px ${alpha(t.palette.common.black, 0.6)}`,
         transition: "color .25s ease",
-        px: 0.75,
+        px: dense ? 0.5 : 0.75,       // โหมดแน่นลด padding
         py: 0.25,
         borderRadius: 1,
         "&:hover": { color: "primary.main" },

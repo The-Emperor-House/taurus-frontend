@@ -72,11 +72,11 @@ export default function NewsListPage() {
   const canNext = page < totalPages;
 
   return (
-    <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", pt: { xs: "120px", md: "160px" } }}>
+    <Box sx={{ bgcolor: "#404040", color: "#fff", minHeight: "100svh", pt: { xs: "120px", md: "160px" } }}>
       <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, md: 3 }, pb: 8 }}>
         {/* Header */}
         <Box sx={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 2, mb: 4 }}>
-          <Box sx={{ height: 1, bgcolor: "rgba(255,255,255,.2)" }} />
+          <Box sx={{ height: 1, bgcolor: "rgba(0, 0, 0, 1)" }} />
           <Typography
             sx={{
               fontWeight: 900,
@@ -88,7 +88,7 @@ export default function NewsListPage() {
           >
             News & Events
           </Typography>
-          <Box sx={{ height: 1, bgcolor: "rgba(255,255,255,.2)" }} />
+          <Box sx={{ height: 1, bgcolor: "rgba(0, 0, 0, 1)" }} />
         </Box>
 
         {err && <Alert severity="error" sx={{ mb: 2 }}>{err}</Alert>}

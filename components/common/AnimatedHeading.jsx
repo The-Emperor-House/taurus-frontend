@@ -2,27 +2,8 @@
 
 import { useInView } from "framer-motion";
 import { useMemo, useRef } from "react";
+import { Box } from "@mui/material";
 
-/**
- * AnimatedHeading (reusable)
- * ------------------------------------------------------------------
- * Props:
- * - title, subtitle
- * - align: "center" | "left" | "right"
- * - titleColor: CSS color (default: "#fff")
- * - textColorClass: tailwind class ของ title (default: "text-white")
- * - mobileSize: tailwind class (default: "text-3xl")
- * - desktopSize: tailwind class (default: "text-4xl")
- * - subtitleMobileSize, subtitleDesktopSize: tailwind class
- * - showLines: แสดงเส้นซ้าย/ขวา (default: true)
- * - showSubtitle: แสดง subtitle (default: true ถ้ามีค่า)
- * - lineColor: CSS color สำหรับเส้น (default: "rgba(255,255,255,0.7)")
- * - lineThickness: px (default: 1)
- * - lineLengthPx: { xs: number, md: number } (default: { xs: 48, md: 96 })
- * - gap: ระยะห่างระหว่างเส้นกับตัวอักษร (px, default: { xs: 8, md: 16 })
- * - className: class ของ container
- * - disableSelection: ปิดการ select (default: false)
- */
 export default function AnimatedHeading({
   title = "PROJECT",
   subtitle = "RECRAFTING SPACES. REVIVING LIVING.",
@@ -41,6 +22,9 @@ export default function AnimatedHeading({
   gap = { xs: 8, md: 16 },
   className = "",
   disableSelection = false,
+
+  variant = "h2",
+  sx = {},
 }) {
   const headingRef = useRef(null);
   const isHeadingInView = useInView(headingRef, { margin: "-10%", amount: 0.3 });
@@ -56,7 +40,10 @@ export default function AnimatedHeading({
     return Boolean(subtitle);
   }, [showSubtitle, subtitle]);
 
-  // สร้างสไตล์สำหรับเส้นซ้าย/ขวาแบบยืดหยุ่น
+  // ใช้แท็กตาม variant
+  const TitleTag = ["h1","h2","h3","h4","h5","h6"].includes(variant) ? variant : "h2";
+
+  // เส้นซ้าย/ขวา
   const commonLineStyle = {
     height: lineThickness,
     transition: "width 500ms ease, opacity 500ms ease, transform 500ms ease",
@@ -77,13 +64,15 @@ export default function AnimatedHeading({
     transform: isHeadingInView ? "translateX(0)" : "translateX(8px)",
   };
 
-  // คลาสตัวอักษรหลัก/รอง
+  // คลาสตัวอักษร
   const titleClass = `${mobileSize} md:${desktopSize} font-light tracking-widest inline-flex items-center`;
   const subtitleClass = `mt-2 ${subtitleMobileSize} md:${subtitleDesktopSize} font-light tracking-[0.15rem]`;
 
   return (
-    <div
+    <Box
       ref={headingRef}
+      component="div"
+      sx={sx}
       className={[
         "flex flex-col",
         containerAlign,
@@ -93,7 +82,7 @@ export default function AnimatedHeading({
       style={{ willChange: "opacity, transform" }}
     >
       {/* Title + lines */}
-      <h2
+      <TitleTag
         className={`${titleClass} ${textColorClass}`}
         style={{
           color: titleColor,
@@ -105,15 +94,10 @@ export default function AnimatedHeading({
           transition: "opacity 300ms ease, transform 300ms ease",
         }}
       >
-        {/* left line */}
         {showLines && <span style={leftLineStyle} />}
-
-        {/* text */}
         <span>{title}</span>
-
-        {/* right line */}
         {showLines && <span style={rightLineStyle} />}
-      </h2>
+      </TitleTag>
 
       {/* Subtitle */}
       {computedShowSubtitle && (
@@ -130,6 +114,6 @@ export default function AnimatedHeading({
           {subtitle}
         </span>
       )}
-    </div>
+    </Box>
   );
 }

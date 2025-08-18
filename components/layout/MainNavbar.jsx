@@ -8,6 +8,7 @@ import {
   IconButton,
   Avatar,
   Button,
+  Tooltip
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -112,14 +113,20 @@ export default function MainNavbar() {
               )}
             </IconButton>
           ) : (
-            <Button
-              onClick={() => signIn()}
-              startIcon={<LoginIcon />}
-              variant="icon"
-              sx={{ ml: 0.5 }}
-              hover={{ bgcolor: "primary.main", opacity: 0.08 }}
-            >
-            </Button>
+            <Tooltip title="Login">
+              <IconButton
+                aria-label="login"
+                onClick={() => signIn()}
+                sx={{
+                  color: "common.white",
+                  "&:hover": {
+                    bgcolor: (theme) => theme.palette.primary.main,
+                  },
+                }}
+              >
+                <LoginIcon />
+              </IconButton>
+            </Tooltip>
           )}
         </Box>
 

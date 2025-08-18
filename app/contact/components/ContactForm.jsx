@@ -160,7 +160,7 @@ export default function ContactForm() {
             {/* Left */}
             <Box>
               <Field label="ชื่อ-นามสกุล ติดต่อกลับ" name="fullName" value={formData.fullName} onChange={handleChange} />
-              <Field label="อีเมลล์" name="email" value={formData.email} onChange={handleChange} />
+              <Field label="อีเมล" name="email" value={formData.email} onChange={handleChange} />
               <Field label="เบอร์โทรติดต่อ" name="phone" value={formData.phone} onChange={handleChange} />
 
               <Typography sx={{ mt: 3, mb: 1.5, fontSize: { xs: 20, md: 24 }, fontWeight: 600 }}>

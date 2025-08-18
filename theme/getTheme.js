@@ -1,9 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 import palette from './palette';
 
-export const getTheme = (mode = 'light') =>
+export const getTheme = () =>
   createTheme({
-    palette: palette(mode),
+    palette: palette(),
     typography: {
       fontFamily: 'Poppins, Prompt, sans-serif',
     },
@@ -30,7 +30,7 @@ export const getTheme = (mode = 'light') =>
       MuiDivider: {
         styleOverrides: {
           root: {
-            backgroundColor: mode === 'light' ? '#000000ff' : '#ffffffff',
+            backgroundColor: '#000000ff',
           },
         },
       },

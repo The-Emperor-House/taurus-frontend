@@ -5,14 +5,16 @@ import Grid from "@mui/material/Grid";
 import Image from "next/image";
 import { serviceItems } from "../_data/services";
 
-const BG   = "#f2e8df";
-const ACC  = "#b89d8b";
+const BG = "#f2e8df";
+const ACC = "#b89d8b";
 const BODY = "#8b7e72";
-const DIV  = "rgba(0,0,0,0.06)";
+const DIV = "rgba(0,0,0,0.06)";
 
 function Heading({ item, align = "left" }) {
   return (
-    <Box sx={{ textAlign: { xs: "center", md: align }, mb: { xs: 2.5, md: 3.5 } }}>
+    <Box
+      sx={{ textAlign: { xs: "center", md: align }, mb: { xs: 2.5, md: 3.5 } }}
+    >
       <Typography
         component="div"
         sx={{
@@ -85,8 +87,8 @@ function TextBody({ children, align = "left" }) {
       variant="body1"
       sx={{
         color: BODY,
-        lineHeight: 2.05,                 // ↑
-        letterSpacing: ".025rem",         // ↑
+        lineHeight: 2.05, // ↑
+        letterSpacing: ".025rem", // ↑
         fontSize: { xs: "1rem", md: "1.1rem" }, // ↑
         textAlign: { xs: "center", md: align },
       }}
@@ -110,7 +112,8 @@ export default function ServiceShowcase() {
         py: { xs: 8, md: 12 }, // ↑ padding แนวตั้ง
       }}
     >
-      <Container maxWidth="xl">{/* ↑ กว้างขึ้นจาก lg → xl */}
+      <Container maxWidth="xl">
+        {/* ↑ กว้างขึ้นจาก lg → xl */}
         {/* หัวเรื่องส่วนนี้ */}
         <Box sx={{ mb: { xs: 6, md: 8 } }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 3, mb: 1.5 }}>
@@ -149,14 +152,19 @@ export default function ServiceShowcase() {
             p: { xs: 4, md: 6 }, // ↑ padding ในกล่อง
           }}
         >
-          <Grid container columns={12} spacing={{ xs: 4, md: 6 }}>{/* ↑ spacing */}
+          <Grid container columns={12} spacing={{ xs: 4, md: 6 }}>
+            {/* ↑ spacing */}
             {/* คอลัมน์ 1 */}
             <Grid size={{ xs: 12, md: 4 }}>
               <Box sx={{ height: "100%", pr: { md: 3 }, pb: { xs: 3, md: 0 } }}>
                 <Heading item={s1} align="left" />
                 <TextBody align="left">{s1.descriptionTH}</TextBody>
                 <Box sx={{ mt: 3 }}>
-                  <Image16x9 src={s1.image} alt={s1.title} objectPosition="left" />
+                  <Image16x9
+                    src={s1.image}
+                    alt={s1.title}
+                    objectPosition="left"
+                  />
                 </Box>
               </Box>
             </Grid>
@@ -164,7 +172,10 @@ export default function ServiceShowcase() {
             {/* คอลัมน์ 2 (รูปก่อน) */}
             <Grid size={{ xs: 12, md: 4 }}>
               <Box sx={{ height: "100%", px: { md: 3 }, py: { xs: 3, md: 0 } }}>
-                <Image16x9 src={s2.image} alt={s2.title} />
+                <Box sx={{ mb: { xs: 2.5, md: 8 } }}>
+                  <Image16x9 src={s2.image} alt={s2.title} />
+                </Box>
+
                 <Heading item={s2} align="center" />
                 <Box sx={{ mt: 3 }}>
                   <TextBody align="center">{s2.descriptionTH}</TextBody>
@@ -178,7 +189,11 @@ export default function ServiceShowcase() {
                 <Heading item={s3} align="right" />
                 <TextBody align="right">{s3.descriptionTH}</TextBody>
                 <Box sx={{ mt: 3 }}>
-                  <Image16x9 src={s3.image} alt={s3.title} objectPosition="right" />
+                  <Image16x9
+                    src={s3.image}
+                    alt={s3.title}
+                    objectPosition="right"
+                  />
                 </Box>
               </Box>
             </Grid>

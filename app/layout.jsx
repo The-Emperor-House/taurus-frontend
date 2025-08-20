@@ -1,12 +1,12 @@
 import './globals.css';
 import { Poppins, Prompt } from 'next/font/google';
-import { Providers } from '@/components/context/Providers';
-import MainNavbar from '@/components/layout/MainNavbar';
-import Footer from '@/components/layout/Footer';
+import { Providers } from '@/shared/providers/Providers';
+import MainNavbar from '@/modules/layout/navbar/MainNavbar';
+import Footer from '@/modules/layout/footer/Footer';
 import { Suspense } from 'react';
-import RouteLoader from '@/components/common/RouteLoader';
-// import ClientGuards from "@/components/common/ClientGuards";
-import EmotionRegistry from './EmotionRegistry'; // ⬅️ เพิ่ม import
+import RouteLoader from '@/modules/layout/common/RouteLoader';
+// import ClientGuards from "@/modules/layout/common/ClientGuards";
+import EmotionRegistry from '@/app/EmotionRegistry';
 
 // กำหนด fonts
 const poppins = Poppins({

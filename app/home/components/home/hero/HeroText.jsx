@@ -40,7 +40,7 @@ export default function HeroText() {
           variant="h1"
           sx={{
             fontWeight: 600,
-            fontSize: { xs: "3rem", sm: "4rem", md: "6rem" }, // ใหญ่มาก
+            fontSize: { xs: "3rem", sm: "4rem", md: "6rem" },
             color: "#cc8f2a",
             textShadow: "0px 4px 12px rgba(0, 0, 0, 0.8)",
             letterSpacing: { xs: "0.1rem", sm: "0.2rem", md: "1rem" },

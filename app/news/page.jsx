@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Box, Typography, Button, Skeleton, Alert, Divider } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import MediaEmbed from "@/components/common/MediaEmbed";
+import MediaEmbed from "@/shared/components/ui/MediaEmbed";
 
 const ACCENT = "#BFA68A";
 const FRAME = "#333";

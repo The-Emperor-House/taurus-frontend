@@ -17,13 +17,13 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
 
 import { useSession, signIn } from "next-auth/react";
-import { useLogout } from "@/hooks/useLogout";
+import { useLogout } from "@/shared/hooks/useLogout";
 
-import LogoSwap from "./navbar/LogoSwap";
-import NavLinks from "./navbar/NavLinks";
-import MobileNavDrawer from "./navbar/MobileNavDrawer";
-import AccountPanel from "./navbar/AccountPanel";
-import AccountDrawer from "./navbar/AccountDrawer";
+import LogoSwap from "./LogoSwap";
+import NavLinks from "./NavLinks";
+import MobileNavDrawer from "./MobileNavDrawer";
+import AccountPanel from "./AccountPanel";
+import AccountDrawer from "./AccountDrawer";
 
 export default function MainNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -87,27 +87,25 @@ export default function MainNavbar() {
         sx={{
           justifyContent: "space-between",
           alignItems: "center",
-          px: { xs: 2, md: 3 },
+          px: { xs: 2, md: 3, lg: 4 },
           py: 1,
-          gap: { md: 1, lg: 0 },
           maxWidth: 1400,
           mx: "auto",
           width: "100%",
         }}
       >
-        <Box sx={{ ml: { xs: 1, md: 2, lg: 4 } }}>
+        <Box sx={{ flexShrink: 0 }}>
           <LogoSwap width={logoW} height={logoH} showOnXs />
         </Box>
 
-        {/* กลุ่มขวา: รวม "ลิงก์เดสก์ท็อป" + "ปุ่ม auth" ไว้ในกล่องเดียวกัน → nav ติดกับ auth */}
         <Box
           sx={{
-            display: { xs: "none", md: "flex" }, // แสดงตั้งแต่ tablet ขึ้นไป
+            display: { xs: "none", md: "flex" },
             alignItems: "center",
-            // ลดช่องว่าง/ฟอนต์บน tablet ให้ไม่ล้น
             gap: { md: 1, lg: 1.5 },
+            ml: "auto",
             "& a, & .MuiButtonBase-root": {
-              fontSize: { md: "0.95rem", lg: "1.05rem" },
+              fontSize: { md: "0.95rem", lg: "1.2rem" },
               letterSpacing: { md: ".02rem", lg: ".03rem" },
               px: { md: 0.5, lg: 1 },
               whiteSpace: "nowrap",
@@ -117,7 +115,6 @@ export default function MainNavbar() {
           <NavLinks
             links={navLinks}
             onSmoothScroll={handleSmoothScroll}
-            // ถ้า NavLinks รองรับ prop ปรับขนาด ให้ส่ง dense เมื่ออยู่ tablet
             dense={!isLgUp}
           />
 
@@ -155,9 +152,12 @@ export default function MainNavbar() {
           )}
         </Box>
 
-        {/* ปุ่มเมนูมือถือ (แสดงเฉพาะ < md) */}
         <IconButton
-          sx={{ display: { xs: "flex", md: "none" }, color: "common.white" }}
+          sx={{
+            display: { xs: "flex", md: "none" },
+            color: "common.white",
+            ml: "auto",
+          }}
           onClick={() => setIsMobileMenuOpen(true)}
           aria-label="open menu"
         >
@@ -165,7 +165,6 @@ export default function MainNavbar() {
         </IconButton>
       </Toolbar>
 
-      {/* Mobile drawer */}
       <MobileNavDrawer
         open={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
@@ -195,7 +194,6 @@ export default function MainNavbar() {
         }
       />
 
-      {/* Account drawer (desktop & ใช้ใน mobile ได้ถ้าต้องการ) */}
       {isAuthed && (
         <AccountDrawer
           open={isAccountOpen}

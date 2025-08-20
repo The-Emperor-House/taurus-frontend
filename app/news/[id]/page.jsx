@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { Box, Typography, Grid, Skeleton, Alert, Divider } from "@mui/material";
-import MediaEmbed from "@/components/common/MediaEmbed";
+import MediaEmbed from "@/shared/components/ui/MediaEmbed";
 
 const FALLBACK_COVER = "/images/default-news.jpg";
 const ACCENT = "#cc8f2a";

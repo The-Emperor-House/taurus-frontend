@@ -1,6 +1,6 @@
 "use client";
 import ProjectCard from "./ProjectCard";
-import { cn } from "@/lib/cn";
+import { cn } from "@/shared/lib/cn";
 
 
 export default function ProjectCardsGrid({ projects, className }) {

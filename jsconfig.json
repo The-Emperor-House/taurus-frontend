@@ -3,11 +3,19 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@/lib/*": ["./lib/*"],
-      "@/components/*": ["./components/*"],
-      "@/app/*": ["./app/*"]
+      "@app/*": ["./app/*"],
+      "@modules/*": ["./modules/*"],
+      "@shared/*": ["./shared/*"],
+      "@/shared/*": ["./shared/*"]
     }
   },
-  "include": ["app/**/*", "pages/**/*", "components/**/*", "lib/**/*", "**/*.jsx", "**/*.js"],
+  "include": [
+    "app/**/*",
+    "modules/**/*",
+    "shared/**/*",
+    "pages/**/*",
+    "**/*.jsx",
+    "**/*.js"
+  ],
   "exclude": ["node_modules", ".next", "public"]
 }

@@ -3,10 +3,10 @@
 import { Box, Container } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
-import FooterLogo from "./footer/FooterLogo";
-import HeadOffice from "./footer/HeadOffice";
-import ShowroomAndSocial from "./footer/ShowroomAndSocial";
-import ResponsiveDivider from "./footer/ResponsiveDivider";
+import FooterLogo from "./FooterLogo";
+import HeadOffice from "./HeadOffice";
+import ShowroomAndSocial from "./ShowroomAndSocial";
+import ResponsiveDivider from "./ResponsiveDivider";
 
 export default function Footer() {
   const logoSrc = "/navbar/logo webp/taurusWhite.webp";

@@ -3,8 +3,8 @@
 import Link from "next/link";         
 import Image from "next/image";
 import { motion } from "framer-motion"; 
-import { cn } from "@/lib/cn";
-import useIsTouch from "@/hooks/useIsTouch";
+import { cn } from "@/shared/lib/cn";
+import useIsTouch from "@/shared/hooks/useIsTouch";
 
 
 const titleVariants = {

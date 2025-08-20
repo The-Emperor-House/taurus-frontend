@@ -15,7 +15,6 @@ export default function LogoSwap({
 }) {
   const [hover, setHover] = useState(false);
 
-  // อุ่นภาพ accent หลัง mount (ไม่ใช้ <link rel="preload"> จึงไม่เตือน)
   useEffect(() => {
     const img = new window.Image();
     img.decoding = "async";
@@ -39,7 +38,6 @@ export default function LogoSwap({
       }}
     >
       <Box sx={{ position: "relative", width, height }}>
-        {/* รูปหลักที่แสดงทันที → priority เพื่อให้โหลดก่อน */}
         <Image
           src={lightSrc}
           alt="Taurus Logo"
@@ -58,7 +56,6 @@ export default function LogoSwap({
           }}
         />
 
-        {/* รูปตอน hover → ไม่ใส่ priority เพื่อตัด warning */}
         <Image
           src={accentSrc}
           alt=""

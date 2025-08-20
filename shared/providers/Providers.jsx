@@ -1,8 +1,8 @@
 'use client';
 
 import { SessionProvider } from 'next-auth/react';
-import { ThemeProvider } from '@/theme';
-import ModalProvider from "@/components/modals/ModalProvider";
+import { ThemeProvider } from '@/shared/theme';
+import ModalProvider from "@/modules/layout/modals/ModalProvider";
 
 export function Providers({ children }) {
   return (

@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { motion } from 'motion/react';
-import { cn } from '@/lib/cn';
-import { BackgroundLines } from '@/components/ui/background-lines';
+import { cn } from '@/shared/lib/cn';
+import { BackgroundLines } from '@/shared/components/ui/background-lines';
 
 /**
  * LoginPage — Tailwind + Framer Motion (Aceternity-style)

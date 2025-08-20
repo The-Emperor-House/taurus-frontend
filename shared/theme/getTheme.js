@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import palette from './palette';
+import palette from '@/shared/theme/palette';
 
 export const getTheme = () =>
   createTheme({

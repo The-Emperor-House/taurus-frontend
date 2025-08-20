@@ -1,4 +1,4 @@
-import AnimatedHeading from '@/components/common/AnimatedHeading';
+import AnimatedHeading from '@/shared/components/ui/AnimatedHeading';
 import ProjectCards from '../home/components/ProjectCards';
 import { Toolbar } from "@mui/material";
 

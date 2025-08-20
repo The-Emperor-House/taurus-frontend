@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Typography, Button, Stack, Divider, Snackbar, Alert } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import useModalContext from "@/hooks/useModalContext";
+import useModalContext from "@/shared/hooks/useModalContext";
 import ProjectSection from "./components/ProjectSection";
 import ProjectFormDialog from "./components/ProjectFormDialog";
 

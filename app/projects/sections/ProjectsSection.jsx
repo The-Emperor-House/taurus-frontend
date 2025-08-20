@@ -2,7 +2,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import ProjectCardsGrid from "../components/ProjectCardsGrid";
-import AnimatedHeading from "@/components/common/AnimatedHeading";
+import AnimatedHeading from "@/shared/components/ui/AnimatedHeading";
 
 
 // mock fetch (replace with real API)

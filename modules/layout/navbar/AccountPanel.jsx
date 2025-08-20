@@ -14,7 +14,7 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import ChairIcon from "@mui/icons-material/Chair";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import useModalContext from "@/hooks/useModalContext";
+import useModalContext from "@/shared/hooks/useModalContext";
 
 export default function AccountPanel({ onClose, onLogout }) {
   const { confirm, showLoading, hideLoading } = useModalContext();

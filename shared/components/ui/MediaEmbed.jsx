@@ -1,7 +1,7 @@
 "use client";
 
 import { Box } from "@mui/material";
-import { parseVideo } from "@/lib/media";
+import { parseVideo } from "@/shared/lib/media";
 
 export default function MediaEmbed({ url }) {
   const info = parseVideo(url);

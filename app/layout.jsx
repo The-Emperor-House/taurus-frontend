@@ -5,7 +5,8 @@ import MainNavbar from '@/components/layout/MainNavbar';
 import Footer from '@/components/layout/Footer';
 import { Suspense } from 'react';
 import RouteLoader from '@/components/common/RouteLoader';
-import ClientGuards from "@/components/common/ClientGuards";
+// import ClientGuards from "@/components/common/ClientGuards";
+import EmotionRegistry from './EmotionRegistry'; // ⬅️ เพิ่ม import
 
 // กำหนด fonts
 const poppins = Poppins({
@@ -32,15 +33,22 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="th" className={`${poppins.variable} ${prompt.variable}`}>
+      <head>
+        {/* จุดเสียบ Style ของ Emotion/MUI ให้ SSR/CSR ตรงกัน */}
+        <meta name="emotion-insertion-point" content="" />
+      </head>
       <body data-protect={enableGuards ? "on" : "off"}>
-        <Providers>
-          <ClientGuards enabled={enableGuards} />
-          <MainNavbar />
-          <main>
-            <Suspense fallback={<RouteLoader />}>{children}</Suspense>
-          </main>
-          <Footer />
-        </Providers>
+        {/* ครอบทั้งแอปด้วย EmotionRegistry (มี CacheProvider ภายใน) */}
+        <EmotionRegistry>
+          <Providers>
+            {/* <ClientGuards enabled={enableGuards} /> */}
+            <MainNavbar />
+            <main>
+              <Suspense fallback={<RouteLoader />}>{children}</Suspense>
+            </main>
+            <Footer />
+          </Providers>
+        </EmotionRegistry>
       </body>
     </html>
   );

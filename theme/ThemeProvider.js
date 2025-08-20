@@ -1,11 +1,10 @@
 'use client';
-
+import { useMemo } from 'react';
 import { ThemeProvider as MuiThemeProvider, CssBaseline } from '@mui/material';
 import { getTheme } from './getTheme';
 
 export default function ThemeProvider({ children }) {
-  const theme = getTheme();
-
+  const theme = useMemo(() => getTheme(), []);
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />

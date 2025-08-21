@@ -9,7 +9,7 @@ import "swiper/css/autoplay";
 
 export default function Carousel({
   slides = [],
-  overlayPaddingLeft = { xs: 24, md: 56 }, // ✅ รองรับ object per breakpoint
+  overlayPaddingLeft = { xs: 24, md: 56 },
   height = "100vh",
   delay = 5000,
 }) {
@@ -49,8 +49,8 @@ export default function Carousel({
                 zIndex: 2,
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "flex-start",
-                pl: overlayPaddingLeft, // ✅ ส่ง object/vars ได้เลย
+                justifyContent: "center",
+                pl: overlayPaddingLeft,
               }}
             >
               {s.content}
@@ -60,4 +60,4 @@ export default function Carousel({
       </Swiper>
     </Box>
   );
-}
+} 

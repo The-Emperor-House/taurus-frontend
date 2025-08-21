@@ -5,7 +5,7 @@ import Carousel from "./home/carousel/Carousel";
 import HeroText from "./home/hero/HeroText";
 
 export default function HomeHero() {
-  const files = ["01", "02", "03", "04", "05", "06", "07"];
+  const files = ["01", "02", "03", "04", "05", "06"];
 
   const slides = files.map((n, i) => ({
     id: i + 1,

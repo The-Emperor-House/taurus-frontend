@@ -14,9 +14,9 @@ const dimToBg = (dim) =>
 export default function BackgroundImage({
   src,
   alt,
-  dim = 0,              // 0..1 หรือ { xs, sm, md, lg, xl }
-  gradient = false,     // ไล่เฉดทับภาพ
-  priority = false,     // true เฉพาะรูปแรกจริง ๆ
+  dim = 0,
+  gradient = false,
+  priority = false,
   objectPosition = "center",
 }) {
   const [loaded, setLoaded] = useState(false);

@@ -8,13 +8,13 @@ const tiles = [
   {
     id: "architectural",
     title: "ARCHITECTURAL DESIGN",
-    image: "/mock/architectural-cover.jpg",
+    image: "/design/architectural-cover.webp",
     link: "/design/architectural",
   },
   {
     id: "interior",
     title: "INTERIOR DESIGN",
-    image: "/mock/interior-cover.jpg",
+    image: "/design/interior-cover.webp",
     link: "/design/interior",
   },
 ];

@@ -1,6 +1,7 @@
 import HomeCard from "@/app/home/components/HomeCards";
 import AboutUsCards from "@/app/home/components/AboutUsCards";
 import ProjectCards from "@/app/home/components/ProjectCards";
+import ProjectsPage from "@/app/projects/page";
 import NewsCards from "@/app/home/components/NewsCards";
 import MapCards from "@/app/home/components/MapCards";
 
@@ -16,7 +17,7 @@ export default function HomePage() {
       <HomeCard />
       <AboutUsCards />
 
-      <section
+      {/* <section
         style={{
           backgroundColor: "var(--bg-color, #404040)",
           color: "#fff",
@@ -24,7 +25,9 @@ export default function HomePage() {
         }}
       >
         <ProjectCards />
-      </section>
+      </section> */}
+
+      <ProjectsPage />
 
       <NewsCards />
       <MapCards />

@@ -33,12 +33,11 @@ const extractLabel = (h1 = "") => {
 };
 
 export default function NewsListPage() {
-  const [allItems, setAllItems] = useState([]); // เก็บทั้งหมด
+  const [allItems, setAllItems] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
-  // โหลดทั้งหมดครั้งเดียว แล้วค่อยตัดหน้า
   useEffect(() => {
     const ctrl = new AbortController();
     (async () => {
@@ -47,7 +46,6 @@ export default function NewsListPage() {
         setErr("");
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news`, { signal: ctrl.signal });
         const data = res.ok ? await res.json() : [];
-        // ถ้า backend ไม่ sort ให้ sort client-side ล่าสุดอยู่บน
         const sorted = Array.isArray(data)
           ? [...data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           : [];
@@ -61,7 +59,6 @@ export default function NewsListPage() {
     return () => ctrl.abort();
   }, []);
 
-  // คำนวณรายการของ "หน้าปัจจุบัน" เท่านั้น
   const pageItems = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
     const end = start + PAGE_SIZE;
@@ -72,8 +69,26 @@ export default function NewsListPage() {
   const canNext = page < totalPages;
 
   return (
-    <Box sx={{ bgcolor: "#404040", color: "#fff", minHeight: "100svh", pt: { xs: "120px", md: "160px" } }}>
-      <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, md: 3 }, pb: 8 }}>
+    <Box
+      sx={{
+        bgcolor: "#404040",
+        color: "#fff",
+        minHeight: "100svh",
+        pt: { xs: "140px", md: "250px" },
+        display: "flex",            // 👈 ทำเป็นคอลัมน์ทั้งหน้า
+        flexDirection: "column",    // 👈 เพื่อดัน footer ไปล่าง
+      }}
+    >
+      <Box
+        sx={{
+          maxWidth: 1200,
+          mx: "auto",
+          px: { xs: 2, md: 3 },
+          pb: 8,
+          flex: 1,                 // 👈 กินพื้นที่ที่เหลือ (footer จะไม่ลอย)
+          width: "100%",
+        }}
+      >
         {/* Header */}
         <Box sx={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 2, mb: 4 }}>
           <Box sx={{ height: 1, bgcolor: "rgba(0, 0, 0, 1)" }} />
@@ -93,7 +108,7 @@ export default function NewsListPage() {
 
         {err && <Alert severity="error" sx={{ mb: 2 }}>{err}</Alert>}
 
-        {/* รายการข่าว: แสดงเฉพาะ pageItems (5 รายการ/หน้า) */}
+        {/* รายการข่าว */}
         {loading && allItems.length === 0
           ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
               <Box key={i} sx={{ mb: 5 }}>
@@ -141,21 +156,73 @@ export default function NewsListPage() {
 
                     {/* ขวา: texts */}
                     <Grid size={{ xs: 12, md: 5 }}>
-                      <Typography sx={{ fontWeight: 800, fontSize: { xs: "1rem", md: "1.1rem" }, mb: 1 }}>
+                      {/* วันที่ — 1 บรรทัด */}
+                      <Typography
+                        sx={{
+                          fontWeight: 800,
+                          fontSize: { xs: "1rem", md: "1.1rem" },
+                          mb: 1,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                        title={dateLine(it.createdAt)}
+                      >
                         {dateLine(it.createdAt)}
                       </Typography>
 
-                      <Typography sx={{ color: ACCENT, fontWeight: 800, letterSpacing: ".06em", textTransform: "uppercase" }}>
+                      {/* หมวด (label) — 1 บรรทัด */}
+                      <Typography
+                        sx={{
+                          color: ACCENT,
+                          fontWeight: 800,
+                          letterSpacing: ".06em",
+                          textTransform: "uppercase",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                        title={extractLabel(it.heading1)}
+                      >
                         {extractLabel(it.heading1)}
                       </Typography>
 
-                      <Typography sx={{ fontWeight: 900, fontSize: { xs: "1.2rem", md: "1.4rem" }, lineHeight: 1.25, mb: 1.5 }}>
+                      {/* หัวข้อหลัก — 2 บรรทัด */}
+                      <Typography
+                        sx={{
+                          fontWeight: 900,
+                          fontSize: { xs: "1.2rem", md: "1.4rem" },
+                          lineHeight: 1.25,
+                          mb: 1.5,
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                        title={it.heading2 || it.heading1}
+                      >
                         {it.heading2 || it.heading1}
                       </Typography>
 
+                      {/* เนื้อหา — 3 บรรทัด (เลิก slice แบบเดิม) */}
                       {it.body && (
-                        <Typography sx={{ color: "rgba(255,255,255,.85)", lineHeight: 1.7, mb: 2 }}>
-                          {it.body.length > 140 ? it.body.slice(0, 140) + "…" : it.body}
+                        <Typography
+                          sx={{
+                            color: "rgba(255,255,255,.85)",
+                            lineHeight: 1.7,
+                            mb: 2,
+                            display: "-webkit-box",
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                          title={it.body}
+                        >
+                          {it.body}
                         </Typography>
                       )}
 
@@ -182,10 +249,8 @@ export default function NewsListPage() {
               );
             })}
 
-        {/* ปุ่ม Next (เปลี่ยนหน้า ไม่ใช่โหลดเพิ่ม) */}
+        {/* ปุ่ม Next */}
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 4, gap: 2 }}>
-          {/* ถ้าอยากมี Prev ให้ปลดคอมเมนต์ */}
-          {/* <Button disabled={page<=1} onClick={()=>setPage(p=>Math.max(1,p-1))}>Prev</Button> */}
           <Button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={!canNext || loading}
@@ -208,6 +273,7 @@ export default function NewsListPage() {
 
         <Divider sx={{ mt: 6, borderColor: "rgba(255,255,255,.12)" }} />
       </Box>
+      {/* Footer ของแอปจะตามมาข้างล่าง และชิดล่างเพราะ flex layout ด้านบน */}
     </Box>
   );
 }

@@ -52,8 +52,6 @@ export default function TypePage() {
   const onProjectClick = (project) => setSelectedProject(project);
   const onModalClose = () => setSelectedProject(null);
 
-  const colSpanAt = (i) => (i < 2 ? 6 : 4);
-
   return (
     <Box
       sx={{
@@ -65,10 +63,10 @@ export default function TypePage() {
     >
       <Box
         sx={{
-          maxWidth: { xs: "100%", md: "1600px" },
+          maxWidth: { xs: "100%", md: "1200px" },
           mx: "auto",
           px: { xs: 2, sm: 3, md: 4, lg: 6 },
-          pt: { xs: "88px", sm: "96px", md: "128px" },
+          pt: { xs: "140px", md: "270px" },
           pb: { xs: 6, md: 10 },
         }}
       >

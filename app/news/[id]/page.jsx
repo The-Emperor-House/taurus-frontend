@@ -76,8 +76,27 @@ export default function NewsDetail() {
   );
 
   return (
-    <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", width: "100%", pt: { xs: "120px", md: "160px" } }}>
-      <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, md: 3 }, pb: 8 }}>
+    <Box
+      sx={{
+        bgcolor: "#000",
+        color: "#fff",
+        minHeight: "100svh",
+        width: "100%",
+        pt: { xs: "120px", md: "160px" },
+        display: "flex",          // ✅ กัน footer ลอย
+        flexDirection: "column",  // ✅
+      }}
+    >
+      <Box
+        sx={{
+          maxWidth: 1200,
+          mx: "auto",
+          px: { xs: 2, md: 3 },
+          pb: 8,
+          flex: 1,                // ✅ ดันให้คอนเทนต์กินพื้นที่ที่เหลือ
+          width: "100%",
+        }}
+      >
         {err && <Alert severity="error" sx={{ mb: 2 }}>{err}</Alert>}
 
         {/* เส้นคั่น + วันที่ตัวใหญ่กลางหน้า */}
@@ -90,7 +109,11 @@ export default function NewsDetail() {
             fontSize: { xs: "1.2rem", md: "1.8rem" },
             textTransform: "uppercase",
             mb: { xs: 2, md: 3 },
+            whiteSpace: "nowrap",            // ✅ ป้องกันยาวเกิน
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
+          title={dateLine}
         >
           {loading ? <Skeleton width={260} sx={{ mx: "auto" }} /> : dateLine}
         </Typography>
@@ -139,6 +162,7 @@ export default function NewsDetail() {
               </>
             ) : (
               <>
+                {/* label — 1 บรรทัด */}
                 <Typography
                   sx={{
                     color: ACCENT,
@@ -147,24 +171,45 @@ export default function NewsDetail() {
                     textTransform: "uppercase",
                     fontSize: { xs: "1rem", md: "1.15rem" },
                     mb: 1,
+                    display: "-webkit-box",
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
+                  title={extractLabel(item?.heading1)}
                 >
                   {extractLabel(item?.heading1)}
                 </Typography>
 
+                {/* หัวข้อ — 3 บรรทัด */}
                 <Typography
                   sx={{
                     fontWeight: 900,
                     fontSize: { xs: "1.6rem", md: "2rem" },
                     lineHeight: 1.15,
                     mb: 2,
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    wordBreak: "break-word",
                   }}
+                  title={item?.heading2 || item?.heading1 || "-"}
                 >
                   {item?.heading2 || item?.heading1 || "-"}
                 </Typography>
 
+                {/* เนื้อหา — ปล่อยเต็ม แต่กันคำยาว ๆ แตกบรรทัด */}
                 {item?.body && (
-                  <Typography sx={{ whiteSpace: "pre-wrap", lineHeight: 1.9 }}>
+                  <Typography
+                    sx={{
+                      whiteSpace: "pre-wrap",
+                      lineHeight: 1.9,
+                      overflowWrap: "anywhere", // ✅ กันคำติดกันยาวๆ
+                    }}
+                  >
                     {item.body}
                   </Typography>
                 )}
@@ -176,7 +221,19 @@ export default function NewsDetail() {
         {/* ===== Gallery ด้านล่าง ===== */}
         {!loading && (item?.images?.length ?? 0) > 0 && (
           <Box sx={{ position: "relative", zIndex: 0, mt: 4 }}>
-            <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              sx={{
+                mb: 2,
+                display: "-webkit-box",
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+              title={`Gallery (${item.images.length})`}
+            >
               Gallery ({item.images.length})
             </Typography>
             <Grid container spacing={2}>
@@ -218,6 +275,7 @@ export default function NewsDetail() {
           </Box>
         )}
       </Box>
+      {/* Footer ของแอปจะตามอยู่ข้างล่าง เพราะเราใช้ flex column + flex:1 ด้านบน */}
     </Box>
   );
 }

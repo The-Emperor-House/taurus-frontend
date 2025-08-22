@@ -5,7 +5,7 @@ import MainNavbar from '@/modules/layout/navbar/MainNavbar';
 import Footer from '@/modules/layout/footer/Footer';
 import { Suspense } from 'react';
 import RouteLoader from '@/modules/layout/common/RouteLoader';
-// import ClientGuards from "@/modules/layout/common/ClientGuards";
+import ClientGuards from "@/modules/layout/common/ClientGuards";
 import EmotionRegistry from '@/app/EmotionRegistry';
 
 // กำหนด fonts
@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
         {/* ครอบทั้งแอปด้วย EmotionRegistry (มี CacheProvider ภายใน) */}
         <EmotionRegistry>
           <Providers>
-            {/* <ClientGuards enabled={enableGuards} /> */}
+            <ClientGuards enabled={enableGuards} />
             <MainNavbar />
             <main>
               <Suspense fallback={<RouteLoader />}>{children}</Suspense>

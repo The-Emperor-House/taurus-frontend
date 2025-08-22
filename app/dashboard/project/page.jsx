@@ -177,7 +177,7 @@ export default function DashboardProjects() {
   };
 
   return (
-    <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", width: "100%", pt: { xs: "140px", md: "170px" } }}>
+    <Box sx={{ bgcolor: "#000", color: "#fff", minHeight: "100svh", width: "100%", pt: { xs: "140px", md: "270px" } }}>
       <Box sx={{ maxWidth: 1400, mx: "auto", px: 2, pb: 6 }}>
         <Stack direction={{ xs: "column", sm: "row" }} alignItems={{ xs: "stretch", sm: "center" }} justifyContent="space-between" mb={2} gap={2}>
           <Typography variant="h4" fontWeight="bold">Dashboard: Project Management</Typography>

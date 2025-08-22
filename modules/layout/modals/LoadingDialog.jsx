@@ -8,12 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 
-/**
- * LoadingDialog
- * - blocking: true จะกันปิดจาก backdrop/ESC (ค่าเริ่มต้น)
- * - onClose: ใช้เมื่ออยากปล่อยให้ผู้ใช้ปิดเอง (ตั้ง blocking={false})
- * - size: ขนาดวงกลมโหลด (28 by default)
- */
 export default function LoadingDialog({
   open,
   text = "Loading...",
@@ -33,9 +27,15 @@ export default function LoadingDialog({
       fullWidth
       maxWidth="xs"
       keepMounted
-      PaperProps={{ sx: { p: 3, borderRadius: 3 } }}
       sx={{
-        "& .MuiBackdrop-root": { backdropFilter: "blur(2px)" },
+        zIndex: (t) => t.zIndex.modal + 10,
+      }}
+      disableEnforceFocus
+      PaperProps={{ sx: { p: 3, borderRadius: 3 } }}
+      slotProps={{
+        backdrop: {
+          sx: { zIndex: (t) => t.zIndex.modal + 9, bgcolor: "rgba(0,0,0,0.35)" },
+        },
       }}
     >
       <DialogContent>

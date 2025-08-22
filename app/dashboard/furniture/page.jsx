@@ -155,7 +155,7 @@ export default function DashboardFurniture() {
   };
 
   return (
-    <Box sx={{ bgcolor: colors.bg, color: colors.text, minHeight: "100svh", pt: { xs: "120px", md: "160px" }, pb: 6 }}>
+    <Box sx={{ bgcolor: colors.bg, color: colors.text, minHeight: "100svh", pt: { xs: "120px", md: "270px" }, pb: 6 }}>
       <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, md: 3 } }}>
         <Stack direction={{ xs: "column", sm: "row" }} alignItems={{ xs: "stretch", sm: "center" }} justifyContent="space-between" gap={2} mb={2}>
           <Typography variant="h4" fontWeight={900}>Dashboard: Furniture</Typography>

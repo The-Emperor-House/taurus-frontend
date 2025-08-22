@@ -43,7 +43,7 @@ export default function MainNavbar() {
       { href: "/about-us", label: "About Us" },
       { href: "/design", label: "Design" },
       { href: "/projects", label: "Projects" },
-      { href: "/furniture", label: "Showroom" },
+      { href: "#furniture", label: "Showroom" },
       { href: "/news", label: "News & Events" },
       { href: "/contact", label: "Contact" },
     ],

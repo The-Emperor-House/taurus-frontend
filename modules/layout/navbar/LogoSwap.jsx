@@ -7,8 +7,8 @@ import { Box } from "@mui/material";
 
 export default function LogoSwap({
   href = "/",
-  lightSrc = "/navbar/logo webp/taurusWhite.webp",
-  accentSrc = "/navbar/logo webp/taurusOrange.webp",
+  lightSrc = "/logo/LOGO NEW TAURUS WHITE.png",
+  accentSrc = "/logo/LOGO NEW TAURUS ORANGE.png",
   width = 160,
   height = 60,
   showOnXs = true,

@@ -64,10 +64,8 @@ function Image16x9({ src, alt, objectPosition = "center" }) {
           width: "100%",
           borderRadius: 2,
           overflow: "hidden",
-          boxShadow: "0 6px 16px rgba(0,0,0,0.10)", // ↑ เงา
         }}
       >
-        {/* สูงขึ้นเล็กน้อยบนเดสก์ท็อป */}
         <Box sx={{ pt: { xs: "56.25%", md: "62.5%" } }} />
         <Image
           src={src}

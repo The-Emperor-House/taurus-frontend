@@ -9,7 +9,7 @@ import ShowroomAndSocial from "./ShowroomAndSocial";
 import ResponsiveDivider from "./ResponsiveDivider";
 
 export default function Footer() {
-  const logoSrc = "/navbar/logo webp/taurusWhite.webp";
+  const logoSrc = "/logo/LOGO NEW TAURUS WHITE.png";
 
   return (
     <Box

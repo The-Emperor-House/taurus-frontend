@@ -25,7 +25,7 @@ const prompt = Prompt({
 export const metadata = {
   title: 'Taurus: WE RENEW',
   description: 'เปลี่ยนบ้านหลังเก่าให้เป็นไปตามจินตนาการของคุณ',
-  icons: { icon: '/logo.ico' },
+  icons: { icon: '/favicon.ico' },
 };
 
 export default function RootLayout({ children }) {

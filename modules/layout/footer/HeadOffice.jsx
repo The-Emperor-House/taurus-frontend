@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import { FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
+import { FaPhoneAlt } from "react-icons/fa";
+import { IoLocationSharp } from "react-icons/io5";
 
 const hoverPrimaryMd = {
   transition: (t) =>
@@ -24,7 +25,7 @@ export default function HeadOffice() {
           ...hoverPrimaryMd,
         }}
       >
-        <FaMapMarkerAlt size={18} />
+        <IoLocationSharp size={18} />
         Head Office :
       </Typography>
 

@@ -1,5 +1,10 @@
 import { Box, Typography } from "@mui/material";
-import { FaMapMarkerAlt, FaLine, FaMailBulk, FaFacebookF, FaTiktok } from "react-icons/fa";
+import { FaLine } from "react-icons/fa";
+import { SiTiktok } from "react-icons/si";
+import { MdEmail } from "react-icons/md";
+import { CgFacebook } from "react-icons/cg";
+import { FaInstagram } from "react-icons/fa6";
+import { IoLocationSharp } from "react-icons/io5";
 import SocialIcon from "./SocialIcon";
 import SectionTitle from "./SectionTitle";
 
@@ -12,7 +17,7 @@ const hoverPrimaryMd = {
 export default function ShowroomAndSocial() {
   return (
     <Box>
-      <SectionTitle icon={<FaMapMarkerAlt size={18} />}>Showroom :</SectionTitle>
+      <SectionTitle icon={<IoLocationSharp size={18} />}>Showroom :</SectionTitle>
 
       <Typography
         variant="body1"
@@ -43,7 +48,7 @@ export default function ShowroomAndSocial() {
         </SocialIcon>
 
         <SocialIcon href="mailto:taurus@emperorhouse.com" label="Email">
-          <FaMailBulk />
+          <MdEmail />
         </SocialIcon>
 
         <Typography
@@ -60,11 +65,15 @@ export default function ShowroomAndSocial() {
         </Typography>
 
         <SocialIcon href="https://facebook.com/TaurusByEmperor" label="Facebook">
-          <FaFacebookF />
+          <CgFacebook />
+        </SocialIcon>
+
+        <SocialIcon href="https://www.instagram.com/showroomtaurus" label="Instagram">
+          <FaInstagram />
         </SocialIcon>
 
         <SocialIcon href="https://www.tiktok.com/@taurus.by.emperor" label="TikTok">
-          <FaTiktok />
+          <SiTiktok />
         </SocialIcon>
 
         <Typography

@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
         {/* ครอบทั้งแอปด้วย EmotionRegistry (มี CacheProvider ภายใน) */}
         <EmotionRegistry>
           <Providers>
-            {/* <ClientGuards enabled={enableGuards} /> */}
+            <ClientGuards enabled={enableGuards} />
             <MainNavbar />
             <main>
               <Suspense fallback={<RouteLoader />}>{children}</Suspense>

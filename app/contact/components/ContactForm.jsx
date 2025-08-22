@@ -118,7 +118,7 @@ export default function ContactForm() {
         width: '100%',
         bgcolor: PAGE_BG,
         minHeight: '100dvh',
-        pt: { xs: '72px', md: '120px' },
+        pt: { xs: '170px', md: '270px' },
       }}
     >
       {/* Top Bar */}
@@ -234,7 +234,7 @@ export default function ContactForm() {
                 />
               }
               label={
-                <Typography sx={{ fontSize: { xs: 18, md: 22 } }}>
+                <Typography sx={{ fontSize: { xs: 14, md: 22 } }}>
                   ยอมรับข้อตกลงในการใช้งานและนโยบายความเป็นส่วนตัว&nbsp;
                   {/* ปุ่มเปิด popup */}
                   <Button
@@ -245,7 +245,7 @@ export default function ContactForm() {
                       minWidth: 0,
                       color: 'inherit',
                       textDecoration: 'underline',
-                      fontSize: { xs: 18, md: 22 },
+                      fontSize: { xs: 16, md: 22 },
                       '&:hover': { backgroundColor: 'transparent' },
                     }}
                   >

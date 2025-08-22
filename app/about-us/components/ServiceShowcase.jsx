@@ -87,9 +87,9 @@ function TextBody({ children, align = "left" }) {
       variant="body1"
       sx={{
         color: BODY,
-        lineHeight: 2.05, // ↑
-        letterSpacing: ".025rem", // ↑
-        fontSize: { xs: "1rem", md: "1.1rem" }, // ↑
+        lineHeight: 2.05,
+        letterSpacing: ".025rem",
+        fontSize: { xs: "1rem", md: "1.1rem" },
         textAlign: { xs: "center", md: align },
       }}
     >
@@ -109,12 +109,10 @@ export default function ServiceShowcase() {
         bgcolor: BG,
         minHeight: { xs: "100dvh", md: "100vh" },
         width: "100%",
-        py: { xs: 8, md: 12 }, // ↑ padding แนวตั้ง
+        py: { xs: 8, md: 12 },
       }}
     >
       <Container maxWidth="xl">
-        {/* ↑ กว้างขึ้นจาก lg → xl */}
-        {/* หัวเรื่องส่วนนี้ */}
         <Box sx={{ mb: { xs: 6, md: 8 } }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 3, mb: 1.5 }}>
             <Box sx={{ flex: 1, height: 2, bgcolor: DIV }} />
@@ -125,7 +123,7 @@ export default function ServiceShowcase() {
                 letterSpacing: ".06em",
                 color: "#3a3a3a",
                 textAlign: "center",
-                fontSize: { xs: "1.4rem", md: "1.8rem" }, // ↑
+                fontSize: { xs: "1.4rem", md: "1.8rem" },
               }}
             >
               บริการรีโนเวทแบบครบวงจร
@@ -149,7 +147,7 @@ export default function ServiceShowcase() {
         <Box
           sx={{
             bgcolor: BG,
-            p: { xs: 4, md: 6 }, // ↑ padding ในกล่อง
+            p: { xs: 4, md: 6 },
           }}
         >
           <Grid container columns={12} spacing={{ xs: 4, md: 6 }}>

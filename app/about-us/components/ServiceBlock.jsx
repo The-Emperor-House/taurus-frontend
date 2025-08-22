@@ -24,9 +24,9 @@ export default function ServiceBlock() {
         {servicesMain.map((item, idx) => (
           <Stack
             key={idx}
-            spacing={{ xs: 1, md: 1.25 }}          // ← ให้ subtitle ชิดกับปุ่มมากขึ้น
+            spacing={{ xs: 1, md: 1.25 }}
             alignItems="center"
-            sx={{ width: "auto" }}                  // ← ไม่บังคับความกว้าง
+            sx={{ width: "auto" }}
           >
             <Button
               variant="contained"
@@ -34,11 +34,11 @@ export default function ServiceBlock() {
               component={motion.button}
               whileHover={{ scale: 1.03 }}
               sx={{
-                display: "inline-flex",            // ← แคปซูลยาวเท่าข้อความ
+                display: "inline-flex",
                 width: "auto",
                 minWidth: 0,
                 minHeight: { xs: 60, md: 80 },
-                px: { xs: 5, md: 7 },              // padding คุมความหนาแคปซูล
+                px: { xs: 5, md: 7 },
                 bgcolor: "#f5ede5",
                 color: "black",
                 fontWeight: 700,

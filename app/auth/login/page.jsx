@@ -165,6 +165,67 @@ export default function LoginPage() {
 /* ============================== */
 /* ====== Reusable UI Bits ====== */
 /* ============================== */
+function AlertBar({ type = 'info', children, onClose }) {
+  const styleByType = {
+    error: 'bg-rose-500/10 border-rose-400/30 text-rose-200',
+    success: 'bg-emerald-500/10 border-emerald-400/30 text-emerald-200',
+    info: 'bg-sky-500/10 border-sky-400/30 text-sky-200',
+    warning: 'bg-amber-500/10 border-amber-400/30 text-amber-200',
+  };
+
+  const iconByType = {
+    error: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm1 13h-2v-2h2v2Zm0-4h-2V7h2v4Z" />
+      </svg>
+    ),
+    success: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm-1.2 14.2L7.5 12.9l1.4-1.4 1.9 1.9 4.8-4.8 1.4 1.4-6.7 6.7Z" />
+      </svg>
+    ),
+    info: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z" />
+      </svg>
+    ),
+    warning: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M1 21h22L12 2 1 21Zm12-3h-2v-2h2v2Zm0-4h-2v-4h2v4Z" />
+      </svg>
+    ),
+  };
+
+  const Icon = iconByType[type] || null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={cn(
+        'relative flex items-start gap-3 rounded-xl border px-3 py-2',
+        styleByType[type] || styleByType.info
+      )}
+      role="alert"
+    >
+      <div className="mt-0.5">{Icon}</div>
+      <div className="text-sm">{children}</div>
+
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          className="ml-auto rounded-md p-1 text-white/60 transition hover:bg-white/10 hover:text-white"
+          aria-label="Close alert"
+        >
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none">
+            <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+        </button>
+      )}
+    </motion.div>
+  );
+}
 
 function GlassCard({ className, children }) {
   return (

@@ -15,7 +15,7 @@ export default function AnimatedHeading({
   subtitleMobileSize = "text-sm",
   subtitleDesktopSize = "text-base",
   showLines = true,
-  showSubtitle, // ถ้าไม่ส่ง จะอิงว่ามี subtitle ไหม
+  showSubtitle,
   lineColor = "rgba(255,255,255,0.7)",
   lineThickness = 1,
   lineLengthPx = { xs: 48, md: 96 },

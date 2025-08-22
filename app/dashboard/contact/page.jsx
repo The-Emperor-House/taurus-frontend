@@ -179,11 +179,11 @@ export default function ContactListWithDetailModal() {
   return (
     <Box
       sx={{
-        bgcolor: "#000",
+        bgcolor: "#404040",
         color: "#fff",
         minHeight: "100svh",
         width: "100%",
-        pt: { xs: "140px", md: "170px" },
+        pt: { xs: "140px", md: "270px" },
       }}
     >
       <Box sx={{ maxWidth: 1200, mx: "auto", px: 2, pb: 6 }}>

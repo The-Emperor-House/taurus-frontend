@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { memo, useMemo, useRef } from 'react';
-import { motion, useInView } from 'motion/react'; // ✅ ใช้แพ็กเกจ motion v12 เท่านั้น
+import { motion, useInView } from 'motion/react';
 import { cn } from '@/shared/lib/cn';
 import useIsTouch from '@/shared/hooks/useIsTouch';
 

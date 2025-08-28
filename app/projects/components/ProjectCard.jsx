@@ -8,25 +8,20 @@ import { cn } from '@/shared/lib/cn';
 import useIsTouch from '@/shared/hooks/useIsTouch';
 
 /* ================================
- * Motion Variants
+ * Variants
  * ================================ */
-const cardLiftVariants = {
-  rest:  { y: 0 },
-  hover: { y: -3 },
-};
-
-const titleVariants = {
+const cardLift = { rest: { y: 0 }, hover: { y: -3 } };
+const titleV = {
   hidden: { opacity: 0, y: 8 },
-  show:   { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
 };
-
-const descVariants = {
+const descV = {
   hidden: { opacity: 0, y: 8 },
-  show:   { opacity: 1, y: 0, transition: { delay: 0.06, type: 'spring', stiffness: 280, damping: 24 } },
+  show: { opacity: 1, y: 0, transition: { delay: 0.06, type: 'spring', stiffness: 280, damping: 24 } },
 };
 
 /* ================================
- * Presentational pieces
+ * Presentational
  * ================================ */
 const CardVignette = memo(function CardVignette() {
   return (
@@ -37,24 +32,14 @@ const CardVignette = memo(function CardVignette() {
   );
 });
 
-/** เส้นใต้แบบ animate: 
- * - ตอนเข้าหน้า: ค่อยๆ ขยายจากซ้าย (whileInView)
- * - ตอน hover การ์ด: เพิ่มความหนา (variants จาก parent)
- */
 const AnimatedUnderline = memo(function AnimatedUnderline() {
-  // ใช้ inView ที่ตัวเส้นเองได้เลย
   const ref = useRef(null);
   const inView = useInView(ref, { margin: '-10%', amount: 0.5, once: true });
 
   return (
     <motion.div
       ref={ref}
-      // รับ state hover จาก parent ผ่าน variants
-      variants={{
-        rest:  { scaleY: 1,   opacity: 0.9 },
-        hover: { scaleY: 1.6, opacity: 1   },
-      }}
-      // เข้าหน้าแล้วค่อยๆ ขยายความยาว (scaleX)
+      variants={{ rest: { scaleY: 1, opacity: 0.9 }, hover: { scaleY: 1.6, opacity: 1 } }}
       initial={{ scaleX: 0, opacity: 0.7 }}
       animate={inView ? { scaleX: 1, opacity: 0.9 } : undefined}
       transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -65,19 +50,30 @@ const AnimatedUnderline = memo(function AnimatedUnderline() {
 });
 
 /* ================================
- * Main Component
+ * Main
  * ================================ */
+/**
+ * @typedef {'sm' | 'md' | 'lg' | 'xl'} Size
+ */
+
+const sizeClass = {
+  // สูงขั้นต่ำ + อัตราส่วนภาพ ปรับตามจอ
+  sm: 'min-h-[240px] aspect-[3/4] md:min-h-[280px]',
+  md: 'min-h-[300px] aspect-[3/4] md:min-h-[360px]',
+  lg: 'min-h-[360px] aspect-[3/4] md:min-h-[420px]',
+  xl: 'min-h-[420px] aspect-[3/4] md:min-h-[520px]',
+};
+
 function ProjectCardBase({
   title,
   description,
   imageSrc,
   href,
-  className,
   priority = false,
+  className,
+  size = 'md',
 }) {
   const isTouch = useIsTouch();
-
-  // บน touch: ให้เห็นเอฟเฟกต์ตั้งแต่ต้น
   const cardInitial = useMemo(() => (isTouch ? 'hover' : 'rest'), [isTouch]);
   const textInitial = useMemo(() => (isTouch ? 'show' : 'hidden'), [isTouch]);
 
@@ -86,12 +82,12 @@ function ProjectCardBase({
       initial={cardInitial}
       animate="rest"
       whileHover="hover"
-      variants={cardLiftVariants}
+      variants={cardLift}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       className={cn(
-        'group relative aspect-[3/4] w-full overflow-hidden rounded-2xl',
-        'bg-neutral-950/70 ring-1 ring-white/10',
-        'shadow-[0_18px_50px_-18px_rgba(0,0,0,0.45)]',
+        'group relative w-full overflow-hidden rounded-2xl',
+        sizeClass[size],
+        'bg-neutral-950/70 ring-1 ring-white/10 shadow-[0_18px_50px_-18px_rgba(0,0,0,0.45)]',
         className
       )}
     >
@@ -107,41 +103,47 @@ function ProjectCardBase({
             fill
             priority={priority}
             sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, (max-width:1536px) 33vw, 25vw"
-            className={cn('object-cover transition-transform duration-700', 'group-hover:scale-[1.02]')}
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
           />
         </div>
 
         <CardVignette />
 
-        {/* centered copy */}
+        {/* centered text */}
         <div className="absolute inset-0 z-10 flex items-center justify-center p-5 sm:p-6">
-          <motion.div
-            initial={textInitial}
-            whileInView="show"
-            viewport={{ once: true, amount: 0.4 }}
-            className="mx-auto max-w-[85%] text-center"
-          >
+          <motion.div initial={textInitial} whileInView="show" viewport={{ once: true, amount: 0.4 }} className="mx-auto max-w-[85%] text-center">
             <motion.h3
-              variants={titleVariants}
+              variants={titleV}
               className={cn(
-                'font-extrabold uppercase text-white',
+                'text-white font-extrabold uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]',
                 'tracking-[0.18em] sm:tracking-[0.22em] md:tracking-[0.26em]',
                 'text-lg sm:text-xl md:text-2xl',
-                'drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]'
+                // กันหัวข้อยาว
+                'overflow-hidden text-ellipsis [word-break:break-word]'
               )}
             >
               {title}
             </motion.h3>
 
-            {/* เส้นใต้—ฟัง hover จาก article + inView ของตัวเอง */}
             <AnimatedUnderline />
 
-            <motion.p
-              variants={descVariants}
-              className="text-sm font-light text-white/90 sm:text-base drop-shadow-[0_3px_8px_rgba(0,0,0,0.5)]"
-            >
-              {description}
-            </motion.p>
+            {description && (
+              <motion.p
+                variants={descV}
+                className={cn(
+                  'text-sm sm:text-base font-light text-white/90 drop-shadow-[0_3px_8px_rgba(0,0,0,0.5)]',
+                  // กันข้อความติดกัน + จำกัดบรรทัด
+                  'overflow-hidden [overflow-wrap:break-word] [word-break:break-word] hyphens-auto',
+                  'line-clamp-3' // ใช้ Tailwind plugin หรือแทนด้วย -webkit line clamp ด้านล่างถ้าไม่ได้เปิด plugin
+                )}
+                style={
+                  // เผื่อกรณีไม่ได้เปิด plugin line-clamp
+                  { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }
+                }
+              >
+                {description}
+              </motion.p>
+            )}
           </motion.div>
         </div>
 
@@ -149,7 +151,7 @@ function ProjectCardBase({
         <span className="absolute inset-0 rounded-2xl ring-2 ring-transparent transition focus-visible:ring-white/60" />
       </Link>
 
-      {/* inner border on hover */}
+      {/* inner glow on hover */}
       <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0))] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
     </motion.article>
   );

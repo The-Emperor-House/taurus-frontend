@@ -80,7 +80,7 @@ export default function ProjectsSection() {
         align="center"
         titleColor="#ffffffff"
       />
-      <ProjectCardsGrid projects={projects} className="min-h-screen" />
+      <ProjectCardsGrid cardSize="lg" projects={projects} className="min-h-screen" />
     </>
   );
 }

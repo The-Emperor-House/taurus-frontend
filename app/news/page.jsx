@@ -71,10 +71,10 @@ export default function NewsListPage() {
   return (
     <Box
       sx={{
-        bgcolor: "#404040",
+        bgcolor: "#000000ff",
         color: "#fff",
         minHeight: "100svh",
-        pt: { xs: "140px", md: "250px" },
+        pt: { xs: "120px", md: "150px" },
         display: "flex",            // 👈 ทำเป็นคอลัมน์ทั้งหน้า
         flexDirection: "column",    // 👈 เพื่อดัน footer ไปล่าง
       }}
@@ -84,14 +84,12 @@ export default function NewsListPage() {
           maxWidth: 1200,
           mx: "auto",
           px: { xs: 2, md: 3 },
-          pb: 8,
           flex: 1,                 // 👈 กินพื้นที่ที่เหลือ (footer จะไม่ลอย)
           width: "100%",
         }}
       >
         {/* Header */}
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 2, mb: 4 }}>
-          <Box sx={{ height: 1, bgcolor: "rgba(0, 0, 0, 1)" }} />
+        <Box sx={{ alignItems: "center", gap: 2, mb: 4 }}>
           <Typography
             sx={{
               fontWeight: 900,
@@ -103,7 +101,6 @@ export default function NewsListPage() {
           >
             News & Events
           </Typography>
-          <Box sx={{ height: 1, bgcolor: "rgba(0, 0, 0, 1)" }} />
         </Box>
 
         {err && <Alert severity="error" sx={{ mb: 2 }}>{err}</Alert>}

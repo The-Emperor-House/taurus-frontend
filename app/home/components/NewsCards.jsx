@@ -30,11 +30,18 @@ function extractLabel(h1 = "") {
 function dateLine(d) {
   if (!d) return "";
   return new Date(d)
-    .toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+    .toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
     .toUpperCase();
 }
 
-export default function LatestNews({ title = "News & Events", showViewAll = true }) {
+export default function LatestNews({
+  title = "News & Events",
+  showViewAll = true,
+}) {
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -47,7 +54,10 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
         setErr("");
 
         // พยายามใช้ limit=1 ก่อน
-        let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news?limit=1`, { signal: ctrl.signal });
+        let res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/news?limit=1`,
+          { signal: ctrl.signal }
+        );
         let latest = null;
         if (res.ok) {
           const data = await res.json();
@@ -55,10 +65,15 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
         }
         // fallback: โหลดทั้งหมดแล้วเลือกตัวล่าสุดเอง
         if (!latest) {
-          const rAll = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news`, { signal: ctrl.signal });
+          const rAll = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/news`,
+            { signal: ctrl.signal }
+          );
           const all = rAll.ok ? await rAll.json() : [];
           if (Array.isArray(all) && all.length) {
-            latest = [...all].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+            latest = [...all].sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            )[0];
           }
         }
         setNews(latest || null);
@@ -71,18 +86,35 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
     return () => ctrl.abort();
   }, []);
 
-  const cover = useMemo(() => resolveUrl(news?.coverUrl) || FALLBACK_COVER, [news?.coverUrl]);
+  const cover = useMemo(
+    () => resolveUrl(news?.coverUrl) || FALLBACK_COVER,
+    [news?.coverUrl]
+  );
 
   if (err) {
     return (
-      <Box sx={{ bgcolor: "#fff", color: "text.primary", px: { xs: 2, md: 3 }, py: 6 }}>
+      <Box
+        sx={{
+          bgcolor: "#fff",
+          color: "text.primary",
+          px: { xs: 2, md: 3 },
+          py: 6,
+        }}
+      >
         <Alert severity="error">{err}</Alert>
       </Box>
     );
   }
 
   return (
-    <Box sx={{ bgcolor: "#fff", color: "text.primary", px: { xs: 2, md: 3 }, py: 6 }}>
+    <Box
+      sx={{
+        bgcolor: "#fff",
+        color: "text.primary",
+        px: { xs: 2, md: 3 },
+        py: 6,
+      }}
+    >
       {/* หัวข้อ */}
       <Box
         sx={{
@@ -113,8 +145,17 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
         <Grid container spacing={{ xs: 2, md: 4 }}>
           <Grid size={{ xs: 12, md: 7 }}>
             <Box sx={{ border: `10px solid ${FRAME}`, borderRadius: 1 }}>
-              <Box sx={{ position: "relative", aspectRatio: "16 / 9", bgcolor: "#f5f5f5" }}>
-                <Skeleton variant="rectangular" sx={{ position: "absolute", inset: 0 }} />
+              <Box
+                sx={{
+                  position: "relative",
+                  aspectRatio: "16 / 9",
+                  bgcolor: "#f5f5f5",
+                }}
+              >
+                <Skeleton
+                  variant="rectangular"
+                  sx={{ position: "absolute", inset: 0 }}
+                />
               </Box>
             </Box>
           </Grid>
@@ -132,7 +173,14 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
           {/* ซ้าย: สื่อหลัก */}
           <Grid size={{ xs: 12, md: 7 }}>
             <Box sx={{ border: `10px solid ${FRAME}`, borderRadius: 1 }}>
-              <Box sx={{ position: "relative", aspectRatio: "16 / 9", overflow: "hidden", bgcolor: "#f5f5f5" }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  aspectRatio: "16 / 9",
+                  overflow: "hidden",
+                  bgcolor: "#f5f5f5",
+                }}
+              >
                 {news.videoUrl ? (
                   <MediaEmbed url={news.videoUrl} />
                 ) : (
@@ -140,7 +188,13 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
                     src={cover}
                     alt={news.heading1 || "news cover"}
                     onError={(e) => (e.currentTarget.src = FALLBACK_COVER)}
-                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 )}
               </Box>
@@ -149,21 +203,71 @@ export default function LatestNews({ title = "News & Events", showViewAll = true
 
           {/* ขวา: ข้อมูล */}
           <Grid size={{ xs: 12, md: 5 }}>
-            <Typography sx={{ fontWeight: 800, fontSize: { xs: "1rem", md: "1.1rem" }, mb: 1 }}>
+            <Typography
+              sx={{
+                fontWeight: 800,
+                fontSize: { xs: "1rem", md: "1.1rem" },
+                mb: 1,
+              }}
+            >
               {dateLine(news.createdAt)}
             </Typography>
 
-            <Typography sx={{ color: ACCENT, fontWeight: 800, letterSpacing: ".06em", textTransform: "uppercase" }}>
-              {extractLabel(news.heading1)}
-            </Typography>
-
-            <Typography sx={{ fontWeight: 900, fontSize: { xs: "1.2rem", md: "1.4rem" }, lineHeight: 1.25, mb: 1.5 }}>
+            <Typography
+              sx={{
+                fontWeight: 900,
+                fontSize: { xs: "1.2rem", md: "1.4rem" },
+                lineHeight: 1.25,
+                mb: 1.5,
+                overflowWrap: "break-word",
+                wordBreak: "break-word",
+                hyphens: "auto",
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
               {news.heading2 || news.heading1}
             </Typography>
 
+            <Typography
+              sx={{
+                color: ACCENT,
+                fontWeight: 800,
+                letterSpacing: ".06em",
+                textTransform: "uppercase",
+                overflowWrap: "break-word",
+                wordBreak: "break-word",
+                hyphens: "auto",
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 1,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {extractLabel(news.heading1)}
+            </Typography>
+
             {news.body && (
-              <Typography sx={{ color: "text.secondary", lineHeight: 1.7, mb: 2 }}>
-                {news.body.length > 140 ? news.body.slice(0, 140) + "…" : news.body}
+              <Typography
+                sx={{
+                  color: "text.secondary",
+                  lineHeight: 1.7,
+                  mb: 2,
+                  overflowWrap: "break-word",
+                  wordBreak: "break-word",
+                  hyphens: "auto",
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {news.body}
               </Typography>
             )}
 

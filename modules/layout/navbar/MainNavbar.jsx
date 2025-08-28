@@ -50,27 +50,14 @@ export default function MainNavbar() {
     []
   );
 
-  const handleSmoothScroll = useCallback((e, href) => {
-    if (href.startsWith("/#")) {
-      e.preventDefault();
-      const id = href.slice(2);
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        window.history.pushState(null, "", href);
-        setIsMobileMenuOpen(false);
-      }
-    }
-  }, []);
-
   const handleLogout = () => {
     logout(session?.refreshToken);
     setIsMobileMenuOpen(false);
     setIsAccountOpen(false);
   };
 
-  const logoW = isLgUp ? 200 : isMdUp ? 160 : 110;
-  const logoH = isLgUp ? 120 : isMdUp ? 96 : 70;
+  const logoW = isLgUp ? 180 : isMdUp ? 150 : 120;
+  const logoH = isLgUp ? 108 : isMdUp ? 90 : 70;
 
   return (
     <AppBar
@@ -79,8 +66,6 @@ export default function MainNavbar() {
       sx={{
         backgroundColor: "transparent",
         boxShadow: "none",
-        top: "50px",
-        zIndex: (t) => t.zIndex.appBar + 1,
       }}
     >
       <Toolbar
@@ -94,7 +79,7 @@ export default function MainNavbar() {
           width: "100%",
         }}
       >
-        <Box sx={{ flexShrink: 0 }}>
+        <Box>
           <LogoSwap width={logoW} height={logoH} showOnXs />
         </Box>
 
@@ -114,7 +99,6 @@ export default function MainNavbar() {
         >
           <NavLinks
             links={navLinks}
-            onSmoothScroll={handleSmoothScroll}
             dense={!isLgUp}
           />
 

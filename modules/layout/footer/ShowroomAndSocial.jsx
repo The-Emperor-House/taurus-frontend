@@ -43,6 +43,18 @@ export default function ShowroomAndSocial() {
           flexWrap: "wrap",
         }}
       >
+        <Typography
+          variant="body1"
+          sx={{
+            mx: 1,
+            color: "rgba(255,255,255,0.9)",
+            letterSpacing: "0.02rem",
+            textAlign: { xs: "center", md: "left" },
+          }}
+        >
+          ติดต่อเรา
+        </Typography>
+
         <SocialIcon href="https://line.me/ti/p/~salestaurus" label="Line">
           <FaLine />
         </SocialIcon>
@@ -50,6 +62,18 @@ export default function ShowroomAndSocial() {
         <SocialIcon href="mailto:taurus@emperorhouse.com" label="Email">
           <MdEmail />
         </SocialIcon>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: { xs: "center", md: "flex-start" },
+          gap: 1,
+          mt: 1.5,
+          flexWrap: "wrap",
+        }}
+      >
 
         <Typography
           variant="body1"
@@ -58,10 +82,9 @@ export default function ShowroomAndSocial() {
             color: "rgba(255,255,255,0.9)",
             letterSpacing: "0.02rem",
             textAlign: { xs: "center", md: "left" },
-            ...hoverPrimaryMd,
           }}
         >
-          ติดตามผลงานเพิ่มเติมของเราได้ที่
+          ติดตามผลงานเพิ่มเติม
         </Typography>
 
         <SocialIcon href="https://facebook.com/TaurusByEmperor" label="Facebook">
@@ -83,7 +106,6 @@ export default function ShowroomAndSocial() {
             color: "rgba(255,255,255,0.9)",
             whiteSpace: "nowrap",
             textAlign: { xs: "center", md: "left" },
-            ...hoverPrimaryMd,
           }}
         >
           Taurus

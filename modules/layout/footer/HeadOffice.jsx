@@ -59,10 +59,31 @@ export default function HeadOffice() {
             color: "rgba(255,255,255,0.9)",
             letterSpacing: { xs: "0.08rem", md: "0.18rem" },
             fontSize: { xs: "0.98rem", md: "1.05rem" },
-            ...hoverPrimaryMd,
           }}
         >
-          (66) 2 970 3080 - 3 / (66) 61 0596111
+          (66) 2 970 3080 - 3
+        </Typography>
+      </Box>
+
+            <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: { xs: "center", md: "flex-start" },
+          gap: 1,
+          mt: 1,
+        }}
+      >
+        <FaPhoneAlt />
+        <Typography
+          variant="body1"
+          sx={{
+            color: "rgba(255,255,255,0.9)",
+            letterSpacing: { xs: "0.08rem", md: "0.18rem" },
+            fontSize: { xs: "0.98rem", md: "1.05rem" },
+          }}
+        >
+          (66) 61 0596111
         </Typography>
       </Box>
     </Box>

@@ -8,12 +8,6 @@ import { IoLocationSharp } from "react-icons/io5";
 import SocialIcon from "./SocialIcon";
 import SectionTitle from "./SectionTitle";
 
-const hoverPrimaryMd = {
-  transition: (t) =>
-    t.transitions.create("color", { duration: t.transitions.duration.shorter }),
-  "&:hover": { color: { xs: "inherit", md: "primary.main" } },
-};
-
 export default function ShowroomAndSocial() {
   return (
     <Box>
@@ -70,8 +64,7 @@ export default function ShowroomAndSocial() {
           alignItems: "center",
           justifyContent: { xs: "center", md: "flex-start" },
           gap: 1,
-          mt: 1.5,
-          flexWrap: "wrap",
+          mt: 1,
         }}
       >
 
@@ -80,7 +73,6 @@ export default function ShowroomAndSocial() {
           sx={{
             mx: 1,
             color: "rgba(255,255,255,0.9)",
-            letterSpacing: "0.02rem",
             textAlign: { xs: "center", md: "left" },
           }}
         >

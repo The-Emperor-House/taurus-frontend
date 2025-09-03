@@ -1,33 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
+import SectionTitle from "./SectionTitle";
 
-const hoverPrimaryMd = {
-  transition: (t) =>
-    t.transitions.create("color", { duration: t.transitions.duration.shorter }),
-  "&:hover": { color: { xs: "inherit", md: "primary.main" } },
-};
 
 export default function HeadOffice() {
   return (
     <Box>
-      <Typography
-        variant="h6"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: { xs: "center", md: "flex-start" },
-          gap: 1,
-          fontWeight: 700,
-          letterSpacing: "0.03rem",
-          mb: 0.75,
-          textAlign: { xs: "center", md: "left" },
-          ...hoverPrimaryMd,
-        }}
-      >
-        <IoLocationSharp size={18} />
-        Head Office :
-      </Typography>
+      <SectionTitle icon={<IoLocationSharp size={18} />}>Head Office :</SectionTitle>
 
       <Typography
         variant="body1"
@@ -49,7 +29,8 @@ export default function HeadOffice() {
           alignItems: "center",
           justifyContent: { xs: "center", md: "flex-start" },
           gap: 1,
-          mt: 1,
+          mt: 1.5,
+          flexWrap: "wrap",
         }}
       >
         <FaPhoneAlt />
@@ -58,14 +39,14 @@ export default function HeadOffice() {
           sx={{
             color: "rgba(255,255,255,0.9)",
             letterSpacing: { xs: "0.08rem", md: "0.18rem" },
-            fontSize: { xs: "0.98rem", md: "1.05rem" },
+            textAlign: { xs: "center", md: "left" },
           }}
         >
           (66) 2 970 3080 - 3
         </Typography>
       </Box>
 
-            <Box
+      <Box
         sx={{
           display: "flex",
           alignItems: "center",
@@ -79,8 +60,7 @@ export default function HeadOffice() {
           variant="body1"
           sx={{
             color: "rgba(255,255,255,0.9)",
-            letterSpacing: { xs: "0.08rem", md: "0.18rem" },
-            fontSize: { xs: "0.98rem", md: "1.05rem" },
+            textAlign: { xs: "center", md: "left" },
           }}
         >
           (66) 61 0596111

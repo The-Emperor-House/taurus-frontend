@@ -60,7 +60,7 @@ export default function MapCards() {
       <div className="relative min-h-[45vh] md:min-h-0 md:h-full">
         <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
           <Image
-            src="/home/team/104096.webp"
+            src="/home/team/team.jpg"
             alt="Taurus Team"
             fill
             sizes="(max-width: 768px) 100vw, (min-width: 769px) 50vw"
